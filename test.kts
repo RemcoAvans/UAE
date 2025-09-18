@@ -1,3 +1,5 @@
 fun main() {
-    println("hello flikkers")
+    println("Hallo, Kotlin!")
 }
+
+main()
