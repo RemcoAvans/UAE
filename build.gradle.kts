@@ -1,22 +1,27 @@
+val kotlin_version: String by project
+val logback_version: String by project
+
 plugins {
-    kotlin("jvm") version "1.9.10"
-    application
+    kotlin("jvm") version "2.2.20"
+    id("io.ktor.plugin") version "3.3.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.20"
 }
 
-repositories {
-    mavenCentral()
+group = "com.example"
+version = "0.0.1"
+
+application {
+    mainClass = "com.example.ApplicationKt"
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:2.3.5")
-    implementation("io.ktor:ktor-server-netty:2.3.5")
-    implementation("ch.qos.logback:logback-classic:1.4.11")
-}
-
-application {
-    mainClass.set("MainKt")
-}
-
-kotlin {
-    jvmToolchain(17) // of 20
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
+    implementation("io.ktor:ktor-server-openapi")
+    implementation("io.ktor:ktor-server-default-headers")
+    implementation("io.ktor:ktor-server-cio")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
+    testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
