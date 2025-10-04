@@ -1,5 +1,6 @@
 package routing
 
+import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
 import com.example.core.ObjectResult
 import com.example.usecase.CreateActivityUseCase
@@ -65,7 +66,11 @@ fun Route.activityRoutes() {
     }
 
     get ("/activitie/{id}") {
-        val id = call.parameters["id"].toString().toInt()
+        val id = call.parameters["id"]?.toIntOrNull()
+        if (id == null){
+            call.badRequest("Ongeldig of geen id")
+            return@get
+        }
 
         val result : ObjectResult<Activity?> = getActivityUseCase.execute(id)
         call.handle(result)
