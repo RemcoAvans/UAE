@@ -3,6 +3,7 @@ package usecase
 import com.example.core.ObjectResult
 import model.User
 import repository.UserRepository
+import kotlin.collections.List
 
 class GetUsersUseCase(private val repository: UserRepository) : BaseUseCase<List<User>> {
 

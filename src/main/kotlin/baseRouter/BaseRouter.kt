@@ -6,6 +6,7 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 import usecase.GetUsersUseCase
 
+
 object BaseRouter {
 
     suspend fun <T> ApplicationCall.handle(data: ObjectResult<T>) {
