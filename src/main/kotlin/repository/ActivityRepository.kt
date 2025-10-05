@@ -23,8 +23,6 @@ class ActivityRepository : CrudRepository<Activity> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun delete(id: Int): Boolean {
-        TODO("Not yet implemented")
-    }
-
+    override suspend fun delete(id: Int): Boolean =
+        activitys.removeIf { it.id == id }
 }

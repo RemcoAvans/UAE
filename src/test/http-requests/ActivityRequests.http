@@ -1,0 +1,43 @@
+alhost:8080/activities
+
+<> 2025-09-29T181744.200.json
+
+### GET incident with ID==1
+GET http://127.0.0.1:8080/activities/1
+
+### POST (Create) a new Incident (with default values for priority, status, ,,,)
+POST http://127.0.0.1:8080/activities
+Content-Type: application/json
+
+{
+  "reportedBy": 1,
+  "category": "Environment",
+  "description": "Broken tree is blocking the cycle track.",
+  "latitude": 51.58677130730741,
+  "longitude": 4.808487370673
+}
+
+### PUT (Update) Incident with ID==2, we will change this to a better solution with a dto class: UpdateIncident
+PUT http://127.0.0.1:8080/activities/2
+Content-Type: application/json
+
+{
+  "reportedBy": 2,
+  "category": "Traffic",
+  "description": "At the corner of the street 2 lights are broken",
+  "latitude": 51.59051650746655,
+  "longitude":  4.812002566502519,
+
+  "id": 2
+}
+
+### PATCH the status of incident with ID==1 to DONE (previous status was ASSIGNED), here a special
+PATCH  http://127.0.0.1:8080/activities/1
+Content-Type: application/json
+
+{
+  "status": "DONE"
+}
+
+### DELETE incident with ID==1
+DELETE http://127.0.0.1:8080/activity/1

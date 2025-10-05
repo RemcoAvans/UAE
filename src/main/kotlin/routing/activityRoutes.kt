@@ -6,6 +6,7 @@ import com.example.core.ObjectResult
 import com.example.usecase.CreateActivityUseCase
 import com.example.usecase.GetActivityUseCase
 import com.example.usecase.GetActivitysUseCase
+import com.example.usecase.activity.DeleteActivityUseCase
 import io.ktor.server.routing.*
 import model.Activity
 
@@ -17,8 +18,10 @@ fun Route.activityRoutes() {
     val createActivityUseCase = CreateActivityUseCase(repo)
     val getActivitysUseCase = GetActivitysUseCase(repo)
     val getActivityUseCase = GetActivityUseCase(repo)
+    val deleteActivity = DeleteActivityUseCase(repo)
     var aantal = 0
 
+    // post("/activities")
     get("/createActivity") {
 
         val activity: Activity = if (aantal == 0) {
@@ -65,7 +68,7 @@ fun Route.activityRoutes() {
 
     }
 
-    get ("/activitie/{id}") {
+    get ("/activities/{id}") {
         val id = call.parameters["id"]?.toIntOrNull()
         if (id == null){
             call.badRequest("Ongeldig of geen id")
@@ -74,6 +77,11 @@ fun Route.activityRoutes() {
 
         val result : ObjectResult<Activity?> = getActivityUseCase.execute(id)
         call.handle(result)
+    }
 
+    delete ("/activities/{id}") {
+        val id = call.parameters["id"]?.toIntOrNull()
+        val result = deleteActivity.execute(id)
+        call.handle(result)
     }
 }
