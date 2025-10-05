@@ -5,7 +5,7 @@ import model.Activity
 import repository.ActivityRepository
 import usecase.BaseUseCase
 
-class GetActivitysUseCase(private val repository : ActivityRepository) : BaseUseCase<List<Activity>> {
+class GetActivitiesUseCase(private val repository : ActivityRepository) : BaseUseCase<List<Activity>> {
 
     override suspend fun execute(): ObjectResult<List<Activity>> {
         val result  = repository.getAll()

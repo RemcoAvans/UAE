@@ -1,22 +1,25 @@
 package routing
 
+import com.example.Dtos.ActivityFilterDto
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
 import com.example.core.ObjectResult
 import com.example.usecase.CreateActivityUseCase
+import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
-import com.example.usecase.GetActivitysUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
+import com.example.usecase.activity.FilterActivitiesUseCase
+import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import model.Activity
 
 import repository.ActivityRepository
 
-
 fun Route.activityRoutes() {
     val repo = ActivityRepository()
     val createActivityUseCase = CreateActivityUseCase(repo)
-    val getActivitysUseCase = GetActivitysUseCase(repo)
+    val getActivitiesUseCase = GetActivitiesUseCase(repo)
+    val filterActivitiesUseCase = FilterActivitiesUseCase(repo)
     val getActivityUseCase = GetActivityUseCase(repo)
     val deleteActivity = DeleteActivityUseCase(repo)
     var aantal = 0
@@ -53,19 +56,19 @@ fun Route.activityRoutes() {
         }
         aantal++
 
-
         val result = createActivityUseCase.execute(activity)
-
         call.handle(result)
-
-
-
     }
 
     get("/activities") {
-        val result : ObjectResult<List<Activity>> = getActivitysUseCase.execute()
+        val result = getActivitiesUseCase.execute()
         call.handle(result)
+    }
 
+    post("/activities/filter") {
+        val filter = call.receive<ActivityFilterDto>()
+        val result = filterActivitiesUseCase(filter)
+        call.handle(result)
     }
 
     get ("/activities/{id}") {
@@ -75,7 +78,7 @@ fun Route.activityRoutes() {
             return@get
         }
 
-        val result : ObjectResult<Activity?> = getActivityUseCase.execute(id)
+        val result = getActivityUseCase.execute(id)
         call.handle(result)
     }
 
