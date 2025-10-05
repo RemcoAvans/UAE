@@ -67,7 +67,7 @@ fun Route.activityRoutes() {
 
     post("/activities/filter") {
         val filter = call.receive<ActivityFilterDto>()
-        val result = filterActivitiesUseCase(filter)
+        val result = filterActivitiesUseCase.execute(filter)
         call.handle(result)
     }
 
