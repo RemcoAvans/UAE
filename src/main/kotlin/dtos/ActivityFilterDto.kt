@@ -1,4 +1,4 @@
-package com.example.Dtos
+package dtos
 
 @kotlinx.serialization.Serializable
 data class ActivityFilterDto(

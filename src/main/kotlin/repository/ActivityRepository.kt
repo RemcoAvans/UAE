@@ -1,6 +1,7 @@
 package repository
 
 import model.Activity
+import model.User
 
 class ActivityRepository : CrudRepository<Activity> {
 
@@ -12,6 +13,10 @@ class ActivityRepository : CrudRepository<Activity> {
 
     override suspend fun getById(id: Int): Activity? {
         return activitys.find { it.id == id }
+    }
+
+    override suspend fun getByQuery(predicate: (Activity) -> Boolean): List<Activity> {
+        return activitys.filter(predicate)
     }
 
     override suspend fun create(entity: Activity): Activity {

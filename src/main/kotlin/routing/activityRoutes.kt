@@ -1,14 +1,13 @@
 package routing
 
-import com.example.Dtos.ActivityFilterDto
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
-import com.example.core.ObjectResult
 import com.example.usecase.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
+import dtos.ActivityFilterDto
 import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import model.Activity

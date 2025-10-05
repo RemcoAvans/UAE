@@ -11,6 +11,10 @@ class UserRepository : CrudRepository<User> {
     override suspend fun getById(id: Int): User? =
         users.find { it.id == id }
 
+    override suspend fun getByQuery(predicate: (User) -> Boolean): List<User> {
+        return users.filter(predicate)
+    }
+
     override suspend fun create(entity: User): User {
         users.add(entity)
         return entity

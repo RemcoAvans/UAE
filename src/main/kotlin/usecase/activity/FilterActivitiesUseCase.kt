@@ -1,8 +1,8 @@
 package com.example.usecase.activity
 
-import com.example.Dtos.ActivityFilterDto
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
+import dtos.ActivityFilterDto
 import model.Activity
 import repository.ActivityRepository
 
@@ -22,10 +22,17 @@ class FilterActivitiesUseCase(val repository: ActivityRepository) : BaseInputUse
             }
             .filter { activity ->
                 // City filter
-                input.city == null || activity.location.equals(input.city, ignoreCase = true)
+                input.city.isNullOrBlank() ||
+                        activity.location.contains(input.city, ignoreCase = true)
             }
             .filter { activity ->
                 // Category filter (lijst)
+                input.categories.isNullOrEmpty() ||
+                        input.categories.any { category ->
+                            activity.type.contains(category, ignoreCase = true)
+                        }
+            }
+            .filter { activity ->
                 input.categories.isNullOrEmpty() || input.categories.contains(activity.type)
             }
 //            .filter { activity ->
