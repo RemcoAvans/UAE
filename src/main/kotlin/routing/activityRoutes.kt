@@ -25,13 +25,6 @@ fun Route.activityRoutes() {
 
     route("/activities") {
 
-//        get("/createActivity") {
-        post() {
-            aantal++
-//            val result = createActivityUseCase.execute(activity)
-//            call.handle(result)
-        }
-
         get() {
             val result = getActivitiesUseCase.execute()
             call.handle(result)

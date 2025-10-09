@@ -20,6 +20,6 @@ fun Route.tagRoutes() {
         post(){
             TODO("een simpele create tag")
         }
-        TODO("een endpoint dat een tag koppelt aan een activity (en dus een ActivityTag entitieit aanmaakt)")
+        // to do: een endpoint dat een tag koppelt aan een activity (en dus een ActivityTag entitieit aanmaakt)
     }
 }
