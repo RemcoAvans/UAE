@@ -11,16 +11,13 @@ import io.ktor.server.routing.route
 fun Route.voteRoutes() {
     route("/votes") {
         get("/{activityId}"){
-            TODO()
+            TODO("Get alle votes van de activities")
         }
         delete("/{id}"){
-            TODO()
-        }
-        patch(){
-            TODO()
+            TODO("delete de vote")
         }
         post(){
-            TODO()
+            TODO("Nieuwe vote. overschrijft de vorige vote van de user(id) met activityId")
         }
     }
 }

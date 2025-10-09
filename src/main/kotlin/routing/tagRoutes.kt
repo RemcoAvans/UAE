@@ -6,22 +6,20 @@ fun Route.tagRoutes() {
     route("/tags") {
 
         get(){
-            TODO()
-        }
-        get("/{id}"){
-            TODO()
+            TODO("Get alle tags")
         }
         get("/{activityId}"){
-            TODO()
+            TODO("Get all tags bij één activity")
         }
         delete("/{id}"){
-            TODO()
+            TODO("een simpele delete tag")
         }
         patch(){
-            TODO()
+            TODO("een simpele update tag")
         }
         post(){
-            TODO()
+            TODO("een simpele create tag")
         }
+        TODO("een endpoint dat een tag koppelt aan een activity (en dus een ActivityTag entitieit aanmaakt)")
     }
 }
