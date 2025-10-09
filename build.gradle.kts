@@ -22,6 +22,10 @@ dependencies {
     implementation("io.ktor:ktor-server-default-headers")
     implementation("io.ktor:ktor-server-cio")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-auth:3.3.0")
+    implementation("io.ktor:ktor-server-auth-jwt:3.3.0")
+    implementation("io.ktor:ktor-server-auth:3.3.0")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
 }
