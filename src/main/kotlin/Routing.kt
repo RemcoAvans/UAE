@@ -8,11 +8,11 @@ import io.ktor.server.plugins.openapi.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import routing.activityRoutes
-import routing.userRoutes
+//import routing.userRoutes
 
 fun Application.configureRouting() {
     routing {
-        userRoutes()
+//        userRoutes()
         activityRoutes()
         get("/") {
             call.respondText("Hello World!")

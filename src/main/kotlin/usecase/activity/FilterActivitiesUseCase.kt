@@ -22,8 +22,7 @@ class FilterActivitiesUseCase(val repository: ActivityRepository) : BaseInputUse
             }
             .filter { activity ->
                 // City filter
-                input.city.isNullOrBlank() ||
-                        activity.location.contains(input.city, ignoreCase = true)
+                input.locationId == null || activity.locationId == input.locationId
             }
             .filter { activity ->
                 // Category filter (lijst)
