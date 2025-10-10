@@ -14,8 +14,17 @@ fun Route.voteRoutes() {
             TODO("Get alle votes van de activities")
         }
         delete("/{id}"){
-            TODO("delete de vote")
+            val id = call.parameters["id"]?.toIntOrNull()
+
+            if (id == null || id <= 0) {
+                call.respond(ObjectResult.fail("voteID is geen geldig getal"))
+                return@delete
+            }
+            val result = DeleteVoteUseCase.execute(id)
+
+            call.respond(result)
         }
+
         post(){
             TODO("Nieuwe vote. overschrijft de vorige vote van de user(id) met activityId")
         }
