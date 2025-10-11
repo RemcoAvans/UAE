@@ -16,10 +16,6 @@ fun Route.voteRoutes() {
         delete("/{id}"){
             val id = call.parameters["id"]?.toIntOrNull()
 
-            if (id == null || id <= 0) {
-                call.respond(ObjectResult.fail("voteID is geen geldig getal"))
-                return@delete
-            }
             val result = DeleteVoteUseCase.execute(id)
 
             call.respond(result)
