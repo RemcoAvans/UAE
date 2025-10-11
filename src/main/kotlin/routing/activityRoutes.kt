@@ -2,12 +2,15 @@ package routing
 
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
-import com.example.usecase.CreateActivityUseCase
+import usecase.activity.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
-import dtos.ActivityFilterDto
+import dtos.activity.ActivityFilterDto
+import dtos.activity.CreateCultureActivityDto
+import dtos.activity.CreateFoodActivityDto
+import dtos.activity.CreateSportActivityDto
 import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import model.Activity
@@ -50,6 +53,22 @@ fun Route.activityRoutes() {
         delete ("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             val result = deleteActivity.execute(id)
+            call.handle(result)
+        }
+
+        post ("/food"){
+            val foodActivity = call.receive<CreateFoodActivityDto>()
+            val result = createActivityUseCase.execute(foodActivity);
+            call.handle(result)
+        }
+        post ("/culture"){
+            val cultureActivity = call.receive<CreateCultureActivityDto>()
+            val result = createActivityUseCase.execute(cultureActivity);
+            call.handle(result)
+        }
+        post ("/sport"){
+            val sportActivity = call.receive<CreateSportActivityDto>()
+            val result = createActivityUseCase.execute(sportActivity);
             call.handle(result)
         }
     }
