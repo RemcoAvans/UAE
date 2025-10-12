@@ -2,7 +2,7 @@ package com.example.usecase.activity
 
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
-import dtos.ActivityFilterDto
+import dtos.activity.ActivityFilterDto
 import model.Activity
 import repository.ActivityRepository
 
