@@ -11,7 +11,8 @@ group = "com.example"
 version = "0.0.1"
 
 application {
-    mainClass = "com.example.ApplicationKt"
+    mainClass =  "com.example.ApplicationKt"
+
 }
 
 dependencies {
@@ -27,5 +28,6 @@ dependencies {
     implementation("io.ktor:ktor-server-auth:3.3.0")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
 
 }
