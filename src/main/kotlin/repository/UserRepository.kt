@@ -1,5 +1,7 @@
 package repository
 
+import dtos.UserRegisterDto
+import dtos.toUser
 import model.User
 
 class UserRepository : CrudRepository<User> {
@@ -16,7 +18,7 @@ class UserRepository : CrudRepository<User> {
     }
 
     override suspend fun create(entity: User): User {
-        users.add(entity)
+      users.add(entity)
         return entity
     }
 
@@ -31,3 +33,5 @@ class UserRepository : CrudRepository<User> {
     override suspend fun delete(id: Int): Boolean =
         users.removeIf { it.id == id }
 }
+
+

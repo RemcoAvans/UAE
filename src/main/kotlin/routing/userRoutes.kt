@@ -6,33 +6,36 @@ import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.sendToken
 import com.example.config.JwtConfig
-import com.example.usecase.CreateUserUseCase
+
+import dtos.UserRegisterDto
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
+import io.ktor.server.request.receive
 import io.ktor.server.response.respondText
 
 import io.ktor.server.routing.*
 import repository.UserRepository
 import usecase.GetUsersUseCase
+import usecase.user.RegisterUseCase
 import java.util.Date
 
 fun Route.userRoutes() {
     val repo = UserRepository()
 //    val registerUseCase = RegisterUseCase(repo)
     val getUsersUseCase = GetUsersUseCase(repo)
-    val createUsersUseCase = CreateUserUseCase(repo)
+    val registerUseCase = RegisterUseCase(repo)
 
 
 
     post("/users/register") {
-//        val user = call.receive<UserRegisterDto>()
-//        val result = registerUseCase.execute(user)
-//        call.handle(result)
+        val user = call.receive<UserRegisterDto>()
+        val result = registerUseCase.execute(user)
+        call.handle(result)
     }
 
-    get("/login") {
 
+    get("/login") {
         val jwt = JwtConfig(environment)
         val expiresAt = System.currentTimeMillis() + 60 * 1000
         val token =  JWT.create()

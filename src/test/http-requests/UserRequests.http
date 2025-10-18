@@ -3,7 +3,16 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ###
+POST http://127.0.0.1:8080/users/register
+Content-Type: application/json
 
+{
+   "firstName": "jaron123!",
+   "lastName": "Jaron",
+   "userName": "Freijser",
+   "email": "jaron@Test.nl",
+   "password": "test123"
+}
 
 ###
 GET http://127.0.0.1:8080/login
