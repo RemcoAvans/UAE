@@ -7,7 +7,6 @@ import io.ktor.server.routing.route
 
 fun Route.analyticsDataRoutes() {
     route("/analyticsData") {
-
         get(){
             TODO("get alle analyticsData ")
         }

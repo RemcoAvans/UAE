@@ -5,22 +5,25 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
 import model.Activity
 
+@Serializable
 abstract class CreateActivityDto<TCreateActivityDto>(
-    val title: String,
-    val description: String,
-    val type : String,
-    val price : Double,
-    val locationId : Int,
-    val capacity : Int,
-    val StartDate: LocalDate,
-    val EndDate: LocalDate,
-    val RecurrencePattern: String,
-    val RecurrenceDays: String,
 )
     where TCreateActivityDto : CreateActivityDto<TCreateActivityDto>
 {
+    abstract val title: String
+    abstract val description: String
+    abstract val type : String
+    abstract val price : Double
+    abstract val locationId : Int
+    abstract val capacity : Int
+    abstract val startDate: LocalDate
+    abstract val endDate: LocalDate
+    abstract val recurrencePattern: String
+    abstract val recurrenceDays: String
+
     fun toActivity(createdByUserId: Int): Activity =
         Activity(
             id = 0,
@@ -34,10 +37,10 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             isHighlighted = false,
             capacity = capacity,
             isFull = false,
-            StartDate = StartDate,
-            EndDate = EndDate,
-            RecurrencePattern = RecurrencePattern,
-            RecurrenceDays = RecurrenceDays,
+            startDate = startDate,
+            endDate = endDate,
+            recurrencePattern = recurrencePattern,
+            recurrenceDays = recurrenceDays,
             createdAt = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .date
