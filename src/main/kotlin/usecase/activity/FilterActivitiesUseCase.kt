@@ -40,6 +40,7 @@ class FilterActivitiesUseCase(val repository: ActivityRepository) : BaseInputUse
 //                val dateToOk = input.dateTo == null || activity.date <= input.dateTo
 //                dateFromOk && dateToOk
 //            }
+            .sortedByDescending { it.isFeatured } // Featured activiteiten bovenaan
             .toList()
         return ObjectResult.success(filtered)
     }

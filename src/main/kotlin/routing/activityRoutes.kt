@@ -8,6 +8,9 @@ import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.SearchActivityUseCase
+import com.example.usecase.activity.GetFeaturedActivitiesUseCase
+import com.example.usecase.activity.PromoteActivityUseCase
+import com.example.usecase.activity.UnpromoteActivityUseCase
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
@@ -26,6 +29,9 @@ fun Route.activityRoutes() {
     val getActivityUseCase = GetActivityUseCase(repo)
     val deleteActivity = DeleteActivityUseCase(repo)
     val searchActivityUseCase = SearchActivityUseCase(filterActivitiesUseCase, repo)
+    val promoteActivityUseCase = PromoteActivityUseCase(repo)
+    val unpromoteActivityUseCase = UnpromoteActivityUseCase(repo)
+    val getFeaturedActivitiesUseCase = GetFeaturedActivitiesUseCase(repo)
 
     route("/activities") {
         get() {
@@ -70,6 +76,29 @@ fun Route.activityRoutes() {
         post ("/sport"){
             val sportActivity = call.receive<CreateSportActivityDto>()
             val result = createActivityUseCase.execute(sportActivity);
+            call.handle(result)
+        }
+    }
+
+    // GET /activities/featured - Ophalen van uitgelichte activiteiten
+    get("/activities/featured") {
+        val result = getFeaturedActivitiesUseCase.execute()
+        call.handle(result)
+    }
+
+    // Admin endpoints voor promoten/depromoten
+    route("/admin/activities") {
+        // POST /admin/activities/{id}/promote
+        post("/{id}/promote") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            val result = promoteActivityUseCase.execute(id)
+            call.handle(result)
+        }
+
+        // POST /admin/activities/{id}/unpromote
+        post("/{id}/unpromote") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            val result = unpromoteActivityUseCase.execute(id)
             call.handle(result)
         }
     }
