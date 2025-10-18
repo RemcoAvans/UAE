@@ -6,6 +6,8 @@ import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.sendToken
 import com.example.config.JwtConfig
+import com.example.dtos.userDtos.userLoginDto
+import com.example.usecase.user.LoginUserUseCase
 
 import dtos.UserRegisterDto
 import io.ktor.server.auth.authenticate
@@ -25,6 +27,7 @@ fun Route.userRoutes() {
 //    val registerUseCase = RegisterUseCase(repo)
     val getUsersUseCase = GetUsersUseCase(repo)
     val registerUseCase = RegisterUseCase(repo)
+    val loginUserUseCase = LoginUserUseCase(repo)
 
 
 
@@ -35,16 +38,26 @@ fun Route.userRoutes() {
     }
 
 
-    get("/login") {
-        val jwt = JwtConfig(environment)
-        val expiresAt = System.currentTimeMillis() + 60 * 1000
-        val token =  JWT.create()
-            .withAudience(jwt.audience)
-            .withIssuer(jwt.issuer)
-            .withClaim("username", "Jaron Freijser")
-            .withExpiresAt(Date(expiresAt)) // 60 seconden
-            .sign(Algorithm.HMAC256(jwt.secret))
-        call.sendToken(token, "Jaron", expiresAt)
+    post("/login") {
+
+        val logindata = call.receive<userLoginDto>()
+        val result = loginUserUseCase.execute(logindata)
+
+        if (result.success) {
+            val jwt = JwtConfig(environment)
+            val expiresAt = System.currentTimeMillis() + 60 * 1000
+            val token =  JWT.create()
+                .withAudience(jwt.audience)
+                .withIssuer(jwt.issuer)
+                .withClaim("username", result.result?.username)
+                .withExpiresAt(Date(expiresAt)) // 60 seconden
+                .sign(Algorithm.HMAC256(jwt.secret))
+            call.sendToken(token, result.result?.username, expiresAt)
+        } else {
+            call.handle(result)
+        }
+
+
 
 
 
