@@ -7,13 +7,14 @@ import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
+import com.example.usecase.activity.SearchActivityUseCase
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
 import dtos.activity.CreateSportActivityDto
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveText
 import io.ktor.server.routing.*
-import model.Activity
 
 import repository.ActivityRepository
 
@@ -24,12 +25,17 @@ fun Route.activityRoutes() {
     val filterActivitiesUseCase = FilterActivitiesUseCase(repo)
     val getActivityUseCase = GetActivityUseCase(repo)
     val deleteActivity = DeleteActivityUseCase(repo)
-    var aantal = 0
+    val searchActivityUseCase = SearchActivityUseCase(filterActivitiesUseCase, repo)
 
     route("/activities") {
-
         get() {
             val result = getActivitiesUseCase.execute()
+            call.handle(result)
+        }
+
+        post ("/search"){
+            val userInput = call.receiveText()
+            val result = searchActivityUseCase.execute(userInput)
             call.handle(result)
         }
 
@@ -41,11 +47,6 @@ fun Route.activityRoutes() {
 
         get ("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null){
-                call.badRequest("Ongeldig of geen id")
-                return@get
-            }
-
             val result = getActivityUseCase.execute(id)
             call.handle(result)
         }
