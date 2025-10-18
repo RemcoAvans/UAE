@@ -17,6 +17,10 @@ version = "0.0.1"
 application {
     mainClass =  "com.example.ApplicationKt"
 }
+repositories {
+    mavenCentral()
+}
+
 
 dependencies {
     implementation("io.ktor:ktor-server-core")
@@ -32,4 +36,7 @@ dependencies {
     implementation("ai.koog:koog-ktor:0.4.2")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("org.mindrot:jbcrypt:0.4")
+
+
 }
