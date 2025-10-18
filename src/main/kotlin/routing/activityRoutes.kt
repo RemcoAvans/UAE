@@ -29,74 +29,41 @@ fun Route.activityRoutes() {
     val getFeaturedActivitiesUseCase = GetFeaturedActivitiesUseCase(repo)
     var aantal = 0
 
-    // post("/activities")
-    get("/createActivity") {
+    route("/activities") {
 
-        val activity: Activity = if (aantal == 0) {
-            Activity(
-                id = 2,
-                activityName = "Varen langs de havens van Dordrecht",
-                description = "Kom gezellig varen met vrienden langs de historische havens van Dordrecht. Inclusief muziek en snacks aan boord!",
-                type = "Recreatie",
-                location = "Dordrecht, Oude Haven",
-                createdByUserId = 42,
-                price = 12.50,
-                imageUrl = "https://drijfdordrecht.nl/wp-content/uploads/2024/12/drijf-dordrecht-header-foto.jpg",
-                isPublic = true,
-                tags = listOf("varen", "boot", "gezellig", "dordrecht", "water")
-            )
-        } else {
-            Activity(
-                id = 4,
-                activityName = "Historische stadswandeling Dordrecht",
-                description = "Ontdek de rijke geschiedenis van Dordrecht...",
-                type = "Cultuur",
-                location = "Dordrecht, Stadscentrum",
-                createdByUserId = 44,
-                price = 10.00,
-                imageUrl = null,
-                isPublic = true,
-                tags = listOf("wandeling", "cultuur")
-            )
-        }
-        aantal++
-
-        val result = createActivityUseCase.execute(activity)
-        call.handle(result)
-    }
-
-    get("/activities") {
-        val result = getActivitiesUseCase.execute()
-        call.handle(result)
-    }
-
-    post("/activities/filter") {
-        val filter = call.receive<ActivityFilterDto>()
-        val result = filterActivitiesUseCase.execute(filter)
-        call.handle(result)
-    }
-
-    get ("/activities/{id}") {
-        val id = call.parameters["id"]?.toIntOrNull()
-        if (id == null){
-            call.badRequest("Ongeldig of geen id")
-            return@get
+        get() {
+            val result = getActivitiesUseCase.execute()
+            call.handle(result)
         }
 
-        val result = getActivityUseCase.execute(id)
-        call.handle(result)
-    }
+        post("/filter") {
+            val filter = call.receive<ActivityFilterDto>()
+            val result = filterActivitiesUseCase.execute(filter)
+            call.handle(result)
+        }
 
-    delete ("/activities/{id}") {
-        val id = call.parameters["id"]?.toIntOrNull()
-        val result = deleteActivity.execute(id)
-        call.handle(result)
-    }
+        get ("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null){
+                call.badRequest("Ongeldig of geen id")
+                return@get
+            }
 
-    // GET /activities/featured - Ophalen van uitgelichte activiteiten
-    get("/activities/featured") {
-        val result = getFeaturedActivitiesUseCase.execute()
-        call.handle(result)
+            val result = getActivityUseCase.execute(id)
+            call.handle(result)
+        }
+
+        delete ("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            val result = deleteActivity.execute(id)
+            call.handle(result)
+        }
+
+        // GET /activities/featured - Ophalen van uitgelichte activiteiten
+        get("/featured") {
+            val result = getFeaturedActivitiesUseCase.execute()
+            call.handle(result)
+        }
     }
 
     // Admin endpoints voor promoten/depromoten
