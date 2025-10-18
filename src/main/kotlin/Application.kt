@@ -2,6 +2,7 @@ package com.example
 
 
 
+import ai.koog.ktor.Koog
 import com.example.config.configureSecurity
 import io.ktor.server.application.*
 
@@ -18,6 +19,7 @@ fun main(args: Array<String>): Unit =
 
 fun Application.module() {
 
+    install(Koog)
     configureSecurity()
     configureSerialization()
     configureHTTP()
