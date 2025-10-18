@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 import model.User
 import repository.UserRepository
 import usecase.GetUsersUseCase
+import usecase.user.RegisterUseCase
 
 fun Route.userRoutes() {
     val repo = UserRepository()
@@ -22,17 +23,18 @@ fun Route.userRoutes() {
         call.handle(result)
     }
 
-    post("/users/login") {
-        val credentials = call.receive<LoginDto>()
-        val loginResult = loginUseCase.execute(credentials)
-
-        if (loginResult.isSuccess) {
-            val token = jwtService.generateToken(loginResult.data!!)
-            call.respond(mapOf("token" to token))
-        } else {
-            call.handle(loginResult)
-        }
-    }
+    // TODO: Implementeer login endpoint
+    // post("/users/login") {
+    //     val credentials = call.receive<LoginDto>()
+    //     val loginResult = loginUseCase.execute(credentials)
+    //
+    //     if (loginResult.isSuccess) {
+    //         val token = jwtService.generateToken(loginResult.data!!)
+    //         call.respond(mapOf("token" to token))
+    //     } else {
+    //         call.handle(loginResult)
+    //     }
+    // }
 
     get("/users") {
         val users = getUsersUseCase.execute()

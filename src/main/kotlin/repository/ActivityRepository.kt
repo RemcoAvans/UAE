@@ -25,9 +25,25 @@ class ActivityRepository : CrudRepository<Activity> {
     }
 
     override suspend fun update(id: Int, entity: Activity): Activity? {
-        TODO("Not yet implemented")
+        val index = activitys.indexOfFirst { it.id == id }
+        return if (index != -1) {
+            activitys[index] = entity
+            entity
+        } else {
+            null
+        }
     }
 
     override suspend fun delete(id: Int): Boolean =
         activitys.removeIf { it.id == id }
+
+    suspend fun setFeatured(id: Int, isFeatured: Boolean): Activity? {
+        val activity = getById(id) ?: return null
+        val updatedActivity = activity.copy(isFeatured = isFeatured)
+        return update(id, updatedActivity)
+    }
+
+    suspend fun getFeaturedActivities(): List<Activity> {
+        return activitys.filter { it.isFeatured }
+    }
 }
