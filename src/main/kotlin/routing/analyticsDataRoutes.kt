@@ -1,17 +1,37 @@
 package com.example.routing
 
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
-import io.ktor.server.routing.route
-
+import com.example.baseRouter.BaseRouter.badRequest
+import com.example.baseRouter.BaseRouter.handle
+import com.example.usecase.analyticsdata.GetAllAnalyticsDataUseCase
+import com.example.usecase.analyticsdata.GetAnalyticsDataByActivityUseCase
+import io.ktor.server.routing.*
+import repository.ActivityRepository
+import repository.AnalyticsDataRepository
 
 fun Route.analyticsDataRoutes() {
+    val analyticsDataRepo = AnalyticsDataRepository()
+    val activityRepo = ActivityRepository()
+
+    val getAllAnalyticsDataUseCase = GetAllAnalyticsDataUseCase(analyticsDataRepo)
+    val getAnalyticsDataByActivityUseCase = GetAnalyticsDataByActivityUseCase(analyticsDataRepo, activityRepo)
+
     route("/analyticsData") {
-        get(){
-            TODO("get alle analyticsData ")
+
+        // GET /analyticsData - Alle analytics data ophalen
+        get {
+            val result = getAllAnalyticsDataUseCase.execute()
+            call.handle(result)
         }
-        get("/{activityId}"){
-            TODO("get alle analyticsData die horen bij een specifieke activity (via location)")
+
+        // GET /analyticsData/{activityId} - Analytics data voor een specifieke activity (via location)
+        get("/{activityId}") {
+            val activityId = call.parameters["activityId"]?.toIntOrNull()
+            if (activityId == null) {
+                call.badRequest("Ongeldige of geen activity ID")
+                return@get
+            }
+            val result = getAnalyticsDataByActivityUseCase.execute(activityId)
+            call.handle(result)
         }
     }
 }
