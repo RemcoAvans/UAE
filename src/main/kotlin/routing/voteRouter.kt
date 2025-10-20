@@ -1,28 +1,46 @@
-package com.example.routing
+package routing
 
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.delete
-import io.ktor.server.routing.get
-import io.ktor.server.routing.patch
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
+import dtos.CreateVoteDto
+import repository.ActivityVoteRepository
+import usecase.vote.GetVotesByActivityUseCase
+import usecase.vote.DeleteVoteUseCase
+import usecase.vote.CreateOrUpdateVoteUseCase
 
 fun Route.voteRoutes() {
     route("/votes") {
-        get("/{activityId}"){
-            TODO("Get alle votes van de activities")
-        }
-        delete("/{id}"){
-            val id = call.parameters["id"]?.toIntOrNull()
+        get("/{activityId}") {
+            val activityId = call.parameters["activityId"]?.toIntOrNull()
 
-            val result = DeleteVoteUseCase.execute(id)
+            val repo = ActivityVoteRepository()
+            val getVotesUseCase = GetVotesByActivityUseCase(repo)
+            val result = getVotesUseCase.execute(activityId)
 
             call.respond(result)
         }
 
-        post(){
-            TODO("Nieuwe vote. overschrijft de vorige vote van de user(id) met activityId")
+        delete("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+
+            val repo = ActivityVoteRepository()
+            val deleteVoteUseCase = DeleteVoteUseCase(repo)
+            val result = deleteVoteUseCase.execute(id)
+
+            call.respond(result)
+        }
+
+        post {
+            val voteDto = call.receive<CreateVoteDto>()
+
+            val repo = ActivityVoteRepository()
+            val createOrUpdateVoteUseCase = CreateOrUpdateVoteUseCase(repo)
+            val result = createOrUpdateVoteUseCase.execute(voteDto)
+
+            call.respond(result)
         }
     }
 }

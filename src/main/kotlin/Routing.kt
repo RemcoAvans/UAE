@@ -2,7 +2,7 @@ package com.example
 
 import com.example.routing.analyticsDataRoutes
 import com.example.routing.tagRoutes
-import com.example.routing.voteRoutes
+import routing.voteRoutes
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
