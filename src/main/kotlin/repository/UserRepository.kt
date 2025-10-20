@@ -1,5 +1,9 @@
 package repository
 
+import com.example.config.PasswordHasher
+import com.example.dtos.userDtos.userLoginDto
+import dtos.UserRegisterDto
+import dtos.toUser
 import model.User
 
 class UserRepository : CrudRepository<User> {
@@ -16,7 +20,7 @@ class UserRepository : CrudRepository<User> {
     }
 
     override suspend fun create(entity: User): User {
-        users.add(entity)
+      users.add(entity)
         return entity
     }
 
@@ -30,4 +34,27 @@ class UserRepository : CrudRepository<User> {
 
     override suspend fun delete(id: Int): Boolean =
         users.removeIf { it.id == id }
+
+    fun login(loginDto: userLoginDto) : User?{
+
+
+            val loginName = loginDto.loginName
+            val loginPassword = loginDto.password
+
+            val user = users.find { it.username == loginName || it.email == loginName }
+            return if (user != null && PasswordHasher.verify(loginPassword, user.passwordHash)) {
+                user
+            } else {
+                null
+            }
+
+
+
+
+
+
+
+    }
 }
+
+

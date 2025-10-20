@@ -2,8 +2,6 @@ package usecase.user
 
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
-import dtos.UserEditProfileDto
-import model.User
 import repository.UserRepository
 
 class DeleteUserUseCase(val repository: UserRepository) : BaseInputUseCase<Int?, Boolean> {

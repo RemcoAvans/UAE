@@ -1,0 +1,54 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+###
+POST http://127.0.0.1:8080/users/register
+Content-Type: application/json
+
+{
+   "firstName": "jaron",
+   "lastName": "Jaron",
+   "userName": "Jaronf",
+   "email": "jaron@Test.nl",
+   "password": "test123"
+}
+
+
+### login by userName
+GET http://127.0.0.1:8080/login
+
+Content-Type: application/json
+
+{
+  "username": "Jaronf",
+  "password": "test123"
+}
+
+> {%
+    client.global.set("userToken", response.body.token);
+%}
+###
+
+### login by Email
+GET http://127.0.0.1:8080/login
+
+Content-Type: application/json
+
+{
+  "username": "jaron@Test.nl",
+  "password": "test123"
+}
+
+> {%
+    client.global.set("userToken", response.body.token);
+%}
+###
+
+
+
+### get me
+GET http://127.0.0.1:8080/meAsUser
+Authorization: Bearer {{userToken}}
+
+###

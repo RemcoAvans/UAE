@@ -1,6 +1,8 @@
-package dtos
+package dtos.activity
 
-@kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ActivityFilterDto(
     val categories: List<String>? = null,
     val locationId: Int? = null,

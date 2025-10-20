@@ -5,19 +5,19 @@ import io.ktor.server.routing.*
 fun Route.tagRoutes() {
     route("/tags") {
 
-        get(){
+        get() {
             TODO("Get alle tags")
         }
-        get("/{activityId}"){
+        get("/{activityId}") {
             TODO("Get all tags bij één activity")
         }
-        delete("/{id}"){
+        delete("/{id}") {
             TODO("een simpele delete tag")
         }
-        patch(){
+        patch() {
             TODO("een simpele update tag")
         }
-        post(){
+        post() {
             TODO("een simpele create tag")
         }
         // to do: een endpoint dat een tag koppelt aan een activity (en dus een ActivityTag entitieit aanmaakt)
