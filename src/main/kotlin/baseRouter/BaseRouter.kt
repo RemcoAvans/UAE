@@ -3,6 +3,7 @@ package com.example.baseRouter
 import com.example.core.ObjectResult
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
+import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import model.TokenResponse
 import usecase.GetUsersUseCase
@@ -33,5 +34,14 @@ object BaseRouter {
     suspend fun ApplicationCall.sendToken(token: String, username: String? = null, expiresAt: Long? = null) {
         respond(HttpStatusCode.OK, TokenResponse(token, expiresAt, username))
     }
+    suspend fun ApplicationCall.unauthorized(
+        message: String = "Unauthorized",
+
+    ) {
+
+
+        respond(HttpStatusCode.Unauthorized, mapOf("error" to message))
+    }
+
 
 }

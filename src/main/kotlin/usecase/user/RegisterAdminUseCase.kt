@@ -3,14 +3,15 @@ package usecase.user
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
 import dtos.UserRegisterDto
+import dtos.toAdmin
 import dtos.toUser
 import model.User
 import repository.UserRepository
 
-class RegisterUseCase(val repository: UserRepository) : BaseInputUseCase<UserRegisterDto, User> {
+class RegisterAdminUseCase (val repository: UserRepository) : BaseInputUseCase<UserRegisterDto, User> {
 
     override suspend fun execute(input: UserRegisterDto): ObjectResult<User> {
-        val user = input.toUser()
+        val user = input.toAdmin()
         val result : String = repository.validate(user)
 
         when (result) {
@@ -20,5 +21,11 @@ class RegisterUseCase(val repository: UserRepository) : BaseInputUseCase<UserReg
             "OK" -> {repository.create(user); return ObjectResult.success(user)}
             else -> return ObjectResult.fail("Unknown error")
         }
+
+
+//
+
+
+
     }
 }
