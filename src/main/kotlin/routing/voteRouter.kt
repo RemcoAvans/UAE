@@ -1,43 +1,37 @@
-package routing
+package com.example.routing
+
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import dtos.CreateVoteDto
-import repository.ActivityVoteRepository
-import usecase.vote.GetVotesByActivityUseCase
-import usecase.vote.DeleteVoteUseCase
 import usecase.vote.CreateOrUpdateVoteUseCase
+import usecase.vote.DeleteVoteUseCase
+import usecase.vote.GetVotesByActivityUseCase
+import repository.ActivityVoteRepository
+import dtos.CreateVoteDto
 
 fun Route.voteRoutes() {
+    val repository = ActivityVoteRepository()
+    val deleteVoteUseCase = DeleteVoteUseCase(repository)
+    val getVotesByActivityUseCase = GetVotesByActivityUseCase(repository)
+    val createOrUpdateVoteUseCase = CreateOrUpdateVoteUseCase(repository)
+
     route("/votes") {
         get("/{activityId}") {
             val activityId = call.parameters["activityId"]?.toIntOrNull()
-
-            val repo = ActivityVoteRepository()
-            val getVotesUseCase = GetVotesByActivityUseCase(repo)
-            val result = getVotesUseCase.execute(activityId)
-
+            val result = getVotesByActivityUseCase.execute(activityId)
             call.respond(result)
         }
 
         delete("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
-
-            val repo = ActivityVoteRepository()
-            val deleteVoteUseCase = DeleteVoteUseCase(repo)
             val result = deleteVoteUseCase.execute(id)
-
             call.respond(result)
         }
 
         post {
-            val voteDto = call.receive<CreateVoteDto>()
-
-            val repo = ActivityVoteRepository()
-            val createOrUpdateVoteUseCase = CreateOrUpdateVoteUseCase(repo)
-            val result = createOrUpdateVoteUseCase.execute(voteDto)
-
+            val dto = call.receive<CreateVoteDto>()
+            val result = createOrUpdateVoteUseCase.execute(dto)
             call.respond(result)
         }
     }

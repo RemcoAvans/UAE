@@ -1,39 +1,36 @@
 package usecase.vote
 
 import com.example.core.ObjectResult
-import com.example.usecase.BaseInputUseCase
 import com.example.model.ActivityVote
+import com.example.usecase.BaseInputUseCase
 import dtos.CreateVoteDto
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import repository.ActivityVoteRepository
 
-class CreateOrUpdateVoteUseCase(
-    private val repository: ActivityVoteRepository
-) : BaseInputUseCase<CreateVoteDto, Int> {
+class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
+    : BaseInputUseCase<CreateVoteDto, Int> {
 
     override suspend fun execute(input: CreateVoteDto): ObjectResult<Int> {
-        // check of id bestaat, user en acitviteit
         if (input.activityId <= 0 || input.userId <= 0) {
-            return ObjectResult.fail("activiteit- of user id ongeldig")
+            return ObjectResult.fail("activityId of userId is ongeldig")
         }
 
-        // check if user already voted for the activity
         val existingVote = repository.getByQuery {
             it.userId == input.userId && it.activityId == input.activityId
         }.firstOrNull()
 
         if (existingVote != null) {
-            // update the vote if it exists
             val updatedVote = existingVote.copy(
                 voteType = input.voteType,
                 activityType = input.activityType,
                 tagSnapshot = input.tagSnapshot
             )
-            repository.update(updatedVote.id, updatedVote)
-
-            return ObjectResult.success(updatedVote.id)
+            val success = repository.update(updatedVote)
+            return if (success) ObjectResult.success(updatedVote.id)
+            else ObjectResult.fail("Kon stem niet updaten")
         } else {
-            // make new vote
             val newVote = ActivityVote(
                 id = 0,
                 activityId = input.activityId,
@@ -41,11 +38,10 @@ class CreateOrUpdateVoteUseCase(
                 voteType = input.voteType,
                 activityType = input.activityType,
                 tagSnapshot = input.tagSnapshot,
-                createAt = LocalDate.now()
+                createdAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             )
-
-            val generatedId = repository.create(newVote)
-            return ObjectResult.success(generatedId)
+            val created = repository.create(newVote)
+            return ObjectResult.success(created.id)
         }
     }
 }

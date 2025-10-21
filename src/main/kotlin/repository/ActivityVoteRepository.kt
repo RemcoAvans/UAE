@@ -1,36 +1,41 @@
 package repository
 
-import model.ActivityVote
-import model.User
+import com.example.model.ActivityVote
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
-class ActivityVoteRepository : CrudRepository<ActivityVote> {
+class ActivityVoteRepository {
 
-    private val ActivityVotes: MutableList<ActivityVote> = mutableListOf() // een legen lijst om in memory data op te slaan
+    private val votes = mutableListOf<ActivityVote>()
 
+    suspend fun getAll(): List<ActivityVote> = votes
 
-    override suspend fun getAll(): List<ActivityVote>  = ActivityVotes
+    suspend fun getById(id: Int): ActivityVote? = votes.find { it.id == id }
 
+    suspend fun getByQuery(predicate: (ActivityVote) -> Boolean): List<ActivityVote> =
+        votes.filter(predicate)
 
-    override suspend fun getById(id: Int): ActivityVote? {
-        return ActivityVotes.find { it.id == id }
+    suspend fun create(entity: ActivityVote): ActivityVote {
+        val nextId = (votes.maxOfOrNull { it.id } ?: 0) + 1
+        val newVote = entity.copy(
+            id = nextId,
+            createdAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        )
+        votes.add(newVote)
+        return newVote
     }
 
-    override suspend fun getByQuery(predicate: (ActivityVote) -> Boolean): List<ActivityVote> {
-        return ActivityVotes.filter(predicate)
+    suspend fun update(entity: ActivityVote): Boolean {
+        val index = votes.indexOfFirst { it.id == entity.id }
+        if (index != -1) {
+            votes[index] = entity
+            return true
+        }
+        return false
     }
 
-    override suspend fun create(entity: ActivityVote): ActivityVote {
-        ActivityVotes.add(entity)
-        return entity
+    suspend fun delete(id: Int): Boolean {
+        return votes.removeIf { it.id == id }
     }
-
-    override suspend fun update(id: Int, entity: ActivityVote): ActivityVote? {
-        val index = ActivityVotes.indexOfFirst { it.id == id }
-        if (index == -1) return null
-        ActivityVotes[index] = entity.copy(id = id)
-        return ActivityVotes[index]
-    }
-
-    override suspend fun delete(id: Int): Boolean =
-        ActivityVotes.removeIf { it.id == id }
 }
