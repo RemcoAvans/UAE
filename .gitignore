@@ -34,3 +34,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Node ###
+node_modules/
+package.json
+package-lock.json
+
+### macOS ###
+.DS_Store
