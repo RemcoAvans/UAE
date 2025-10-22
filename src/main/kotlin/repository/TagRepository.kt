@@ -1,7 +1,7 @@
 import com.example.model.Tag
 import repository.CrudRepository
 
-class TagRepository : CrudRepository<Tag> {
+open class TagRepository : CrudRepository<Tag> {
 
     private val tags = mutableListOf<Tag>()
 

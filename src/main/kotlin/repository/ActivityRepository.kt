@@ -6,7 +6,7 @@ import com.example.model.SportActivity
 import model.Activity
 import model.User
 
-class ActivityRepository : CrudRepository<Activity> {
+open class ActivityRepository : CrudRepository<Activity> {
 
     private val activitys: MutableList<Activity> = mutableListOf() // een legen lijst om in memory data op te slaan
     private val sportActivities: MutableList<SportActivity> = mutableListOf() // een legen lijst om in memory data op te slaan

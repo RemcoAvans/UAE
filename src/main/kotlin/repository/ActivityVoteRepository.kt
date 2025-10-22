@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-class ActivityVoteRepository {
+open class ActivityVoteRepository {
 
     private val votes = mutableListOf<ActivityVote>()
 
@@ -15,7 +15,7 @@ class ActivityVoteRepository {
 
     suspend fun getById(id: Int): ActivityVote? = votes.find { it.id == id }
 
-    suspend fun getByQuery(predicate: (ActivityVote) -> Boolean): List<ActivityVote> =
+    open suspend fun getByQuery(predicate: (ActivityVote) -> Boolean): List<ActivityVote> =
         votes.filter(predicate)
 
     suspend fun create(entity: ActivityVote): ActivityVote {
