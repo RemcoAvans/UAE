@@ -5,5 +5,6 @@ data class CreateVoteDto(
     val userId: Int,
     val voteType: String,
     val activityType: String,
-    val tagSnapshot: String
+    val tagSnapshot: String,
+    val positive: Boolean
 )

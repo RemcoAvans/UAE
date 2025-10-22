@@ -42,7 +42,8 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
                 voteType = input.voteType,
                 activityType = input.activityType,
                 tagSnapshot = input.tagSnapshot,
-                createAt = today
+                createAt = today,
+                positive = input.positive
             )
             val created = repository.create(newVote)
             return ObjectResult.success(created.id)

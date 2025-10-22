@@ -33,6 +33,7 @@ fun Route.activityRoutes() {
             call.handle(result)
         }
 
+
         post ("/search"){
             val userInput = call.receiveText()
             val result = searchActivityUseCase.execute(userInput)
@@ -46,6 +47,11 @@ fun Route.activityRoutes() {
         }
 
         get ("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            val result = getActivityUseCase.execute(id)
+            call.handle(result)
+        }
+        get("/Details/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             val result = getActivityUseCase.execute(id)
             call.handle(result)

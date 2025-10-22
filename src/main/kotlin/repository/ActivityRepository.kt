@@ -13,9 +13,7 @@ class ActivityRepository : CrudRepository<Activity> {
     private val foodActivities: MutableList<FoodActivity> = mutableListOf() // een legen lijst om in memory data op te slaan
     private val cultureActivities: MutableList<CultureActivity> = mutableListOf() // een legen lijst om in memory data op te slaan
 
-
     override suspend fun getAll(): List<Activity>  = activitys
-
 
     override suspend fun getById(id: Int): Activity? {
         return activitys.find { it.id == id }

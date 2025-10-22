@@ -10,4 +10,5 @@ data class ActivityVote(
     val activityType: String,
     val tagSnapshot: String,
     val createAt: LocalDate,
+    val positive: Boolean,
 ) { }
