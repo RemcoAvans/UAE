@@ -2,6 +2,8 @@ package repository
 
 import com.example.model.ActivityVote
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Clock.*
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -18,9 +20,12 @@ class ActivityVoteRepository {
 
     suspend fun create(entity: ActivityVote): ActivityVote {
         val nextId = (votes.maxOfOrNull { it.id } ?: 0) + 1
+        val today: LocalDate = Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
         val newVote = entity.copy(
             id = nextId,
-            createdAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+            createAt = today
         )
         votes.add(newVote)
         return newVote

@@ -8,7 +8,7 @@ import usecase.vote.CreateOrUpdateVoteUseCase
 import usecase.vote.DeleteVoteUseCase
 import usecase.vote.GetVotesByActivityUseCase
 import repository.ActivityVoteRepository
-import dtos.CreateVoteDto
+import dtos.vote.CreateVoteDto
 
 fun Route.voteRoutes() {
     val repository = ActivityVoteRepository()

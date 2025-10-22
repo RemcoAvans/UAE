@@ -1,4 +1,4 @@
-package dtos
+package dtos.vote
 
 data class CreateVoteDto(
     val activityId: Int,

@@ -3,8 +3,9 @@ package usecase.vote
 import com.example.core.ObjectResult
 import com.example.model.ActivityVote
 import com.example.usecase.BaseInputUseCase
-import dtos.CreateVoteDto
+import dtos.vote.CreateVoteDto
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import repository.ActivityVoteRepository
@@ -31,6 +32,9 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
             return if (success) ObjectResult.success(updatedVote.id)
             else ObjectResult.fail("Kon stem niet updaten")
         } else {
+            val today: LocalDate = Clock.System.now()
+                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .date
             val newVote = ActivityVote(
                 id = 0,
                 activityId = input.activityId,
@@ -38,7 +42,7 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
                 voteType = input.voteType,
                 activityType = input.activityType,
                 tagSnapshot = input.tagSnapshot,
-                createdAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                createAt = today
             )
             val created = repository.create(newVote)
             return ObjectResult.success(created.id)
