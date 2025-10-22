@@ -25,15 +25,35 @@ fun UserRegisterDto.toUser(): User{
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .date
     return User(
-        id = Random.nextInt(),
+        id = Random.nextInt(0, Int.MAX_VALUE),
         firstName = this.firstName,
         lastName = this.lastName,
         username = this.userName,
         email = this.email,
         passwordHash = PasswordHasher.hash(this.password),
-        role = "user",
+        role = "User",
         createdAt = today
 
     )
 
 }
+
+fun UserRegisterDto.toAdmin(): User{
+    val today: LocalDate = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
+    return User(
+        id = Random.nextInt(0, Int.MAX_VALUE),
+        firstName = this.firstName,
+        lastName = this.lastName,
+        username = this.userName,
+        email = this.email,
+        passwordHash = PasswordHasher.hash(this.password),
+        role = "Admin",
+        createdAt = today
+
+    )
+
+}
+
+

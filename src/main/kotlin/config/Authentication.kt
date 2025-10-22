@@ -8,43 +8,33 @@ import io.ktor.server.auth.jwt.jwt
 
 
 fun Application.configureSecurity() {
-    val userJwt = JwtConfig(environment)
-    val adminJwt = JwtConfig(environment)
+    val jwtConfig = JwtConfig(environment)
 
     authentication {
-        jwt("auth-jwt-user") {
-            realm = "UsersRealm"
+        // 🔒 Eén realm, maar we controleren dynamisch op rol
+        jwt("auth-jwt") {
+            realm = "AppRealm"
             verifier(
                 JWT
-                    .require(userJwt.algorithm)
-                    .withAudience(userJwt.audience)
-                    .withIssuer(userJwt.issuer)
+                    .require(jwtConfig.algorithm)
+                    .withAudience(jwtConfig.audience)
+                    .withIssuer(jwtConfig.issuer)
                     .build()
             )
+
             validate { credential ->
-                if (credential.payload.audience.contains(userJwt.audience)) JWTPrincipal(credential.payload) else null
+                val audienceOk = credential.payload.audience.contains(jwtConfig.audience)
+                val role = credential.payload.getClaim("role").asString()
+
+                // Alleen accepteren als audience klopt én er een geldige rol is
+                if (audienceOk && (role == "User" || role == "Admin")) {
+                    JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
             }
         }
-
-        //EEN TEST REALM
-        jwt("auth-jwt-admin") {
-            realm = "AdminRealm"
-            verifier(
-                JWT
-                    .require(adminJwt.algorithm) // eventueel een andere secret
-                    .withAudience(adminJwt.audience)
-                    .withIssuer(adminJwt.issuer)
-                    .build()
-            )
-            validate { credential ->
-                if (credential.payload.audience.contains(adminJwt.audience)) JWTPrincipal(credential.payload) else null
-            }
-        }
-
     }
-
-
-
 }
 
 

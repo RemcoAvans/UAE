@@ -8,7 +8,7 @@ class DeleteUserUseCase(val repository: UserRepository) : BaseInputUseCase<Int?,
 
     override suspend fun execute(input: Int?): ObjectResult<Boolean> {
         // check if id is valide
-        if (input == null || input <= 0) {
+        if (input == null || input < 0) {
             return ObjectResult.fail("ID is niet valide")
         }
         // remove id

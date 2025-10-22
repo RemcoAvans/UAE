@@ -1,6 +1,7 @@
 package repository
 
 import com.example.config.PasswordHasher
+import com.example.core.ObjectResult
 import com.example.dtos.userDtos.userLoginDto
 import dtos.UserRegisterDto
 import dtos.toUser
@@ -50,6 +51,26 @@ class UserRepository : CrudRepository<User> {
 
 
 
+
+
+
+
+    }
+
+    fun validate(user: User) : String{
+        if (user.email == "") {
+            return "Invalid email"
+        }
+        if (user.passwordHash == "") {
+            return "Invalid password"
+        }
+
+        val exists = users.any { it.username == user.username }
+        if (exists) {
+            return "User already exists"
+        }
+
+        return "OK"
 
 
 

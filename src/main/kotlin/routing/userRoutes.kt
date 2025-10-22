@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.sendToken
+import com.example.baseRouter.BaseRouter.unauthorized
 import com.example.config.JwtConfig
 import com.example.dtos.userDtos.userLoginDto
 import com.example.usecase.user.LoginUserUseCase
@@ -19,6 +20,8 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
 import repository.UserRepository
 import usecase.GetUsersUseCase
+import usecase.user.DeleteUserUseCase
+import usecase.user.RegisterAdminUseCase
 import usecase.user.RegisterUseCase
 import java.util.Date
 
@@ -28,12 +31,20 @@ fun Route.userRoutes() {
     val getUsersUseCase = GetUsersUseCase(repo)
     val registerUseCase = RegisterUseCase(repo)
     val loginUserUseCase = LoginUserUseCase(repo)
+    val registerAdminUseCase = RegisterAdminUseCase(repo)
+    val deleteUserUseCase = DeleteUserUseCase(repo)
 
 
 
     post("/users/register") {
         val user = call.receive<UserRegisterDto>()
         val result = registerUseCase.execute(user)
+        call.handle(result)
+    }
+
+    post("/users/registerAdmin") {
+        val user = call.receive<UserRegisterDto>()
+        val result = registerAdminUseCase.execute(user)
         call.handle(result)
     }
 
@@ -44,12 +55,15 @@ fun Route.userRoutes() {
         val result = loginUserUseCase.execute(logindata)
 
         if (result.success) {
+
             val jwt = JwtConfig(environment)
+
             val expiresAt = System.currentTimeMillis() + 60 * 1000
             val token =  JWT.create()
                 .withAudience(jwt.audience)
                 .withIssuer(jwt.issuer)
                 .withClaim("username", result.result?.username)
+                .withClaim("role", result.result?.role)
                 .withExpiresAt(Date(expiresAt)) // 60 seconden
                 .sign(Algorithm.HMAC256(jwt.secret))
             call.sendToken(token, result.result?.username, expiresAt)
@@ -65,17 +79,59 @@ fun Route.userRoutes() {
     }
 
 
-        authenticate("auth-jwt-user"){
+        authenticate("auth-jwt"){
             get("/meAsUser") {
                 val principal = call.principal<JWTPrincipal>()
                 if (principal == null) {
-                    call.badRequest("Unauthenticated user")
+                    call.unauthorized("Unauthenticated user")
                     return@get
                 }
 
                 val username = principal.payload.getClaim("username").asString()
                 val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
                 call.respondText("Hello, $username! Token expires at $expiresAt ms.")
+            }
+
+            get("/meAsAdmin/") {
+                val principal = call.principal<JWTPrincipal>()
+                if (principal == null) {
+                    call.unauthorized("Unauthenticated user")
+                    return@get
+                }
+                val role = principal.payload.getClaim("role").asString()
+                if (role == "Admin"){
+                    val username = principal.payload.getClaim("username").asString()
+                    val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
+                    call.respondText("Hello, $username! you're role is : $role And you're Token expires at $expiresAt ms.")
+
+                } else {
+                    call.unauthorized()
+                }
+
+
+
+            }
+
+            delete("/DeleteUser/{id}") {
+                val principal = call.principal<JWTPrincipal>()
+                if (principal == null) {
+                    call.unauthorized("Unauthenticated user")
+                    return@delete
+                }
+                val role = principal.payload.getClaim("role").asString()
+                if (role == "Admin"){
+                    val idParam = call.parameters["id"]
+                    val id = idParam?.toInt()
+
+                    val result = deleteUserUseCase.execute(id)
+                    call.handle(result)
+
+
+                } else {
+                    call.unauthorized()
+                }
+
+
             }
         }
 
