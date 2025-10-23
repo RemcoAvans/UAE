@@ -3,6 +3,7 @@ package com.example.core
 import ai.koog.agents.core.tools.annotations.LLMDescription
 import ai.koog.agents.core.tools.annotations.Tool
 import ai.koog.agents.core.tools.reflect.ToolSet
+import com.example.repository.IActivityRepository
 import com.example.usecase.activity.FilterActivitiesUseCase
 import dtos.activity.ActivityFilterDto
 import model.Activity
@@ -10,7 +11,7 @@ import repository.ActivityRepository
 
 class FilterActivitiesTool(
     private val filterUseCase: FilterActivitiesUseCase,
-    private val repo: ActivityRepository
+    private val repo: IActivityRepository
 ) : ToolSet {
     @Tool
     @LLMDescription("fetch all activities")

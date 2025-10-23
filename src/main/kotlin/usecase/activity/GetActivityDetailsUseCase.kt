@@ -3,16 +3,21 @@ package com.example.usecase.activity
 import TagRepository
 import com.example.core.ObjectResult
 import com.example.dtos.activity.ActivityDetailDto
+import com.example.model.Tag
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityRepository
+import com.example.repository.IActivityTagRepository
+import com.example.repository.IActivityVoteRepository
 import com.example.usecase.BaseInputUseCase
 import repository.ActivityRepository
 import repository.ActivityVoteRepository
+import repository.CrudRepository
 
 class GetActivityDetailsUseCase(
-    private val activityRepo: ActivityRepository,
-    private val voteRepo: ActivityVoteRepository,
-    private val activityTagRepository: ActivityTagRepository,
-    private val tagRepo: TagRepository
+    private val activityRepo: IActivityRepository,
+    private val voteRepo: IActivityVoteRepository,
+    private val activityTagRepository: IActivityTagRepository,
+    private val tagRepo: CrudRepository<Tag>
 ) : BaseInputUseCase<Int?, ActivityDetailDto> {
 
     override suspend fun execute(input: Int?): ObjectResult<ActivityDetailDto> {

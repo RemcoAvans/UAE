@@ -1,10 +1,11 @@
 package usecase.user
 
 import com.example.core.ObjectResult
+import com.example.repository.IUserRepository
 import com.example.usecase.BaseInputUseCase
 import repository.UserRepository
 
-class DeleteUserUseCase(val repository: UserRepository) : BaseInputUseCase<Int?, Boolean> {
+class DeleteUserUseCase(val repository: IUserRepository) : BaseInputUseCase<Int?, Boolean> {
 
     override suspend fun execute(input: Int?): ObjectResult<Boolean> {
         // check if id is valide

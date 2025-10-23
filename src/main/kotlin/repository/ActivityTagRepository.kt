@@ -1,10 +1,8 @@
 package com.example.repository
 
 import com.example.model.ActivityTag
-import model.User
-import repository.CrudRepository
 
-open class ActivityTagRepository : CrudRepository<ActivityTag> {
+open class ActivityTagRepository : IActivityTagRepository {
 
     private val activityTags = mutableListOf<ActivityTag>()
 

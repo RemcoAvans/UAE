@@ -3,11 +3,12 @@ package repository
 import com.example.config.PasswordHasher
 import com.example.core.ObjectResult
 import com.example.dtos.userDtos.userLoginDto
+import com.example.repository.IUserRepository
 import dtos.UserRegisterDto
 import dtos.toUser
 import model.User
 
-class UserRepository : CrudRepository<User> {
+class UserRepository : IUserRepository {
 
     private val users = mutableListOf<User>()
 
@@ -36,45 +37,30 @@ class UserRepository : CrudRepository<User> {
     override suspend fun delete(id: Int): Boolean =
         users.removeIf { it.id == id }
 
-    fun login(loginDto: userLoginDto) : User?{
+    override fun login(loginDto: userLoginDto) : User?{
+        val loginName = loginDto.loginName
+        val loginPassword = loginDto.password
 
-
-            val loginName = loginDto.loginName
-            val loginPassword = loginDto.password
-
-            val user = users.find { it.username == loginName || it.email == loginName }
-            return if (user != null && PasswordHasher.verify(loginPassword, user.passwordHash)) {
-                user
-            } else {
-                null
-            }
-
-
-
-
-
-
-
+        val user = users.find { it.username == loginName || it.email == loginName }
+        return if (user != null && PasswordHasher.verify(loginPassword, user.passwordHash)) {
+            user
+        } else {
+            null
+        }
     }
 
-    fun validate(user: User) : String{
+    override fun validate(user: User) : String{
         if (user.email == "") {
             return "Invalid email"
         }
         if (user.passwordHash == "") {
             return "Invalid password"
         }
-
         val exists = users.any { it.username == user.username }
         if (exists) {
             return "User already exists"
         }
-
         return "OK"
-
-
-
-
     }
 }
 
