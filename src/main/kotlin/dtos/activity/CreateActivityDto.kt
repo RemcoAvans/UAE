@@ -7,6 +7,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import model.Activity
+import kotlin.random.Random
 
 @Serializable
 abstract class CreateActivityDto<TCreateActivityDto>(
@@ -26,7 +27,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
 
     fun toActivity(createdByUserId: Int): Activity =
         Activity(
-            id = 0,
+            id = Random.nextInt(0, Int.MAX_VALUE),
             title = title,
             description = description,
             photoUrl = "",

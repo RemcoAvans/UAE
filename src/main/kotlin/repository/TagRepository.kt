@@ -1,10 +1,11 @@
-package repository
+package com.example.repository
 
 import com.example.model.Tag
+import repository.CrudRepository
 
-class TagRepository : CrudRepository<Tag> {
+open class TagRepository : CrudRepository<Tag> {
 
-    private val tags: MutableList<Tag> = mutableListOf()
+    private val tags = mutableListOf<Tag>()
 
     override suspend fun getAll(): List<Tag> = tags
 
@@ -23,15 +24,13 @@ class TagRepository : CrudRepository<Tag> {
 
     override suspend fun update(id: Int, entity: Tag): Tag? {
         val index = tags.indexOfFirst { it.id == id }
-        return if (index != -1) {
+        if (index != -1) {
             tags[index] = entity
-            entity
-        } else {
-            null
+            return entity
         }
+        return null
     }
 
-    override suspend fun delete(id: Int): Boolean {
-        return tags.removeIf { it.id == id }
-    }
+    override suspend fun delete(id: Int): Boolean =
+        tags.removeIf { it.id == id }
 }
