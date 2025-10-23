@@ -2,8 +2,8 @@ package com.example.usecase.tag
 
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
-import repository.ActivityTagRepository
-import repository.TagRepository
+import com.example.repository.ActivityTagRepository
+import com.example.repository.TagRepository
 
 class DeleteTagUseCase(
     private val tagRepository: TagRepository,
@@ -22,7 +22,10 @@ class DeleteTagUseCase(
         }
 
         // Verwijder eerst alle koppelingen met activities
-        activityTagRepository.deleteByTagId(input)
+        val activityTags = activityTagRepository.getByQuery { it.TagId == input }
+        activityTags.forEach { activityTag ->
+            activityTagRepository.delete(activityTag.id)
+        }
 
         // Verwijder de tag
         val success = tagRepository.delete(input)

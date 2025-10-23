@@ -30,11 +30,31 @@ open class ActivityRepository : IActivityRepository {
     }
 
     override suspend fun update(id: Int, entity: Activity): Activity? {
-        TODO("Not yet implemented")
+        val index = activitys.indexOfFirst { it.id == id }
+        if (index != -1) {
+            activitys[index] = entity
+            return entity
+        }
+        return null
     }
 
     override suspend fun delete(id: Int): Boolean =
         activitys.removeIf { it.id == id }
+
+    open fun setFeatured(id: Int, featured: Boolean): Activity? {
+        val activity = activitys.find { it.id == id } ?: return null
+        val updatedActivity = activity.copy(isFeatured = featured)
+        val index = activitys.indexOfFirst { it.id == id }
+        if (index != -1) {
+            activitys[index] = updatedActivity
+            return updatedActivity
+        }
+        return null
+    }
+
+    open fun getFeaturedActivities(): List<Activity> {
+        return activitys.filter { it.isFeatured }
+    }
 
     override fun createSport(sportActivity: SportActivity) : SportActivity {
         sportActivities.add(sportActivity)

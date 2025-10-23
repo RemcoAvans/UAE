@@ -3,8 +3,8 @@ package com.example.usecase.tag
 import com.example.core.ObjectResult
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
-import repository.ActivityTagRepository
-import repository.TagRepository
+import com.example.repository.ActivityTagRepository
+import com.example.repository.TagRepository
 
 class GetTagsByActivityUseCase(
     private val tagRepository: TagRepository,
@@ -16,7 +16,7 @@ class GetTagsByActivityUseCase(
             return ObjectResult.fail("Ongeldige activity ID")
         }
 
-        val tagIds = activityTagRepository.getTagsByActivityId(input)
+        val tagIds = activityTagRepository.getByQuery { it.ActivityId == input }.map { it.TagId }
         if (tagIds.isEmpty()) {
             return ObjectResult.notFound("Geen tags gevonden voor deze activity")
         }

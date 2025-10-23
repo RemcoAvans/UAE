@@ -7,8 +7,8 @@ import com.example.usecase.tag.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import repository.ActivityRepository
-import repository.ActivityTagRepository
-import repository.TagRepository
+import com.example.repository.ActivityTagRepository
+import com.example.repository.TagRepository
 
 fun Route.tagRoutes() {
     val tagRepo = TagRepository()

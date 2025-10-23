@@ -2,7 +2,7 @@ package com.example.usecase.tag
 
 import com.example.core.ObjectResult
 import com.example.model.Tag
-import repository.TagRepository
+import com.example.repository.TagRepository
 import usecase.BaseUseCase
 
 class GetAllTagsUseCase(private val repository: TagRepository) : BaseUseCase<List<Tag>> {

@@ -1,6 +1,5 @@
 package com.example.usecase.activity
 
-import TagRepository
 import com.example.core.ObjectResult
 import com.example.dtos.activity.ActivityDetailDto
 import com.example.model.ActivityTag
@@ -15,6 +14,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import repository.ActivityRepository
 import repository.ActivityVoteRepository
+import repository.CrudRepository
 
 class GetActivityDetailsUseCaseTest {
 
@@ -33,8 +33,13 @@ class GetActivityDetailsUseCaseTest {
             tags.filter(filter)
     }
 
-    class FakeTagRepository(val tagMap: Map<Int, Tag>) : TagRepository() {
+    class FakeTagRepository(val tagMap: Map<Int, Tag>) : CrudRepository<Tag> {
+        override suspend fun getAll(): List<Tag> = tagMap.values.toList()
         override suspend fun getById(id: Int): Tag? = tagMap[id]
+        override suspend fun getByQuery(predicate: (Tag) -> Boolean): List<Tag> = tagMap.values.filter(predicate)
+        override suspend fun create(entity: Tag): Tag = entity
+        override suspend fun update(id: Int, entity: Tag): Tag? = entity
+        override suspend fun delete(id: Int): Boolean = true
     }
 
     // ---------- TESTS ----------
@@ -50,7 +55,7 @@ class GetActivityDetailsUseCaseTest {
             price = 15.0,
             createdByUserId = 10,
             locationId = 5,
-            isHighlighted = true,
+            isFeatured = true,
             capacity = 20,
             isFull = false,
             startDate = LocalDate.parse("2025-10-21"),

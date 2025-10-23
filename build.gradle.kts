@@ -35,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth:3.3.0")
     implementation("ai.koog:koog-ktor:0.4.2")
     testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("io.ktor:ktor-client-content-negotiation")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.mindrot:jbcrypt:0.4")
 

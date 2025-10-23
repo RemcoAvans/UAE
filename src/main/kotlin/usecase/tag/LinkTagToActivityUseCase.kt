@@ -4,8 +4,8 @@ import com.example.core.ObjectResult
 import com.example.model.ActivityTag
 import com.example.usecase.BaseInputUseCase
 import repository.ActivityRepository
-import repository.ActivityTagRepository
-import repository.TagRepository
+import com.example.repository.ActivityTagRepository
+import com.example.repository.TagRepository
 
 data class LinkTagInput(
     val activityId: Int,
@@ -32,13 +32,15 @@ class LinkTagToActivityUseCase(
         }
 
         // Check of koppeling al bestaat
-        val existingTagIds = activityTagRepository.getTagsByActivityId(input.activityId)
+        val existingTagIds = activityTagRepository.getByQuery { it.ActivityId == input.activityId }.map { it.TagId }
         if (existingTagIds.contains(input.tagId)) {
             return ObjectResult.fail("Deze tag is al gekoppeld aan deze activity")
         }
 
         // Maak de koppeling
+        val nextId = activityTagRepository.getAll().maxOfOrNull { it.id }?.plus(1) ?: 1
         val activityTag = ActivityTag(
+            id = nextId,
             ActivityId = input.activityId,
             TagId = input.tagId
         )

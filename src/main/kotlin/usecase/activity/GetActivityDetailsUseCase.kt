@@ -1,16 +1,12 @@
 package com.example.usecase.activity
 
-import TagRepository
 import com.example.core.ObjectResult
 import com.example.dtos.activity.ActivityDetailDto
 import com.example.model.Tag
-import com.example.repository.ActivityTagRepository
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
 import com.example.repository.IActivityVoteRepository
 import com.example.usecase.BaseInputUseCase
-import repository.ActivityRepository
-import repository.ActivityVoteRepository
 import repository.CrudRepository
 
 class GetActivityDetailsUseCase(
@@ -39,7 +35,7 @@ class GetActivityDetailsUseCase(
             price = activity.price,
             createdByUserId = activity.createdByUserId,
             locationId = activity.locationId,
-            isHighlighted = activity.isHighlighted,
+            isHighlighted = activity.isFeatured,
             capacity = activity.capacity,
             isFull = activity.isFull,
             startDate = activity.startDate,

@@ -3,7 +3,7 @@ package com.example.usecase.tag
 import com.example.core.ObjectResult
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
-import repository.TagRepository
+import com.example.repository.TagRepository
 
 class UpdateTagUseCase(private val repository: TagRepository) : BaseInputUseCase<Tag, Tag> {
 
