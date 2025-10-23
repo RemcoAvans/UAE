@@ -2,6 +2,7 @@ package usecase.vote
 
 import com.example.core.ObjectResult
 import com.example.model.ActivityVote
+import com.example.repository.IActivityVoteRepository
 import com.example.usecase.BaseInputUseCase
 import dtos.vote.CreateVoteDto
 import kotlinx.datetime.Clock
@@ -10,7 +11,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import repository.ActivityVoteRepository
 
-class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
+class CreateOrUpdateVoteUseCase(private val repository: IActivityVoteRepository)
     : BaseInputUseCase<CreateVoteDto, Int> {
 
     override suspend fun execute(input: CreateVoteDto): ObjectResult<Int> {

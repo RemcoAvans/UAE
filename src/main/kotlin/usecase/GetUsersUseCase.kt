@@ -1,11 +1,12 @@
 package usecase
 
 import com.example.core.ObjectResult
+import com.example.repository.IUserRepository
 import model.User
 import repository.UserRepository
 import kotlin.collections.List
 
-class GetUsersUseCase(private val repository: UserRepository) : BaseUseCase<List<User>> {
+class GetUsersUseCase(private val repository: IUserRepository) : BaseUseCase<List<User>> {
 
     override suspend fun execute(): ObjectResult<List<User>> {
         val users = repository.getAll()

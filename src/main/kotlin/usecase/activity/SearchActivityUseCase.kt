@@ -15,12 +15,13 @@ import ai.koog.prompt.executor.clients.openai.OpenAIModels
 import ai.koog.prompt.executor.llms.MultiLLMPromptExecutor
 import ai.koog.prompt.llm.LLMProvider
 import com.example.core.FilterActivitiesTool
+import com.example.repository.IActivityRepository
 import kotlinx.serialization.json.Json
 import repository.ActivityRepository
 
 class SearchActivityUseCase(
     val filterActivitiesUseCase: FilterActivitiesUseCase,
-    val repo: ActivityRepository
+    val repo: IActivityRepository
 ) : BaseInputUseCase<String, List<Activity>> {
     override suspend fun execute(input: String): ObjectResult<List<Activity>> {
         // Create and run a default single‑run agent using a specific model

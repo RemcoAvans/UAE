@@ -1,9 +1,8 @@
 package com.example.repository
 
 import com.example.model.ActivityTag
-import repository.CrudRepository
 
-open class ActivityTagRepository : CrudRepository<ActivityTag> {
+open class ActivityTagRepository : IActivityTagRepository {
 
     private val activityTags = mutableListOf<ActivityTag>()
 
@@ -29,24 +28,4 @@ open class ActivityTagRepository : CrudRepository<ActivityTag> {
     override suspend fun delete(id: Int): Boolean =
         activityTags.removeIf { it.id == id }
 
-    // Specific methods for activity-tag relationships
-    suspend fun getTagsByActivityId(activityId: Int): List<Int> {
-        return activityTags
-            .filter { it.ActivityId == activityId }
-            .map { it.TagId }
-    }
-
-    suspend fun getActivitiesByTagId(tagId: Int): List<Int> {
-        return activityTags
-            .filter { it.TagId == tagId }
-            .map { it.ActivityId }
-    }
-
-    suspend fun deleteByActivityId(activityId: Int): Boolean {
-        return activityTags.removeIf { it.ActivityId == activityId }
-    }
-
-    suspend fun deleteByTagId(tagId: Int): Boolean {
-        return activityTags.removeIf { it.TagId == tagId }
-    }
 }

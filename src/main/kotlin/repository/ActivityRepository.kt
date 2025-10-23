@@ -3,10 +3,11 @@ package repository
 import com.example.model.CultureActivity
 import com.example.model.FoodActivity
 import com.example.model.SportActivity
+import com.example.repository.IActivityRepository
 import model.Activity
 import model.User
 
-open class ActivityRepository : CrudRepository<Activity> {
+open class ActivityRepository : IActivityRepository {
 
     private val activitys: MutableList<Activity> = mutableListOf() // een legen lijst om in memory data op te slaan
     private val sportActivities: MutableList<SportActivity> = mutableListOf() // een legen lijst om in memory data op te slaan
@@ -29,40 +30,22 @@ open class ActivityRepository : CrudRepository<Activity> {
     }
 
     override suspend fun update(id: Int, entity: Activity): Activity? {
-        val index = activitys.indexOfFirst { it.id == id }
-        return if (index != -1) {
-            activitys[index] = entity
-            entity
-        } else {
-            null
-        }
+        TODO("Not yet implemented")
     }
 
     override suspend fun delete(id: Int): Boolean =
         activitys.removeIf { it.id == id }
 
-    fun createSport(sportActivity: SportActivity) : SportActivity {
+    override fun createSport(sportActivity: SportActivity) : SportActivity {
         sportActivities.add(sportActivity)
         return sportActivity
     }
-
-    fun createFood(foodActivity: FoodActivity) : FoodActivity {
+    override fun createFood(foodActivity: FoodActivity) : FoodActivity {
         foodActivities.add(foodActivity)
         return foodActivity
     }
-
-    fun createCulture(cultureActivity: CultureActivity) : CultureActivity {
+    override fun createCulture(cultureActivity: CultureActivity) : CultureActivity {
         cultureActivities.add(cultureActivity)
         return cultureActivity
-    }
-
-    suspend fun setFeatured(id: Int, isFeatured: Boolean): Activity? {
-        val activity = getById(id) ?: return null
-        val updatedActivity = activity.copy(isFeatured = isFeatured)
-        return update(id, updatedActivity)
-    }
-
-    suspend fun getFeaturedActivities(): List<Activity> {
-        return activitys.filter { it.isFeatured }
     }
 }

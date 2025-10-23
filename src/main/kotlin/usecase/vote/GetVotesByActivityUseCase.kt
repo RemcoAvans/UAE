@@ -3,9 +3,10 @@ package usecase.vote
 import com.example.core.ObjectResult
 import com.example.usecase.BaseInputUseCase
 import com.example.model.ActivityVote
+import com.example.repository.IActivityVoteRepository
 import repository.ActivityVoteRepository
 
-class GetVotesByActivityUseCase(val repository: ActivityVoteRepository) : BaseInputUseCase<Int?, List<ActivityVote>> {
+class GetVotesByActivityUseCase(val repository: IActivityVoteRepository) : BaseInputUseCase<Int?, List<ActivityVote>> {
 
     override suspend fun execute(input: Int?): ObjectResult<List<ActivityVote>> {
         // check of id bestaat

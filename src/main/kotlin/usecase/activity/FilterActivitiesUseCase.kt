@@ -1,12 +1,13 @@
 package com.example.usecase.activity
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
 import com.example.usecase.BaseInputUseCase
 import dtos.activity.ActivityFilterDto
 import model.Activity
 import repository.ActivityRepository
 
-class FilterActivitiesUseCase(val repository: ActivityRepository) : BaseInputUseCase<ActivityFilterDto, List<Activity>> {
+class FilterActivitiesUseCase(val repository: IActivityRepository) : BaseInputUseCase<ActivityFilterDto, List<Activity>> {
 
     override suspend fun execute(input: ActivityFilterDto): ObjectResult<List<Activity>> {
         val activityList = repository.getAll()

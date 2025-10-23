@@ -1,6 +1,7 @@
 package usecase.user
 
 import com.example.core.ObjectResult
+import com.example.repository.IUserRepository
 import com.example.usecase.BaseInputUseCase
 import dtos.UserRegisterDto
 import dtos.toAdmin
@@ -8,7 +9,7 @@ import dtos.toUser
 import model.User
 import repository.UserRepository
 
-class RegisterAdminUseCase (val repository: UserRepository) : BaseInputUseCase<UserRegisterDto, User> {
+class RegisterAdminUseCase (val repository: IUserRepository) : BaseInputUseCase<UserRegisterDto, User> {
 
     override suspend fun execute(input: UserRegisterDto): ObjectResult<User> {
         val user = input.toAdmin()
