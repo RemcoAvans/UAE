@@ -35,7 +35,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             price = price,
             createdByUserId = createdByUserId,
             locationId = locationId,
-            isHighlighted = false,
+            isFeatured = false,
             capacity = capacity,
             isFull = false,
             startDate = startDate,

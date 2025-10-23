@@ -14,7 +14,7 @@ data class Activity(
     val price: Double,
     val createdByUserId: Int = 0,
     val locationId: Int,
-    val isHighlighted: Boolean = false,
+    val isFeatured: Boolean = false,
     val capacity: Int,
     val isFull: Boolean,
     @Serializable(with = LocalDateSerializer::class) val startDate: LocalDate,
