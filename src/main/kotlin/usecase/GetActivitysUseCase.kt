@@ -13,7 +13,7 @@ class GetActivitiesUseCase(private val repository : IActivityRepository) : BaseU
          return if (result.isNotEmpty()) {
              ObjectResult.success(result)
         } else {
-             ObjectResult.notFound("Geen gebruikers gevonden")
+             ObjectResult.notFound("No Activity's found")
         }
     }
 }
