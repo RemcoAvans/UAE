@@ -16,7 +16,7 @@ class GetActivityUseCase(private val repository : ActivityRepository) : BaseInpu
         return if (result != null) {
             ObjectResult.success(result)
         } else {
-            ObjectResult.notFound("Geen gebruikers gevonden.")
+            ObjectResult.notFound("No Activity found")
         }
 
     }
