@@ -1,7 +1,6 @@
 package com.example.routing
 
-import io.ktor.server.application.*
-import io.ktor.server.response.*
+import com.example.baseRouter.BaseRouter.handle
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import usecase.vote.CreateOrUpdateVoteUseCase
@@ -10,8 +9,7 @@ import usecase.vote.GetVotesByActivityUseCase
 import repository.ActivityVoteRepository
 import dtos.vote.CreateVoteDto
 
-fun Route.voteRoutes() {
-    val repository = ActivityVoteRepository()
+fun Route.voteRoutes(repository: ActivityVoteRepository) {
     val deleteVoteUseCase = DeleteVoteUseCase(repository)
     val getVotesByActivityUseCase = GetVotesByActivityUseCase(repository)
     val createOrUpdateVoteUseCase = CreateOrUpdateVoteUseCase(repository)
@@ -20,19 +18,19 @@ fun Route.voteRoutes() {
         get("/{activityId}") {
             val activityId = call.parameters["activityId"]?.toIntOrNull()
             val result = getVotesByActivityUseCase.execute(activityId)
-            call.respond(result)
+            call.handle(result)
         }
 
         delete("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             val result = deleteVoteUseCase.execute(id)
-            call.respond(result)
+            call.handle(result)
         }
 
         post {
             val dto = call.receive<CreateVoteDto>()
             val result = createOrUpdateVoteUseCase.execute(dto)
-            call.respond(result)
+            call.handle(result)
         }
     }
 }

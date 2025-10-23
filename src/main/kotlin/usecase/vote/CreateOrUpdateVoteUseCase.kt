@@ -15,7 +15,7 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
 
     override suspend fun execute(input: CreateVoteDto): ObjectResult<Int> {
         if (input.activityId <= 0 || input.userId <= 0) {
-            return ObjectResult.fail("activityId of userId is ongeldig")
+            return ObjectResult.fail("Input is invalid.")
         }
 
         val existingVote = repository.getByQuery {
@@ -23,14 +23,10 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
         }.firstOrNull()
 
         if (existingVote != null) {
-            val updatedVote = existingVote.copy(
-                voteType = input.voteType,
-                activityType = input.activityType,
-                tagSnapshot = input.tagSnapshot
-            )
+            val updatedVote = existingVote.copy()
             val success = repository.update(updatedVote)
             return if (success) ObjectResult.success(updatedVote.id)
-            else ObjectResult.fail("Kon stem niet updaten")
+            else ObjectResult.fail("Could not update vote ${updatedVote.id}")
         } else {
             val today: LocalDate = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
@@ -39,9 +35,6 @@ class CreateOrUpdateVoteUseCase(private val repository: ActivityVoteRepository)
                 id = 0,
                 activityId = input.activityId,
                 userId = input.userId,
-                voteType = input.voteType,
-                activityType = input.activityType,
-                tagSnapshot = input.tagSnapshot,
                 createAt = today,
                 positive = input.positive
             )

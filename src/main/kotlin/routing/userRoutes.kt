@@ -58,7 +58,7 @@ fun Route.userRoutes() {
 
             val jwt = JwtConfig(environment)
 
-            val expiresAt = System.currentTimeMillis() + 60 * 1000
+            val expiresAt = System.currentTimeMillis() + 600 * 1000
             val token =  JWT.create()
                 .withAudience(jwt.audience)
                 .withIssuer(jwt.issuer)

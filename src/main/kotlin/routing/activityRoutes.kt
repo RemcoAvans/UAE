@@ -1,13 +1,15 @@
 package routing
 
-import com.example.baseRouter.BaseRouter.badRequest
+import TagRepository
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.unauthorized
+import com.example.repository.ActivityTagRepository
 import usecase.activity.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
+import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
@@ -21,15 +23,21 @@ import io.ktor.server.request.receiveText
 import io.ktor.server.routing.*
 
 import repository.ActivityRepository
+import repository.ActivityVoteRepository
 
-fun Route.activityRoutes() {
-    val repo = ActivityRepository()
-    val createActivityUseCase = CreateActivityUseCase(repo)
-    val getActivitiesUseCase = GetActivitiesUseCase(repo)
-    val filterActivitiesUseCase = FilterActivitiesUseCase(repo)
-    val getActivityUseCase = GetActivityUseCase(repo)
-    val deleteActivity = DeleteActivityUseCase(repo)
-    val searchActivityUseCase = SearchActivityUseCase(filterActivitiesUseCase, repo)
+fun Route.activityRoutes(
+    activityRepository: ActivityRepository,
+    activityVoteRepository: ActivityVoteRepository,
+    tagRepo1: TagRepository,
+    activityTagRepository: ActivityTagRepository
+) {
+    val createActivityUseCase = CreateActivityUseCase(activityRepository)
+    val getActivitiesUseCase = GetActivitiesUseCase(activityRepository)
+    val getActivityDetailsUseCase = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo1)
+    val filterActivitiesUseCase = FilterActivitiesUseCase(activityRepository)
+    val getActivityUseCase = GetActivityUseCase(activityRepository)
+    val deleteActivity = DeleteActivityUseCase(activityRepository)
+    val searchActivityUseCase = SearchActivityUseCase(filterActivitiesUseCase, activityRepository)
 
     route("/activities") {
         authenticate("auth-jwt") {
@@ -58,7 +66,7 @@ fun Route.activityRoutes() {
             }
         get("/Details/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
-            val result = getActivityUseCase.execute(id)
+            val result = getActivityDetailsUseCase.execute(id)
             call.handle(result)
         }
 
