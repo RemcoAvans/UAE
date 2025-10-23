@@ -1,10 +1,11 @@
 package usecase.vote
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityVoteRepository
 import com.example.usecase.BaseInputUseCase
 import repository.ActivityVoteRepository
 
-class DeleteVoteUseCase(val repository: ActivityVoteRepository) : BaseInputUseCase<Int?, Boolean> {
+class DeleteVoteUseCase(val repository: IActivityVoteRepository) : BaseInputUseCase<Int?, Boolean> {
 
     override suspend fun execute(input: Int?): ObjectResult<Boolean> {
         // check of id bestaat

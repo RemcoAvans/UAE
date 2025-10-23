@@ -33,7 +33,6 @@ fun Route.activityRoutes() {
             call.handle(result)
         }
 
-
         post ("/search"){
             val userInput = call.receiveText()
             val result = searchActivityUseCase.execute(userInput)
@@ -51,6 +50,7 @@ fun Route.activityRoutes() {
             val result = getActivityUseCase.execute(id)
             call.handle(result)
         }
+
         get("/Details/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
             val result = getActivityUseCase.execute(id)
@@ -68,11 +68,13 @@ fun Route.activityRoutes() {
             val result = createActivityUseCase.execute(foodActivity);
             call.handle(result)
         }
+
         post ("/culture"){
             val cultureActivity = call.receive<CreateCultureActivityDto>()
             val result = createActivityUseCase.execute(cultureActivity);
             call.handle(result)
         }
+
         post ("/sport"){
             val sportActivity = call.receive<CreateSportActivityDto>()
             val result = createActivityUseCase.execute(sportActivity);

@@ -1,10 +1,10 @@
 package com.example.usecase.activity
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
 import com.example.usecase.BaseInputUseCase
-import repository.ActivityRepository
 
-class DeleteActivityUseCase(val repository: ActivityRepository) : BaseInputUseCase<Int?, Boolean> {
+class DeleteActivityUseCase(val repository: IActivityRepository) : BaseInputUseCase<Int?, Boolean> {
 
     override suspend fun execute(input: Int?): ObjectResult<Boolean> {
         if (input == null || input < 0) {

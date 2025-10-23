@@ -4,6 +4,7 @@ import com.example.core.ObjectResult
 import com.example.model.CultureActivity
 import com.example.model.FoodActivity
 import com.example.model.SportActivity
+import com.example.repository.IActivityRepository
 import com.example.usecase.BaseInputUseCase
 import dtos.activity.CreateActivityDto
 import dtos.activity.CreateCultureActivityDto
@@ -12,7 +13,7 @@ import dtos.activity.CreateSportActivityDto
 import model.Activity
 import repository.ActivityRepository
 
-class CreateActivityUseCase(private val repository : ActivityRepository) :
+class CreateActivityUseCase(private val repository : IActivityRepository) :
     BaseInputUseCase<CreateActivityDto<*>, Activity> {
     override suspend fun execute(input: CreateActivityDto<*>): ObjectResult<Activity> {
         // Later: haal userId uit auth principal
