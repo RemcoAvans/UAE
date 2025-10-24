@@ -2,12 +2,12 @@ package repository
 
 import model.SearchLog
 
-class AnalyticsRepository {
+open class AnalyticsRepository {
 
     private val searchLogs: MutableList<SearchLog> = mutableListOf()
     private var searchLogIdCounter = 1
 
-    suspend fun logSearch(
+    open suspend fun logSearch(
         categories: List<String>?,
         city: String?,
         minPrice: Int?,
@@ -27,9 +27,9 @@ class AnalyticsRepository {
         return log
     }
 
-    suspend fun getAllSearchLogs(): List<SearchLog> = searchLogs
+    open suspend fun getAllSearchLogs(): List<SearchLog> = searchLogs
 
-    suspend fun getSearchLogsByDateRange(fromTimestamp: Long, toTimestamp: Long): List<SearchLog> {
+    open suspend fun getSearchLogsByDateRange(fromTimestamp: Long, toTimestamp: Long): List<SearchLog> {
         return searchLogs.filter { it.timestamp in fromTimestamp..toTimestamp }
     }
 }

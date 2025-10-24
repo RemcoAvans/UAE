@@ -2,7 +2,7 @@ package repository
 
 import com.example.model.AnalyticsData
 
-class AnalyticsDataRepository : CrudRepository<AnalyticsData> {
+open class AnalyticsDataRepository : CrudRepository<AnalyticsData> {
 
     private val analyticsData: MutableList<AnalyticsData> = mutableListOf()
 
@@ -35,7 +35,7 @@ class AnalyticsDataRepository : CrudRepository<AnalyticsData> {
         return analyticsData.removeIf { it.id == id }
     }
 
-    suspend fun getByLocationId(locationId: Int): AnalyticsData? {
+    open suspend fun getByLocationId(locationId: Int): AnalyticsData? {
         return analyticsData.find { it.locationId == locationId }
     }
 }

@@ -8,9 +8,10 @@ import io.ktor.server.routing.*
 import repository.ActivityRepository
 import repository.AnalyticsDataRepository
 
-fun Route.analyticsDataRoutes() {
-    val analyticsDataRepo = AnalyticsDataRepository()
-    val activityRepo = ActivityRepository()
+fun Route.analyticsDataRoutes(
+    analyticsDataRepo: AnalyticsDataRepository = AnalyticsDataRepository(),
+    activityRepo: ActivityRepository = ActivityRepository()
+) {
 
     val getAllAnalyticsDataUseCase = GetAllAnalyticsDataUseCase(analyticsDataRepo)
     val getAnalyticsDataByActivityUseCase = GetAnalyticsDataByActivityUseCase(analyticsDataRepo, activityRepo)

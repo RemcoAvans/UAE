@@ -8,7 +8,7 @@ import dtos.UserRegisterDto
 import dtos.toUser
 import model.User
 
-class UserRepository : IUserRepository {
+open class UserRepository : IUserRepository {
 
     private val users = mutableListOf<User>()
 

@@ -10,10 +10,11 @@ import repository.ActivityRepository
 import com.example.repository.ActivityTagRepository
 import com.example.repository.TagRepository
 
-fun Route.tagRoutes() {
-    val tagRepo = TagRepository()
-    val activityTagRepo = ActivityTagRepository()
-    val activityRepo = ActivityRepository()
+fun Route.tagRoutes(
+    tagRepo: TagRepository = TagRepository(),
+    activityTagRepo: ActivityTagRepository = ActivityTagRepository(),
+    activityRepo: ActivityRepository = ActivityRepository()
+) {
 
     val getAllTagsUseCase = GetAllTagsUseCase(tagRepo)
     val getTagsByActivityUseCase = GetTagsByActivityUseCase(tagRepo, activityTagRepo)
