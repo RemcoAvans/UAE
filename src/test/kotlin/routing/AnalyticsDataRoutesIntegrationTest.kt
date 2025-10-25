@@ -1,7 +1,9 @@
 package routing
 
 import com.example.model.AnalyticsData
+import com.example.repository.IAnalyticsDataRepository
 import com.example.routing.analyticsDataRoutes
+import com.example.usecase.activity.GetActivityDetailsUseCaseTest
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation as ClientContentNegotiation
 import io.ktor.client.request.*
@@ -13,6 +15,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
+import model.Activity
 import org.junit.Test
 import repository.AnalyticsDataRepository
 import kotlin.test.assertEquals
@@ -23,7 +26,7 @@ class AnalyticsDataRoutesIntegrationTest {
     // Fake repository voor testing
     class FakeAnalyticsDataRepository(
         private val analyticsData: MutableList<AnalyticsData> = mutableListOf()
-    ) : repository.AnalyticsDataRepository() {
+    ) : repository.AnalyticsDataRepository(), IAnalyticsDataRepository {
 
         override suspend fun getAll(): List<AnalyticsData> = analyticsData
 
@@ -66,6 +69,26 @@ class AnalyticsDataRoutesIntegrationTest {
             analyticsData.clear()
         }
     }
+    var activityRepo = GetActivityDetailsUseCaseTest.FakeActivityRepository(
+    Activity(
+    id = 1,
+    title = "Boulderen",
+    description = "Indoor klimmen",
+    photoUrl = "photo.jpg",
+    type = "Sport",
+    price = 15.0,
+    createdByUserId = 10,
+    locationId = 5,
+    isFeatured = true,
+    capacity = 20,
+    isFull = false,
+    startDate = LocalDate.parse("2025-10-21"),
+    endDate = LocalDate.parse("2025-10-22"),
+    recurrencePattern = "",
+    recurrenceDays = "",
+    createdAt = LocalDate.parse("2025-10-01")
+    )
+    )
 
     @Test
     fun `GET analyticsData - should return 200 with all analytics data`() = testApplication {
@@ -96,7 +119,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 
@@ -128,7 +151,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 
@@ -173,7 +196,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 
@@ -202,7 +225,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 
@@ -235,7 +258,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 
@@ -283,7 +306,7 @@ class AnalyticsDataRoutesIntegrationTest {
                 json()
             }
             routing {
-                analyticsDataRoutes(fakeRepo)
+                analyticsDataRoutes(fakeRepo, activityRepo)
             }
         }
 

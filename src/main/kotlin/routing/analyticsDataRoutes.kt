@@ -7,8 +7,6 @@ import com.example.repository.IAnalyticsDataRepository
 import com.example.usecase.analyticsdata.GetAllAnalyticsDataUseCase
 import com.example.usecase.analyticsdata.GetAnalyticsDataByActivityUseCase
 import io.ktor.server.routing.*
-import repository.ActivityRepository
-import repository.AnalyticsDataRepository
 
 fun Route.analyticsDataRoutes(
     analyticsDataRepo: IAnalyticsDataRepository,
