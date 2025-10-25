@@ -2,7 +2,11 @@ package routing
 
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.unauthorized
+import com.example.model.Tag
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityRepository
+import com.example.repository.IActivityTagRepository
+import com.example.repository.IActivityVoteRepository
 import com.example.repository.TagRepository
 import usecase.activity.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
@@ -11,7 +15,6 @@ import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
-import dtos.UserRegisterDto
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
@@ -31,13 +34,14 @@ import kotlinx.serialization.json.Json
 
 import repository.ActivityRepository
 import repository.ActivityVoteRepository
+import repository.CrudRepository
 import java.io.File
 
 fun Route.activityRoutes(
-    activityRepository: ActivityRepository,
-    activityVoteRepository: ActivityVoteRepository,
-    tagRepo: TagRepository,
-    activityTagRepository: ActivityTagRepository
+    activityRepository: IActivityRepository,
+    activityVoteRepository: IActivityVoteRepository,
+    tagRepo: CrudRepository<Tag>,
+    activityTagRepository: IActivityTagRepository
 ) {
     val createActivity = CreateActivityUseCase(activityRepository)
     val getActivities = GetActivitiesUseCase(activityRepository)

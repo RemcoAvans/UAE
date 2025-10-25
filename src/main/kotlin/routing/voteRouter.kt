@@ -1,6 +1,7 @@
 package com.example.routing
 
 import com.example.baseRouter.BaseRouter.handle
+import com.example.repository.IActivityVoteRepository
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import usecase.vote.CreateOrUpdateVoteUseCase
@@ -9,7 +10,7 @@ import usecase.vote.GetVotesByActivityUseCase
 import repository.ActivityVoteRepository
 import dtos.vote.CreateVoteDto
 
-fun Route.voteRoutes(repository: ActivityVoteRepository) {
+fun Route.voteRoutes(repository: IActivityVoteRepository) {
     val deleteVoteUseCase = DeleteVoteUseCase(repository)
     val getVotesByActivityUseCase = GetVotesByActivityUseCase(repository)
     val createOrUpdateVoteUseCase = CreateOrUpdateVoteUseCase(repository)

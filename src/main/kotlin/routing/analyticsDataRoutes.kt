@@ -2,6 +2,8 @@ package com.example.routing
 
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
+import com.example.repository.IActivityRepository
+import com.example.repository.IAnalyticsDataRepository
 import com.example.usecase.analyticsdata.GetAllAnalyticsDataUseCase
 import com.example.usecase.analyticsdata.GetAnalyticsDataByActivityUseCase
 import io.ktor.server.routing.*
@@ -9,8 +11,8 @@ import repository.ActivityRepository
 import repository.AnalyticsDataRepository
 
 fun Route.analyticsDataRoutes(
-    analyticsDataRepo: AnalyticsDataRepository,
-    activityRepo: ActivityRepository
+    analyticsDataRepo: IAnalyticsDataRepository,
+    activityRepo: IActivityRepository
 ) {
 
     val getAllAnalyticsDataUseCase = GetAllAnalyticsDataUseCase(analyticsDataRepo)

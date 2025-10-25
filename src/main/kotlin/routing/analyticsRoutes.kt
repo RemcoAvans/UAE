@@ -1,6 +1,8 @@
 package routing
 
 import com.example.baseRouter.BaseRouter.handle
+import com.example.repository.IActivityRepository
+import com.example.repository.IAnalyticsRepository
 import com.example.usecase.analytics.GetActivityStatisticsUseCase
 import com.example.usecase.analytics.GetActivityTrendsUseCase
 import com.example.usecase.analytics.GetSearchAnalyticsUseCase
@@ -9,8 +11,8 @@ import repository.ActivityRepository
 import repository.AnalyticsRepository
 
 fun Route.analyticsRoutes(
-    activityRepo: ActivityRepository = ActivityRepository(),
-    analyticsRepo: AnalyticsRepository = AnalyticsRepository()
+    activityRepo: IActivityRepository,
+    analyticsRepo: IAnalyticsRepository
 ) {
 
     val getActivityTrendsUseCase = GetActivityTrendsUseCase(activityRepo, analyticsRepo)

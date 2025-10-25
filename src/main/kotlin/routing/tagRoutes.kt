@@ -8,14 +8,16 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import repository.ActivityRepository
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityRepository
+import com.example.repository.IActivityTagRepository
 import com.example.repository.TagRepository
+import repository.CrudRepository
 
 fun Route.tagRoutes(
-    tagRepo: TagRepository,
-    activityTagRepo: ActivityTagRepository,
-    activityRepo: ActivityRepository
+    tagRepo: CrudRepository<Tag>,
+    activityTagRepo: IActivityTagRepository,
+    activityRepo: IActivityRepository
 ) {
-
     val getAllTagsUseCase = GetAllTagsUseCase(tagRepo)
     val getTagsByActivityUseCase = GetTagsByActivityUseCase(tagRepo, activityTagRepo)
     val createTagUseCase = CreateTagUseCase(tagRepo)
@@ -24,7 +26,6 @@ fun Route.tagRoutes(
     val linkTagToActivityUseCase = LinkTagToActivityUseCase(activityRepo, tagRepo, activityTagRepo)
 
     route("/tags") {
-
         // GET /tags - Alle tags ophalen
         get {
             val result = getAllTagsUseCase.execute()

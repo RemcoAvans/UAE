@@ -8,6 +8,7 @@ import com.example.baseRouter.BaseRouter.sendToken
 import com.example.baseRouter.BaseRouter.unauthorized
 import com.example.config.JwtConfig
 import com.example.dtos.userDtos.userLoginDto
+import com.example.repository.IUserRepository
 import com.example.usecase.user.LoginUserUseCase
 
 import dtos.UserRegisterDto
@@ -25,7 +26,7 @@ import usecase.user.RegisterAdminUseCase
 import usecase.user.RegisterUseCase
 import java.util.Date
 
-fun Route.userRoutes(repo: UserRepository) {
+fun Route.userRoutes(repo: IUserRepository) {
 //    val registerUseCase = RegisterUseCase(repo)
     val getUsersUseCase = GetUsersUseCase(repo)
     val registerUseCase = RegisterUseCase(repo)
