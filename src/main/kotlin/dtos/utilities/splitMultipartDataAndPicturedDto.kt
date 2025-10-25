@@ -1,0 +1,25 @@
+package com.example.dtos.utilities
+
+data class splitMultipartDataAndPicturedDto(val jsonData: String?,
+                                            val fileBytes: ByteArray?,
+                                            val originalFileName: String?) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as splitMultipartDataAndPicturedDto
+
+        if (jsonData != other.jsonData) return false
+        if (!fileBytes.contentEquals(other.fileBytes)) return false
+        if (originalFileName != other.originalFileName) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = jsonData.hashCode()
+        result = 31 * result + fileBytes.contentHashCode()
+        result = 31 * result + (originalFileName?.hashCode() ?: 0)
+        return result
+    }
+}

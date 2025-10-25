@@ -44,6 +44,9 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             recurrenceDays = recurrenceDays,
             createdAt = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
-                .date
+                .date,
+
+
+
         )
 }

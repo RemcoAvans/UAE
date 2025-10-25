@@ -1,7 +1,12 @@
 package routing
 
+import com.example.Utilities.splitMultipartDataAndPicture
+import com.example.Utilities.uploadPicture
+import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
+import com.example.baseRouter.BaseRouter.ok
 import com.example.baseRouter.BaseRouter.unauthorized
+import com.example.dtos.utilities.pictureDto
 import com.example.model.Tag
 import com.example.repository.ActivityTagRepository
 import com.example.repository.IActivityRepository
@@ -15,6 +20,7 @@ import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
@@ -31,6 +37,7 @@ import io.ktor.server.routing.*
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
 import kotlinx.serialization.json.Json
+import model.Activity
 
 import repository.ActivityRepository
 import repository.ActivityVoteRepository
@@ -57,33 +64,56 @@ fun Route.activityRoutes(
             // dit is om te testen
 
             val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
-            var sportActivity : CreateSportActivityDto? = null
-            var fileDescription = ""
-            var fileName = ""
 
-            multipartData.forEachPart { part ->
-            when (part) {
-                is PartData.FormItem -> {
-                    if (part.name == "Image") {
-                        fileDescription = part.value
-                    }
-                    if (part.name == "activityData") {
-                        sportActivity = Json.decodeFromString(part.value)
-                    }
 
-                }
 
-                is PartData.FileItem -> {
-                    fileName = part.originalFileName as String
-                    val file = File("uploads/$fileName")
-                    part.provider().copyAndClose(file.writeChannel())
-                }
 
-                else -> {}
+            val result = splitMultipartDataAndPicture(multipartData)
+
+            if (result.jsonData != null) {
+                val sportActivity : Activity = Json.decodeFromString(result.jsonData)
+
             }
-            part.dispose()
 
-        }
+            if (!result.originalFileName.isNullOrBlank() && result.fileBytes?.isNotEmpty() == true){
+
+                val picture : pictureDto = pictureDto(result.originalFileName, result.fileBytes )
+                uploadPicture(picture)
+            }
+            call.ok("alles oke")
+
+
+
+
+
+
+//                    val file = File("uploads/$fileName")
+
+
+
+//            multipartData.forEachPart { part ->
+//            when (part) {
+//                is PartData.FormItem -> {
+//                    if (part.name == "Image") {
+//                        fileDescription = part.value
+//                    }
+//                    if (part.name == "activityData") {
+//                        sportActivity = Json.decodeFromString(part.value)
+//                    }
+//
+//                }
+//
+//                is PartData.FileItem -> {
+//                    fileName = part.originalFileName as String
+//                    val file = File("uploads/$fileName")
+//                    part.provider().copyAndClose(file.writeChannel())
+//                }
+//
+//                else -> {}
+//            }
+//            part.dispose()
+//
+//        }
 
 
         }
@@ -129,8 +159,17 @@ fun Route.activityRoutes(
                 call.handle(result)
             }
 
+            TODO("add picture file location to activitys ")
+
             post("/food") {
-                val foodActivity = call.receive<CreateFoodActivityDto>()
+                val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
+                val data = splitMultipartDataAndPicture(multipartData)
+                val json = data.jsonData ?: return@post call.badRequest("Missing form-data JSON")
+                val fileName = data.originalFileName ?: return@post call.badRequest("Missing file name")
+                val bytes = data.fileBytes ?: return@post call.badRequest("Missing file bytes")
+                val foodActivity : CreateFoodActivityDto = Json.decodeFromString(json)
+                val picture : pictureDto = pictureDto(data.originalFileName, data.fileBytes )
+                uploadPicture(picture)
                 val result = createActivity.execute(foodActivity);
                 call.handle(result)
             }
