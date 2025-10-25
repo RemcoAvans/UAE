@@ -1,6 +1,6 @@
 package com.example.model
 
-data class ActivityTag(
+data class  ActivityTag(
     val ActivityId: Int,
     val TagId: Int,
 ) {
