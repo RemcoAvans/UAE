@@ -25,7 +25,7 @@ import usecase.user.RegisterAdminUseCase
 import usecase.user.RegisterUseCase
 import java.util.Date
 
-fun Route.userRoutes(repo: UserRepository = UserRepository()) {
+fun Route.userRoutes(repo: UserRepository) {
 //    val registerUseCase = RegisterUseCase(repo)
     val getUsersUseCase = GetUsersUseCase(repo)
     val registerUseCase = RegisterUseCase(repo)

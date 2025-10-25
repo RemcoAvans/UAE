@@ -9,8 +9,8 @@ import repository.ActivityRepository
 import repository.AnalyticsDataRepository
 
 fun Route.analyticsDataRoutes(
-    analyticsDataRepo: AnalyticsDataRepository = AnalyticsDataRepository(),
-    activityRepo: ActivityRepository = ActivityRepository()
+    analyticsDataRepo: AnalyticsDataRepository,
+    activityRepo: ActivityRepository
 ) {
 
     val getAllAnalyticsDataUseCase = GetAllAnalyticsDataUseCase(analyticsDataRepo)

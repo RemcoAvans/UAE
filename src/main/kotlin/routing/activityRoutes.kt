@@ -28,45 +28,45 @@ import repository.ActivityVoteRepository
 fun Route.activityRoutes(
     activityRepository: ActivityRepository,
     activityVoteRepository: ActivityVoteRepository,
-    tagRepo1: TagRepository,
+    tagRepo: TagRepository,
     activityTagRepository: ActivityTagRepository
 ) {
-    val createActivityUseCase = CreateActivityUseCase(activityRepository)
-    val getActivitiesUseCase = GetActivitiesUseCase(activityRepository)
-    val getActivityDetailsUseCase = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo1)
-    val filterActivitiesUseCase = FilterActivitiesUseCase(activityRepository)
-    val getActivityUseCase = GetActivityUseCase(activityRepository)
+    val createActivity = CreateActivityUseCase(activityRepository)
+    val getActivities = GetActivitiesUseCase(activityRepository)
+    val getActivityDetails = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo)
+    val filterActivities = FilterActivitiesUseCase(activityRepository)
+    val getActivity = GetActivityUseCase(activityRepository)
     val deleteActivity = DeleteActivityUseCase(activityRepository)
-    val searchActivityUseCase = SearchActivityUseCase(filterActivitiesUseCase, activityRepository)
+    val searchActivity = SearchActivityUseCase(filterActivities, activityRepository)
 
     route("/activities") {
         authenticate("auth-jwt") {
             get() {
-                val result = getActivitiesUseCase.execute()
+                val result = getActivities.execute()
                 call.handle(result)
             }
 
 
             post("/search") {
                 val userInput = call.receiveText()
-                val result = searchActivityUseCase.execute(userInput)
+                val result = searchActivity.execute(userInput)
                 call.handle(result)
             }
 
             post("/filter") {
                 val filter = call.receive<ActivityFilterDto>()
-                val result = filterActivitiesUseCase.execute(filter)
+                val result = filterActivities.execute(filter)
                 call.handle(result)
             }
 
             get("/{id}") {
                 val id = call.parameters["id"]?.toIntOrNull()
-                val result = getActivityUseCase.execute(id)
+                val result = getActivity.execute(id)
                 call.handle(result)
             }
         get("/Details/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
-            val result = getActivityDetailsUseCase.execute(id)
+            val result = getActivityDetails.execute(id)
             call.handle(result)
         }
 
@@ -84,17 +84,17 @@ fun Route.activityRoutes(
 
             post("/food") {
                 val foodActivity = call.receive<CreateFoodActivityDto>()
-                val result = createActivityUseCase.execute(foodActivity);
+                val result = createActivity.execute(foodActivity);
                 call.handle(result)
             }
             post("/culture") {
                 val cultureActivity = call.receive<CreateCultureActivityDto>()
-                val result = createActivityUseCase.execute(cultureActivity);
+                val result = createActivity.execute(cultureActivity);
                 call.handle(result)
             }
             post("/sport") {
                 val sportActivity = call.receive<CreateSportActivityDto>()
-                val result = createActivityUseCase.execute(sportActivity);
+                val result = createActivity.execute(sportActivity);
                 call.handle(result)
             }
         }
