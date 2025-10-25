@@ -14,12 +14,10 @@ class RegisterUseCase(val repository: IUserRepository) : BaseInputUseCase<UserRe
         val user = input.toUser()
         val result : String = repository.validate(user)
 
-        when (result) {
-            "Invalid email" -> return ObjectResult.fail("Invalid Email")
-            "Invalid password" -> return ObjectResult.fail("Invalid Password")
-            "User already exists" -> return ObjectResult.fail("User already exists")
-            "OK" -> {repository.create(user); return ObjectResult.success(user)}
-            else -> return ObjectResult.fail("Unknown error")
+        if (result == "OK") {
+            repository.create(user); return ObjectResult.success(user)
+        } else {
+            return ObjectResult.fail(result)
         }
     }
 }
