@@ -4,11 +4,13 @@ import com.example.core.ObjectResult
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityTagRepository
 import com.example.repository.TagRepository
+import repository.CrudRepository
 
 class GetTagsByActivityUseCase(
-    private val tagRepository: TagRepository,
-    private val activityTagRepository: ActivityTagRepository
+    private val tagRepository: CrudRepository<Tag>,
+    private val activityTagRepository: IActivityTagRepository
 ) : BaseInputUseCase<Int?, List<Tag>> {
 
     override suspend fun execute(input: Int?): ObjectResult<List<Tag>> {

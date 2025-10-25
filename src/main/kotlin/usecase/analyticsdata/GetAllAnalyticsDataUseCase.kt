@@ -2,10 +2,11 @@ package com.example.usecase.analyticsdata
 
 import com.example.core.ObjectResult
 import com.example.model.AnalyticsData
+import com.example.repository.IAnalyticsDataRepository
 import repository.AnalyticsDataRepository
 import usecase.BaseUseCase
 
-class GetAllAnalyticsDataUseCase(private val repository: AnalyticsDataRepository) : BaseUseCase<List<AnalyticsData>> {
+class GetAllAnalyticsDataUseCase(private val repository: IAnalyticsDataRepository) : BaseUseCase<List<AnalyticsData>> {
 
     override suspend fun execute(): ObjectResult<List<AnalyticsData>> {
         val data = repository.getAll()

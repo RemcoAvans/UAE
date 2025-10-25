@@ -1,11 +1,12 @@
 package com.example.usecase.activity
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
 import model.Activity
 import repository.ActivityRepository
 import usecase.BaseUseCase
 
-class GetFeaturedActivitiesUseCase(private val repository: ActivityRepository) : BaseUseCase<List<Activity>> {
+class GetFeaturedActivitiesUseCase(private val repository: IActivityRepository) : BaseUseCase<List<Activity>> {
 
     override suspend fun execute(): ObjectResult<List<Activity>> {
         val result = repository.getFeaturedActivities()

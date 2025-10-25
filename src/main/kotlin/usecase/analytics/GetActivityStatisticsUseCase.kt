@@ -1,12 +1,13 @@
 package com.example.usecase.analytics
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
 import dtos.*
 import repository.ActivityRepository
 import usecase.BaseUseCase
 
 class GetActivityStatisticsUseCase(
-    private val activityRepository: ActivityRepository
+    private val activityRepository: IActivityRepository
 ) : BaseUseCase<ActivityStatisticsDto> {
 
     override suspend fun execute(): ObjectResult<ActivityStatisticsDto> {

@@ -4,8 +4,9 @@ import com.example.core.ObjectResult
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
 import com.example.repository.TagRepository
+import repository.CrudRepository
 
-class CreateTagUseCase(private val repository: TagRepository) : BaseInputUseCase<Tag, Tag> {
+class CreateTagUseCase(private val repository: CrudRepository<Tag>) : BaseInputUseCase<Tag, Tag> {
 
     override suspend fun execute(input: Tag): ObjectResult<Tag> {
         // Validatie: check of tag naam al bestaat

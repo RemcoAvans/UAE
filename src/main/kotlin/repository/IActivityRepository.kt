@@ -13,4 +13,8 @@ interface IActivityRepository : CrudRepository<Activity> {
     fun createFood(foodActivity: FoodActivity) : FoodActivity
 
     fun createCulture(cultureActivity: CultureActivity) : CultureActivity
+
+    fun setFeatured(id: Int, featured: Boolean): Activity?
+
+    fun getFeaturedActivities(): List<Activity>
 }

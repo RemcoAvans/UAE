@@ -41,7 +41,7 @@ open class ActivityRepository : IActivityRepository {
     override suspend fun delete(id: Int): Boolean =
         activitys.removeIf { it.id == id }
 
-    open fun setFeatured(id: Int, featured: Boolean): Activity? {
+    open override fun setFeatured(id: Int, featured: Boolean): Activity? {
         val activity = activitys.find { it.id == id } ?: return null
         val updatedActivity = activity.copy(isFeatured = featured)
         val index = activitys.indexOfFirst { it.id == id }
@@ -52,7 +52,7 @@ open class ActivityRepository : IActivityRepository {
         return null
     }
 
-    open fun getFeaturedActivities(): List<Activity> {
+    open override fun getFeaturedActivities(): List<Activity> {
         return activitys.filter { it.isFeatured }
     }
 
@@ -60,10 +60,12 @@ open class ActivityRepository : IActivityRepository {
         sportActivities.add(sportActivity)
         return sportActivity
     }
+
     override fun createFood(foodActivity: FoodActivity) : FoodActivity {
         foodActivities.add(foodActivity)
         return foodActivity
     }
+
     override fun createCulture(cultureActivity: CultureActivity) : CultureActivity {
         cultureActivities.add(cultureActivity)
         return cultureActivity

@@ -1,3 +1,0 @@
-// package usecase.tag
-//
-// import

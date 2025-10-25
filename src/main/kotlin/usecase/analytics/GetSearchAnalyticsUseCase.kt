@@ -1,12 +1,13 @@
 package com.example.usecase.analytics
 
 import com.example.core.ObjectResult
+import com.example.repository.IAnalyticsRepository
 import dtos.*
 import repository.AnalyticsRepository
 import usecase.BaseUseCase
 
 class GetSearchAnalyticsUseCase(
-    private val analyticsRepository: AnalyticsRepository
+    private val analyticsRepository: IAnalyticsRepository
 ) : BaseUseCase<SearchAnalyticsDto> {
 
     override suspend fun execute(): ObjectResult<SearchAnalyticsDto> {

@@ -1,11 +1,12 @@
 package com.example.usecase.activity
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
 import com.example.usecase.BaseInputUseCase
 import model.Activity
 import repository.ActivityRepository
 
-class UnpromoteActivityUseCase(private val repository: ActivityRepository) : BaseInputUseCase<Int?, Activity> {
+class UnpromoteActivityUseCase(private val repository: IActivityRepository) : BaseInputUseCase<Int?, Activity> {
 
     override suspend fun execute(input: Int?): ObjectResult<Activity> {
         if (input == null || input < 0) {

@@ -2,10 +2,14 @@ package com.example.usecase.tag
 
 import com.example.core.ObjectResult
 import com.example.model.ActivityTag
+import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
 import repository.ActivityRepository
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityRepository
+import com.example.repository.IActivityTagRepository
 import com.example.repository.TagRepository
+import repository.CrudRepository
 
 data class LinkTagInput(
     val activityId: Int,
@@ -13,9 +17,9 @@ data class LinkTagInput(
 )
 
 class LinkTagToActivityUseCase(
-    private val activityRepository: ActivityRepository,
-    private val tagRepository: TagRepository,
-    private val activityTagRepository: ActivityTagRepository
+    private val activityRepository: IActivityRepository,
+    private val tagRepository: CrudRepository<Tag>,
+    private val activityTagRepository: IActivityTagRepository
 ) : BaseInputUseCase<LinkTagInput, ActivityTag> {
 
     override suspend fun execute(input: LinkTagInput): ObjectResult<ActivityTag> {

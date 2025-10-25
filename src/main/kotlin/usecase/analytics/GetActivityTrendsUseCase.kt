@@ -1,14 +1,16 @@
 package com.example.usecase.analytics
 
 import com.example.core.ObjectResult
+import com.example.repository.IActivityRepository
+import com.example.repository.IAnalyticsRepository
 import com.example.usecase.BaseInputUseCase
 import dtos.CategoryTrendDto
 import repository.ActivityRepository
 import repository.AnalyticsRepository
 
 class GetActivityTrendsUseCase(
-    private val activityRepository: ActivityRepository,
-    private val analyticsRepository: AnalyticsRepository
+    private val activityRepository: IActivityRepository,
+    private val analyticsRepository: IAnalyticsRepository
 ) : BaseInputUseCase<Int?, List<CategoryTrendDto>> {
 
     override suspend fun execute(input: Int?): ObjectResult<List<CategoryTrendDto>> {

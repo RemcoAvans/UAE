@@ -2,13 +2,15 @@ package com.example.usecase.analyticsdata
 
 import com.example.core.ObjectResult
 import com.example.model.AnalyticsData
+import com.example.repository.IActivityRepository
+import com.example.repository.IAnalyticsDataRepository
 import com.example.usecase.BaseInputUseCase
 import repository.ActivityRepository
 import repository.AnalyticsDataRepository
 
 class GetAnalyticsDataByActivityUseCase(
-    private val analyticsDataRepository: AnalyticsDataRepository,
-    private val activityRepository: ActivityRepository
+    private val analyticsDataRepository: IAnalyticsDataRepository,
+    private val activityRepository: IActivityRepository
 ) : BaseInputUseCase<Int?, AnalyticsData> {
 
     override suspend fun execute(input: Int?): ObjectResult<AnalyticsData> {
