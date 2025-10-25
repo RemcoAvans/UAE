@@ -11,19 +11,27 @@ import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
+import dtos.UserRegisterDto
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
 import dtos.activity.CreateSportActivityDto
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveMultipart
 import io.ktor.server.request.receiveText
 import io.ktor.server.routing.*
+import io.ktor.util.cio.writeChannel
+import io.ktor.utils.io.copyAndClose
+import kotlinx.serialization.json.Json
 
 import repository.ActivityRepository
 import repository.ActivityVoteRepository
+import java.io.File
 
 fun Route.activityRoutes(
     activityRepository: ActivityRepository,
@@ -40,6 +48,41 @@ fun Route.activityRoutes(
     val searchActivity = SearchActivityUseCase(filterActivities, activityRepository)
 
     route("/activities") {
+
+        post("FileTest") {
+            // dit is om te testen
+
+            val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
+            var sportActivity : CreateSportActivityDto? = null
+            var fileDescription = ""
+            var fileName = ""
+
+            multipartData.forEachPart { part ->
+            when (part) {
+                is PartData.FormItem -> {
+                    if (part.name == "Image") {
+                        fileDescription = part.value
+                    }
+                    if (part.name == "activityData") {
+                        sportActivity = Json.decodeFromString(part.value)
+                    }
+
+                }
+
+                is PartData.FileItem -> {
+                    fileName = part.originalFileName as String
+                    val file = File("uploads/$fileName")
+                    part.provider().copyAndClose(file.writeChannel())
+                }
+
+                else -> {}
+            }
+            part.dispose()
+
+        }
+
+
+        }
         authenticate("auth-jwt") {
             get() {
                 val result = getActivities.execute()
