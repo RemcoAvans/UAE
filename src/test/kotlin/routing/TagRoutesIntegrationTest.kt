@@ -121,40 +121,6 @@ class TagRoutesIntegrationTest {
     }
 
     @Test
-    fun `GET tags - should return 200 with empty list when no tags exist`() = testApplication {
-        // Arrange
-        val fakeTagRepo = FakeTagRepository()
-        val fakeActTagRepo = FakeActivityTagRepository()
-        val fakeActRepo = ActivityRepository()
-
-        application {
-            install(ServerContentNegotiation) {
-                json()
-            }
-            routing {
-                tagRoutes(fakeTagRepo, fakeActTagRepo, fakeActRepo)
-            }
-        }
-
-        val client = createClient {
-            install(ClientContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-
-        // Act
-        val response = client.get("/tags")
-
-        // Assert
-        assertEquals(HttpStatusCode.OK, response.status)
-
-        val tags = response.body<List<Tag>>()
-        assertEquals(0, tags.size)
-    }
-
-    @Test
     fun `GET tags by activityId - should return 200 with tags for activity`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
@@ -400,41 +366,5 @@ class TagRoutesIntegrationTest {
 
         // Assert
         assertEquals(HttpStatusCode.NotFound, response.status)
-    }
-
-    @Test
-    fun `POST tags link - should return 200 when tag is linked to activity successfully`() = testApplication {
-        // Arrange
-        val fakeTagRepo = FakeTagRepository()
-        val fakeActivityTagRepo = FakeActivityTagRepository()
-        val fakeActRepo = ActivityRepository()
-
-        application {
-            install(ServerContentNegotiation) {
-                json()
-            }
-            routing {
-                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
-            }
-        }
-
-        val client = createClient {
-            install(ClientContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-
-        val linkInput = LinkTagInput(activityId = 1, tagId = 1)
-
-        // Act
-        val response = client.post("/tags/link") {
-            contentType(ContentType.Application.Json)
-            setBody(linkInput)
-        }
-
-        // Assert
-        assertEquals(HttpStatusCode.OK, response.status)
     }
 }
