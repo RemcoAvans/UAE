@@ -16,6 +16,7 @@ import com.example.repository.TagRepository
 import usecase.activity.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
+import com.example.usecase.activity.CreateActivityWithPictureUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
@@ -57,6 +58,7 @@ fun Route.activityRoutes(
     val getActivity = GetActivityUseCase(activityRepository)
     val deleteActivity = DeleteActivityUseCase(activityRepository)
     val searchActivity = SearchActivityUseCase(filterActivities, activityRepository)
+    val createActivityWithPicture = CreateActivityWithPictureUseCase(createActivity, activityRepository)
 
     route("/activities") {
 
@@ -102,21 +104,10 @@ fun Route.activityRoutes(
                 call.handle(result)
             }
 
-
-
             post("/food") {
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
-                val errors = data.validate()
-                if (errors.isNotEmpty()) {
-                    return@post call.badRequest(errors.joinToString(", "))
-                }
-                val foodActivity : CreateFoodActivityDto = Json.decodeFromString(data.jsonData!!)
-                val result = createActivity.execute(foodActivity)
-                if (result.success){
-                    val picture = pictureDto(data.originalFileName!!, data.fileBytes!!)
-                    val photoUrl = uploadPicture(picture, result.result?.id, activityRepository)
-                }
+                var result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
             post("/culture") {

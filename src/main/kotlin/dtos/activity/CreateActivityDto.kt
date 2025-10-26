@@ -45,8 +45,5 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             createdAt = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .date,
-
-
-
         )
 }

@@ -3,6 +3,7 @@ package routing
 import com.example.model.ActivityTag
 import com.example.model.Tag
 import com.example.repository.ActivityTagRepository
+import com.example.repository.IActivityRepository
 import com.example.repository.TagRepository
 import com.example.routing.tagRoutes
 import com.example.usecase.tag.LinkTagInput
@@ -17,6 +18,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.json.Json
 import org.junit.Test
+import repository.ActivityRepository
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -84,6 +86,8 @@ class TagRoutesIntegrationTest {
     fun `GET tags - should return 200 with all tags`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         fakeTagRepo.addTag(Tag(id = 1, name = "Outdoor"))
         fakeTagRepo.addTag(Tag(id = 2, name = "Family"))
@@ -94,7 +98,7 @@ class TagRoutesIntegrationTest {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActTagRepo, fakeActRepo)
             }
         }
 
@@ -120,13 +124,15 @@ class TagRoutesIntegrationTest {
     fun `GET tags - should return 200 with empty list when no tags exist`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActTagRepo, fakeActRepo)
             }
         }
 
@@ -153,6 +159,7 @@ class TagRoutesIntegrationTest {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
         val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         fakeTagRepo.addTag(Tag(id = 1, name = "Outdoor"))
         fakeTagRepo.addTag(Tag(id = 2, name = "Family"))
@@ -165,7 +172,7 @@ class TagRoutesIntegrationTest {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -191,13 +198,15 @@ class TagRoutesIntegrationTest {
     fun `GET tags by activityId - should return 400 when activityId is invalid`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -224,13 +233,15 @@ class TagRoutesIntegrationTest {
     fun `POST tags - should return 200 when tag is created successfully`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -258,6 +269,8 @@ class TagRoutesIntegrationTest {
     fun `PATCH tags - should return 200 when tag is updated successfully`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         fakeTagRepo.addTag(Tag(id = 1, name = "Old Name"))
 
@@ -266,7 +279,7 @@ class TagRoutesIntegrationTest {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -294,6 +307,8 @@ class TagRoutesIntegrationTest {
     fun `DELETE tags by id - should return 200 when tag is deleted successfully`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         fakeTagRepo.addTag(Tag(id = 1, name = "To Delete"))
 
@@ -302,7 +317,7 @@ class TagRoutesIntegrationTest {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -325,13 +340,15 @@ class TagRoutesIntegrationTest {
     fun `DELETE tags by id - should return 400 when id is invalid`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -358,13 +375,15 @@ class TagRoutesIntegrationTest {
     fun `DELETE tags by id - should return 404 when tag does not exist`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
@@ -387,13 +406,15 @@ class TagRoutesIntegrationTest {
     fun `POST tags link - should return 200 when tag is linked to activity successfully`() = testApplication {
         // Arrange
         val fakeTagRepo = FakeTagRepository()
+        val fakeActivityTagRepo = FakeActivityTagRepository()
+        val fakeActRepo = ActivityRepository()
 
         application {
             install(ServerContentNegotiation) {
                 json()
             }
             routing {
-                tagRoutes(fakeTagRepo)
+                tagRoutes(fakeTagRepo, fakeActivityTagRepo, fakeActRepo)
             }
         }
 
