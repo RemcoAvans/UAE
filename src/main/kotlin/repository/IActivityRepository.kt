@@ -17,4 +17,6 @@ interface IActivityRepository : CrudRepository<Activity> {
     fun setFeatured(id: Int, featured: Boolean): Activity?
 
     fun getFeaturedActivities(): List<Activity>
+
+    fun updatePhotoUrl(id: Int, photoUrl: String)
 }

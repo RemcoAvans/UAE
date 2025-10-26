@@ -60,63 +60,6 @@ fun Route.activityRoutes(
 
     route("/activities") {
 
-        post("FileTest") {
-            // dit is om te testen
-
-            val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
-
-
-
-
-            val result = splitMultipartDataAndPicture(multipartData)
-
-            if (result.jsonData != null) {
-                val sportActivity : Activity = Json.decodeFromString(result.jsonData)
-
-            }
-
-            if (!result.originalFileName.isNullOrBlank() && result.fileBytes?.isNotEmpty() == true){
-
-                val picture : pictureDto = pictureDto(result.originalFileName, result.fileBytes )
-                uploadPicture(picture)
-            }
-            call.ok("alles oke")
-
-
-
-
-
-
-//                    val file = File("uploads/$fileName")
-
-
-
-//            multipartData.forEachPart { part ->
-//            when (part) {
-//                is PartData.FormItem -> {
-//                    if (part.name == "Image") {
-//                        fileDescription = part.value
-//                    }
-//                    if (part.name == "activityData") {
-//                        sportActivity = Json.decodeFromString(part.value)
-//                    }
-//
-//                }
-//
-//                is PartData.FileItem -> {
-//                    fileName = part.originalFileName as String
-//                    val file = File("uploads/$fileName")
-//                    part.provider().copyAndClose(file.writeChannel())
-//                }
-//
-//                else -> {}
-//            }
-//            part.dispose()
-//
-//        }
-
-
-        }
         authenticate("auth-jwt") {
             get() {
                 val result = getActivities.execute()
@@ -159,18 +102,21 @@ fun Route.activityRoutes(
                 call.handle(result)
             }
 
-            TODO("add picture file location to activitys ")
+
 
             post("/food") {
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
-                val json = data.jsonData ?: return@post call.badRequest("Missing form-data JSON")
-                val fileName = data.originalFileName ?: return@post call.badRequest("Missing file name")
-                val bytes = data.fileBytes ?: return@post call.badRequest("Missing file bytes")
-                val foodActivity : CreateFoodActivityDto = Json.decodeFromString(json)
-                val picture : pictureDto = pictureDto(data.originalFileName, data.fileBytes )
-                uploadPicture(picture)
-                val result = createActivity.execute(foodActivity);
+                val errors = data.validate()
+                if (errors.isNotEmpty()) {
+                    return@post call.badRequest(errors.joinToString(", "))
+                }
+                val foodActivity : CreateFoodActivityDto = Json.decodeFromString(data.jsonData!!)
+                val result = createActivity.execute(foodActivity)
+                if (result.success){
+                    val picture = pictureDto(data.originalFileName!!, data.fileBytes!!)
+                    val photoUrl = uploadPicture(picture, result.result?.id, activityRepository)
+                }
                 call.handle(result)
             }
             post("/culture") {

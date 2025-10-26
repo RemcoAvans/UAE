@@ -1,9 +1,11 @@
 package com.example.Utilities
 
 import com.example.dtos.utilities.pictureDto
+import com.example.repository.IActivityRepository
 import java.io.File
 
-fun uploadPicture(data : pictureDto){
+fun uploadPicture(data: pictureDto, id: Int?, activityRepository: IActivityRepository) {
+
 
     val uploadDir = File("uploads")
 
@@ -18,4 +20,7 @@ fun uploadPicture(data : pictureDto){
 
     fileToSave.writeBytes(data.fileBytes)
 
+    if (id != null) {
+        activityRepository.updatePhotoUrl(id, "/uploads/${data.fileName}")
+    }
 }

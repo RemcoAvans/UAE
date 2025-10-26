@@ -56,6 +56,13 @@ open class ActivityRepository : IActivityRepository {
         return activitys.filter { it.isFeatured }
     }
 
+    override fun updatePhotoUrl(id: Int, photoUrl: String) {
+        val index = activitys.indexOfFirst { it.id == id }
+        if (index != -1) {
+            activitys[index] = activitys[index].copy(photoUrl = photoUrl)
+        }
+    }
+
     override fun createSport(sportActivity: SportActivity) : SportActivity {
         sportActivities.add(sportActivity)
         return sportActivity

@@ -19,4 +19,6 @@ class CreateFoodActivityDto(
     val PriceRange: String,
 ) : CreateActivityDto<CreateFoodActivityDto>(
 )  {
+
+
 }

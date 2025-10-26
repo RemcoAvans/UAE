@@ -3,6 +3,17 @@ package com.example.dtos.utilities
 data class splitMultipartDataAndPicturedDto(val jsonData: String?,
                                             val fileBytes: ByteArray?,
                                             val originalFileName: String?) {
+
+    fun validate(): List<String> {
+        val errors = mutableListOf<String>()
+
+        if (jsonData == null) errors.add("No json data found")
+        if (fileBytes == null) errors.add("No file data found")
+        if (originalFileName == null) errors.add("No file name found")
+
+        return errors
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
