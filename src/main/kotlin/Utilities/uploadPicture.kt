@@ -5,7 +5,7 @@ import com.example.dtos.utilities.pictureDto
 import com.example.repository.IActivityRepository
 import java.io.File
 
-fun uploadPicture(data: pictureDto, id: Int?, activityRepository: IActivityRepository): ObjectResult<String> {
+fun uploadPicture(data: pictureDto): ObjectResult<String> {
 
     val uploadDir = File("uploads")
     if (!uploadDir.exists()) { // controleren of die bestaat

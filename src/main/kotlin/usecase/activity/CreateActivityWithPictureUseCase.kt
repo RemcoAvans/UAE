@@ -23,10 +23,10 @@ class CreateActivityWithPictureUseCase(
         }
         val foodActivity : CreateFoodActivityDto = Json.decodeFromString(input.jsonData!!)
         val activityResult = createActivity.execute(foodActivity)
-        if (!activityResult.success || activityResult.result?.id != null) return activityResult
+        if (!activityResult.success || activityResult.result?.id == null) return activityResult
 
         val picture = pictureDto(input.originalFileName!!, input.fileBytes!!)
-        val photoResult = uploadPicture(picture, activityResult.result!!.id, activityRepository)
+        val photoResult = uploadPicture(picture)
         if (photoResult.success) {
             activityRepository.updatePhotoUrl(activityResult.result.id, "/uploads/${photoResult.result}")
         }
