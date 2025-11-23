@@ -38,7 +38,7 @@ class SearchActivityUseCase(
 
         val agent = AIAgent(
             executor = executor,
-            llmModel = OpenAIModels.Chat.GPT5Nano,
+            llmModel = OpenAIModels.Chat.GPT4o,
             toolRegistry = tools,
             systemPrompt = """
             Je bent een AI-assistent die helpt bij het vinden van de best passende activiteiten.
