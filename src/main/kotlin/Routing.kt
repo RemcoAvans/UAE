@@ -1,7 +1,7 @@
 package com.example
 
-import com.example.repository.ActivityTagRepository
-import com.example.repository.TagRepository
+import com.example.repository.memory.ActivityTagRepository
+import com.example.repository.memory.TagRepository
 import com.example.routing.analyticsDataRoutes
 import com.example.routing.tagRoutes
 import com.example.routing.voteRoutes

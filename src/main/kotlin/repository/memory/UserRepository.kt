@@ -1,11 +1,8 @@
 package repository
 
 import com.example.config.PasswordHasher
-import com.example.core.ObjectResult
 import com.example.dtos.userDtos.userLoginDto
 import com.example.repository.IUserRepository
-import dtos.UserRegisterDto
-import dtos.toUser
 import model.User
 
 open class UserRepository : IUserRepository {

@@ -1,4 +1,4 @@
-package com.example.repository
+package com.example.repository.memory
 
 import com.example.model.Tag
 import repository.CrudRepository

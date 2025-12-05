@@ -1,6 +1,7 @@
-package com.example.repository
+package com.example.repository.memory
 
 import com.example.model.ActivityTag
+import com.example.repository.IActivityTagRepository
 
 open class ActivityTagRepository : IActivityTagRepository {
 
