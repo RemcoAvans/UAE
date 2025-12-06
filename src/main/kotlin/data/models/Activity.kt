@@ -1,7 +1,6 @@
 package com.example.data.models
 
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.kotlin.datetime.date
 import kotlinx.datetime.LocalDate
 
 object ActivityTable : IntIdTable("activities") {
@@ -14,9 +13,9 @@ object ActivityTable : IntIdTable("activities") {
     val locationId = integer("locationId")
     val isFeatured = bool("isFeatured")
     val capacity = integer("capacity")
-    val startDate = date("startDate")
-    val endDate = date("endDate")
+    val startDate = varchar("startDate", 255)
+    val endDate = varchar("endDate", 255)
     val recurrencePattern = varchar("recurrencePattern", 255)
     val recurrenceDays = varchar("recurrenceDays", 255)
-    val createdAt = date("createdAt")
+    val createdAt = varchar("createdAt", 255)
 }

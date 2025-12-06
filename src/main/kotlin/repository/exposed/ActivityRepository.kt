@@ -4,26 +4,14 @@ import com.example.model.CultureActivity
 import com.example.model.FoodActivity
 import com.example.model.SportActivity
 import com.example.repository.IActivityRepository
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import model.Activity
-package repository
-
-import com.example.model.Activity
-import com.example.model.CultureActivity
-import com.example.model.FoodActivity
-import com.example.model.SportActivity
-import com.example.repository.IActivityRepository
+import kotlin.toString
 import com.example.data.models.ActivityTable
 import com.example.data.models.FoodActivity as FoodActivityTable
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.kotlin.datetime.date
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -44,9 +32,9 @@ class ActivityRepository : IActivityRepository {
             capacity = row[ActivityTable.capacity],
             isFull = false,                   // <-- je hebt dit niet in DB, maar in model wel
             isFeatured = row[ActivityTable.isFeatured],
-            startDate = row[ActivityTable.startDate],
-            endDate = row[ActivityTable.endDate],
-            createdAt = row[ActivityTable.createdAt]
+            startDate = LocalDate.parse(row[ActivityTable.startDate]),
+            endDate = LocalDate.parse(row[ActivityTable.endDate]),
+            createdAt = LocalDate.parse(row[ActivityTable.createdAt])
         )
 
 
@@ -73,9 +61,9 @@ class ActivityRepository : IActivityRepository {
             row[capacity] = entity.capacity
             row[locationId] = entity.locationId
             row[isFeatured] = entity.isFeatured
-            row[startDate] = entity.startDate
-            row[endDate] = entity.endDate
-            row[createdAt] = entity.createdAt
+            row[startDate] = entity.startDate.toString()
+            row[endDate] = entity.endDate.toString()
+            row[createdAt] = entity.createdAt.toString()
             row[recurrencePattern] = entity.recurrencePattern ?: ""
             row[recurrenceDays] = entity.recurrenceDays ?: ""
             row[createdByUser] = 1 // placeholder foreign key
@@ -94,9 +82,9 @@ class ActivityRepository : IActivityRepository {
             row[capacity] = entity.capacity
             row[locationId] = entity.locationId
             row[isFeatured] = entity.isFeatured
-            row[startDate] = entity.startDate
-            row[endDate] = entity.endDate
-            row[createdAt] = entity.createdAt
+            row[startDate] = entity.startDate.toString()
+            row[endDate] = entity.endDate.toString()
+            row[createdAt] = entity.createdAt.toString()
             row[recurrenceDays] = entity.recurrenceDays ?: ""
             row[recurrencePattern] = entity.recurrencePattern ?: ""
         }
