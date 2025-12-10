@@ -42,11 +42,10 @@ class ActivityRepository : IActivityRepository {
         ActivityTable.selectAll().map(::toActivity)
     }
 
-    override suspend fun getById(id: Int): Activity? = dbQuery {
-        ActivityTable.select { ActivityTable.id === id }
+    override suspend fun getById(id: Int): Activity? =
+        ActivityTable.selectAll().where { ActivityTable.id eq id }.toList()
             .map(::toActivity)
             .singleOrNull()
-    }
 
     override suspend fun getByQuery(predicate: (Activity) -> Boolean): List<Activity> =
         getAll().filter(predicate)
@@ -101,13 +100,13 @@ class ActivityRepository : IActivityRepository {
             it[isFeatured] = featured
         }
 
-        ActivityTable.select { ActivityTable.id eq id }
+        ActivityTable.selectAll().where { ActivityTable.id eq id }
             .map(::toActivity)
             .singleOrNull()
     }
 
     override fun getFeaturedActivities(): List<Activity> = transaction {
-        ActivityTable.select { ActivityTable.isFeatured eq true }
+        ActivityTable.selectAll().where { ActivityTable.isFeatured eq true }
             .map(::toActivity)
     }
 
