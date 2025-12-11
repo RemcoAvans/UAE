@@ -34,6 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:3.3.0")
     implementation("io.ktor:ktor-server-auth:3.3.0")
     implementation("ai.koog:koog-ktor:0.4.2")
+    implementation("org.postgresql:postgresql:42.7.3")
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
     implementation("com.h2database:h2:2.3.232")
@@ -41,6 +42,5 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.mindrot:jbcrypt:0.4")
-
 
 }

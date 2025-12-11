@@ -1,4 +1,4 @@
-package repository
+package repository.exposed
 
 import com.example.repository.IAnalyticsRepository
 import model.SearchLog

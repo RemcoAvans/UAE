@@ -9,11 +9,12 @@ object DatabaseFactory {
 
     fun init() {
         Database.connect(
-            url = "jdbc:postgresql://localhost:5432/activities",
+            url = "jdbc:postgresql://db.locvhwyvbjplqhhuwrag.supabase.co:5432/postgres",
             driver = "org.postgresql.Driver",
             user = "postgres",
-            password = "secret"
+            password = "Welkom2025!",
         )
+
 
         transaction {
             SchemaUtils.create(ActivityTable)

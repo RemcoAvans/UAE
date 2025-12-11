@@ -9,5 +9,5 @@ object User : IntIdTable("user"){
     val email = varchar("email", 255)
     val passwordHash = varchar("passwordHash", 510)
     val role = varchar("role", 255)
-    val createdAt = date()
+    val createdAt = varchar("createAt", 255)
 }

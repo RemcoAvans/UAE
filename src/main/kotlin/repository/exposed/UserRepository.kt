@@ -1,4 +1,4 @@
-package repository
+package repository.exposed
 
 import com.example.config.PasswordHasher
 import com.example.dtos.userDtos.userLoginDto

@@ -1,4 +1,4 @@
-package repository
+package repository.exposed
 
 import com.example.model.AnalyticsData
 import com.example.repository.IAnalyticsDataRepository
