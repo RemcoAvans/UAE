@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 import model.Activity
 import kotlin.toString
 import com.example.data.models.ActivityTable
-import com.example.data.models.FoodActivity as FoodActivityTable
+import com.example.data.models.FoodActivityTable as FoodActivityTable
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

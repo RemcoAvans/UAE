@@ -1,7 +1,6 @@
 package com.example.data.models
 
 import org.jetbrains.exposed.dao.id.IntIdTable
-import kotlinx.datetime.LocalDate
 
 object ActivityTable : IntIdTable("activities") {
     val title = varchar("title", 255)

@@ -2,7 +2,7 @@ package com.example.data.models
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 
-object User : IntIdTable("user"){
+object UserTable : IntIdTable("user"){
     val firstName = varchar("firstName", 255)
     val lastName = varchar("lastName", 255)
     val username = varchar("username", 255)

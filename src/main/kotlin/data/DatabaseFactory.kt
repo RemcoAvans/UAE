@@ -18,16 +18,16 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(ActivityTable)
-            SchemaUtils.create(ActivityTag)
-            SchemaUtils.create(ActivityVote)
-            SchemaUtils.create(AnalyticsData)
-            SchemaUtils.create(CultureActivity)
-            SchemaUtils.create(FoodActivity)
-            SchemaUtils.create(Location)
-            SchemaUtils.create(SearchLog)
-            SchemaUtils.create(SportActivity)
-            SchemaUtils.create(Tag)
-            SchemaUtils.create(User)
+            SchemaUtils.create(ActivityTagTable)
+            SchemaUtils.create(ActivityVoteTable)
+            SchemaUtils.create(AnalyticsDataTable)
+            SchemaUtils.create(CultureActivityTable)
+            SchemaUtils.create(FoodActivityTable)
+            SchemaUtils.create(LocationTable)
+            SchemaUtils.create(SearchLogTable)
+            SchemaUtils.create(SportActivityTable)
+            SchemaUtils.create(TagTable)
+            SchemaUtils.create(UserTable)
         }
     }
 }
