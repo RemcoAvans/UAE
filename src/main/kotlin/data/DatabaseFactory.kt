@@ -9,10 +9,10 @@ object DatabaseFactory {
 
     fun init() {
         Database.connect(
-            url = "jdbc:postgresql://db.locvhwyvbjplqhhuwrag.supabase.co:5432/postgres",
+            url = "jdbc:postgresql://db.locvhwyvbjplqhhuwrag.supabase.co:5432/postgres?sslmode=require",
             driver = "org.postgresql.Driver",
             user = "postgres",
-            password = "Welkom2025!",
+            password = $$"cu3eZeq8BuDR?!$e3h$3", // cu3eZeq8BuDR?!$e3h$3
         )
 
 
