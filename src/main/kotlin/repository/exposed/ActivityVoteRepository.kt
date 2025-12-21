@@ -1,21 +1,16 @@
 package repository.exposed
 
-import com.example.data.models.ActivityTable
-import com.example.data.models.ActivityTagTable
 import com.example.data.models.ActivityVoteTable
-import com.example.model.ActivityTag
 import com.example.model.ActivityVote
 import com.example.repository.IActivityVoteRepository
 import com.example.repository.exposed.DatabaseHelper
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import model.Activity
-import org.h2.api.H2Type.row
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 import kotlin.Int
 
 open class ActivityVoteRepository : IActivityVoteRepository {
@@ -58,16 +53,17 @@ open class ActivityVoteRepository : IActivityVoteRepository {
         entity.copy(id = id.value)
     }
 
-    override suspend fun update(entity: ActivityVote): Boolean {
-        val index = votes.indexOfFirst { it.id == entity.id }
-        if (index != -1) {
-            votes[index] = entity
-            return true
+    override suspend fun update(entity: ActivityVote): Boolean = DatabaseHelper.dbQuery {
+        val updated = ActivityVoteTable.update({ ActivityVoteTable.id eq entity.id }) { row ->
+            row[activityId] = entity.activityId
+            row[userId] = entity.userId
+            row[createAt] = entity.createAt.toString()
+            row[positive] = entity.positive
         }
-        return false
+        updated > 0
     }
 
-    override suspend fun delete(id: Int): Boolean {
-        return votes.removeIf { it.id == id }
+    override suspend fun delete(id: Int): Boolean = DatabaseHelper.dbQuery {
+        ActivityVoteTable.deleteWhere { ActivityVoteTable.id eq id } > 0
     }
 }

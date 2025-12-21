@@ -34,7 +34,7 @@ open class UserRepository : IUserRepository {
     override suspend fun delete(id: Int): Boolean =
         users.removeIf { it.id == id }
 
-    override fun login(loginDto: userLoginDto) : User?{
+    override suspend fun login(loginDto: userLoginDto) : User?{
         val loginName = loginDto.loginName
         val loginPassword = loginDto.password
 
@@ -46,7 +46,7 @@ open class UserRepository : IUserRepository {
         }
     }
 
-    override fun validate(user: User) : String{
+    override suspend fun validate(user: User) : String{
         if (user.email == "") {
             return "Invalid email"
         }
