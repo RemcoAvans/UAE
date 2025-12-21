@@ -3,9 +3,7 @@ package com.example.usecase.tag
 import com.example.core.ObjectResult
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
-import com.example.repository.ActivityTagRepository
 import com.example.repository.IActivityTagRepository
-import com.example.repository.TagRepository
 import repository.CrudRepository
 
 class DeleteTagUseCase(

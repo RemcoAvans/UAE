@@ -1,17 +1,22 @@
 package com.example
 
-import com.example.repository.ActivityTagRepository
-import com.example.repository.TagRepository
+import com.example.repository.exposed.*
+//import com.example.repository.memory.ActivityTagRepository
+//import com.example.repository.memory.TagRepository
+//import repository.ActivityRepository
+//import repository.ActivityVoteRepository
+//import repository.AnalyticsDataRepository
+//import repository.UserRepository
 import com.example.routing.analyticsDataRoutes
 import com.example.routing.tagRoutes
 import com.example.routing.voteRoutes
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import repository.ActivityRepository
-import repository.ActivityVoteRepository
-import repository.AnalyticsDataRepository
-import repository.UserRepository
+import repository.exposed.ActivityRepository
+import repository.exposed.ActivityVoteRepository
+import repository.exposed.AnalyticsDataRepository
+import repository.exposed.UserRepository
 import routing.activityRoutes
 import routing.userRoutes
 

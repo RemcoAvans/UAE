@@ -7,7 +7,7 @@ import repository.CrudRepository
 
 interface IUserRepository : CrudRepository<User> {
 
-    fun login(loginDto: userLoginDto) : User?
+    suspend fun login(loginDto: userLoginDto) : User?
 
-    fun validate(user: User) : String
+    suspend fun validate(user: User) : String
 }

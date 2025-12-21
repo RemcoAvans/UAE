@@ -6,11 +6,8 @@ import com.example.model.Tag
 import com.example.usecase.tag.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import repository.ActivityRepository
-import com.example.repository.ActivityTagRepository
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
-import com.example.repository.TagRepository
 import repository.CrudRepository
 
 fun Route.tagRoutes(

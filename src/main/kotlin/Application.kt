@@ -9,6 +9,7 @@ import ai.koog.prompt.executor.clients.openai.OpenAIModels
 import ai.koog.prompt.executor.llms.MultiLLMPromptExecutor
 import ai.koog.prompt.llm.LLMProvider
 import com.example.config.configureSecurity
+import com.example.data.DatabaseFactory
 import io.ktor.server.application.*
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
@@ -61,6 +62,7 @@ fun Application.module() {
 //            }
 //        }
 //    }
+    DatabaseFactory.init()
     configureSecurity()
     configureSerialization()
     configureHTTP()

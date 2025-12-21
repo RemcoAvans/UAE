@@ -2,11 +2,9 @@ package routing
 
 import com.example.model.ActivityTag
 import com.example.model.Tag
-import com.example.repository.ActivityTagRepository
-import com.example.repository.IActivityRepository
-import com.example.repository.TagRepository
+import com.example.repository.memory.ActivityTagRepository
+import com.example.repository.memory.TagRepository
 import com.example.routing.tagRoutes
-import com.example.usecase.tag.LinkTagInput
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation as ClientContentNegotiation
 import io.ktor.client.request.*

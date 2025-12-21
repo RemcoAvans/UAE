@@ -1,11 +1,8 @@
 package repository
 
 import com.example.config.PasswordHasher
-import com.example.core.ObjectResult
 import com.example.dtos.userDtos.userLoginDto
 import com.example.repository.IUserRepository
-import dtos.UserRegisterDto
-import dtos.toUser
 import model.User
 
 open class UserRepository : IUserRepository {
@@ -37,7 +34,7 @@ open class UserRepository : IUserRepository {
     override suspend fun delete(id: Int): Boolean =
         users.removeIf { it.id == id }
 
-    override fun login(loginDto: userLoginDto) : User?{
+    override suspend fun login(loginDto: userLoginDto) : User?{
         val loginName = loginDto.loginName
         val loginPassword = loginDto.password
 
@@ -49,7 +46,7 @@ open class UserRepository : IUserRepository {
         }
     }
 
-    override fun validate(user: User) : String{
+    override suspend fun validate(user: User) : String{
         if (user.email == "") {
             return "Invalid email"
         }

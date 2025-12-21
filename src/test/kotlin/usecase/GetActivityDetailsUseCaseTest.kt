@@ -1,11 +1,9 @@
 package com.example.usecase.activity
 
-import com.example.core.ObjectResult
-import com.example.dtos.activity.ActivityDetailDto
 import com.example.model.ActivityTag
 import com.example.model.ActivityVote
 import com.example.model.Tag
-import com.example.repository.ActivityTagRepository
+import com.example.repository.memory.ActivityTagRepository
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate

@@ -4,11 +4,8 @@ import com.example.core.ObjectResult
 import com.example.model.ActivityTag
 import com.example.model.Tag
 import com.example.usecase.BaseInputUseCase
-import repository.ActivityRepository
-import com.example.repository.ActivityTagRepository
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
-import com.example.repository.TagRepository
 import repository.CrudRepository
 
 data class LinkTagInput(
