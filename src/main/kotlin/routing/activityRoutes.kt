@@ -44,12 +44,12 @@ fun Route.activityRoutes(
     val createActivityWithPicture = CreateActivityWithPictureUseCase(createActivity, activityRepository)
 
     route("/activities") {
-
+        get() { // Let op voor testen van ophalen fotos heb ik hem buiten de Auth gezet moet rterug als dit nog niet gedaan is !
+            val result = getActivities.execute()
+            call.handle(result)
+        }
         authenticate("auth-jwt") {
-            get() {
-                val result = getActivities.execute()
-                call.handle(result)
-            }
+
 
 
             post("/search") {
