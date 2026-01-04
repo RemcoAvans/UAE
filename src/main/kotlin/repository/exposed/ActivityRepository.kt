@@ -32,11 +32,10 @@ class ActivityRepository : IActivityRepository {
             capacity = row[ActivityTable.capacity],
             isFull = false,                   // <-- je hebt dit niet in DB, maar in model wel
             isFeatured = row[ActivityTable.isFeatured],
-            startDate = LocalDate.parse(row[ActivityTable.startDate]),
-            endDate = LocalDate.parse(row[ActivityTable.endDate]),
+            startDate = LocalDate.parse(row[ActivityTable.startDate].toString()),
+            endDate = LocalDate.parse(row[ActivityTable.endDate].toString()),
             createdAt = LocalDate.parse(row[ActivityTable.createdAt])
         )
-
 
     override suspend fun getAll(): List<Activity> = dbQuery {
         ActivityTable.selectAll().map(::toActivity)

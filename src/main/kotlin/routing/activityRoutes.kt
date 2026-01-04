@@ -7,6 +7,7 @@ import com.example.model.Tag
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
 import com.example.repository.IActivityVoteRepository
+import com.example.repository.ILocationRepository
 import usecase.activity.CreateActivityUseCase
 import com.example.usecase.GetActivitiesUseCase
 import com.example.usecase.GetActivityUseCase
@@ -32,9 +33,10 @@ fun Route.activityRoutes(
     activityRepository: IActivityRepository,
     activityVoteRepository: IActivityVoteRepository,
     tagRepo: CrudRepository<Tag>,
-    activityTagRepository: IActivityTagRepository
+    activityTagRepository: IActivityTagRepository,
+    locationRepository: ILocationRepository,
 ) {
-    val createActivity = CreateActivityUseCase(activityRepository)
+    val createActivity = CreateActivityUseCase(activityRepository, locationRepository)
     val getActivities = GetActivitiesUseCase(activityRepository)
     val getActivityDetails = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo)
     val filterActivities = FilterActivitiesUseCase(activityRepository)

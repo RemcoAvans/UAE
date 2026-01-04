@@ -15,11 +15,11 @@ data class Activity(
     val createdByUserId: Int = 0,
     val locationId: Int,
     val isFeatured: Boolean = false,
-    val capacity: Int,
-    val isFull: Boolean,
-    @Serializable(with = LocalDateSerializer::class) val startDate: LocalDate,
-    @Serializable(with = LocalDateSerializer::class) val endDate: LocalDate,
-    val recurrencePattern: String = "",
-    val recurrenceDays: String = "",
+    val capacity: Int?,
+    val isFull: Boolean?,
+    @Serializable(with = LocalDateSerializer::class) val startDate: LocalDate?,
+    @Serializable(with = LocalDateSerializer::class) val endDate: LocalDate?,
+    val recurrencePattern: String? = null,
+    val recurrenceDays: String? = null,
     @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null
 )

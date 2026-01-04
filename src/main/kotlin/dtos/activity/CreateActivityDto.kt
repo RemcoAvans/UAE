@@ -18,14 +18,15 @@ abstract class CreateActivityDto<TCreateActivityDto>(
     abstract val description: String
     abstract val type : String
     abstract val price : Double
-    abstract val locationId : Int
-    abstract val capacity : Int
-    abstract val startDate: LocalDate
-    abstract val endDate: LocalDate
-    abstract val recurrencePattern: String
-    abstract val recurrenceDays: String
+    abstract val locationLatitude: Double
+    abstract val locationLongitude: Double
+    abstract val capacity : Int?
+    abstract val startDate: LocalDate?
+    abstract val endDate: LocalDate?
+    abstract val recurrencePattern: String?
+    abstract val recurrenceDays: String?
 
-    fun toActivity(createdByUserId: Int): Activity =
+    fun toActivity(createdByUserId: Int, locationId: Int): Activity =
         Activity(
             id = Random.nextInt(0, Int.MAX_VALUE),
             title = title,
@@ -36,7 +37,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             createdByUserId = createdByUserId,
             locationId = locationId,
             isFeatured = false,
-            capacity = capacity,
+            capacity = capacity ?: 0,
             isFull = false,
             startDate = startDate,
             endDate = endDate,
