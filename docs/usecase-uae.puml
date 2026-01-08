@@ -1,0 +1,106 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF5FF
+  BorderColor #335599
+}
+
+actor "Gebruiker" as User
+actor "Beheerder" as Admin
+Admin --|> User
+
+rectangle "Activiteiten" {
+  usecase "UC1: Activiteit toevoegen" as UC1
+  usecase "UC2: Activiteiten bekijken (overzicht)" as UC2
+  usecase "UC3: Activiteit detail bekijken" as UC3
+  usecase "UC4: Zoeken en filteren" as UC4
+  usecase "UC5: Eigen activiteit verwijderen" as UC5
+}
+
+rectangle "Moderatie & Beheer" {
+  usecase "UC6: Ongepaste activiteit verwijderen" as UC6
+  usecase "UC7: Inzicht in activiteiten en trends" as UC7
+  usecase "UC8: Activiteit promoten (uitlichten)" as UC8
+  usecase "UC9: Beheren accounts" as UC9
+  usecase "UC10: Inzicht in locatiegebruik" as UC10
+}
+
+' Koppelingen per actor
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+Admin --> UC9
+Admin --> UC10
+
+' Relaties tussen use-cases (navigatie/condities)
+UC3 ..> UC2 : <<extend>>\nSelecteer activiteit
+UC4 ..> UC2 : <<extend>>\nZoek of filter
+UC5 ..> UC2 : <<extend>>\nVerwijderen vanuit overzicht
+UC5 ..> UC3 : <<extend>>\nVerwijderen vanuit detail
+UC6 ..> UC2 : <<extend>>\nModereren vanuit lijst/detail
+UC8 ..> UC2 : <<extend>>\nUitlichten vanuit overzicht
+
+' Traceability naar implementatie in code (indicatief, niet uitputtend)
+note right of UC1
+  usecase/activity/CreateActivityUseCase
+  usecase/activity/CreateActivityWithPictureUseCase
+  routing/activityRoutes.kt (POST /activities)
+end note
+
+note right of UC2
+  usecase/GetActivitysUseCase
+  usecase/activity/GetFeaturedActivitiesUseCase
+  routing/activityRoutes.kt (GET /activities, /activities/featured)
+end note
+
+note right of UC3
+  usecase/activity/GetActivityDetailsUseCase
+  routing/activityRoutes.kt (GET /activities/{id}/details)
+end note
+
+note right of UC4
+  usecase/activity/SearchActivityUseCase
+  usecase/activity/FilterActivitiesUseCase
+  routing/activityRoutes.kt (GET /activities?search=...&category=...)
+end note
+
+note right of UC5
+  usecase/activity/DeleteActivityUseCase
+  routing/activityRoutes.kt (DELETE /activities/{id})
+end note
+
+note right of UC6
+  routing/activityRoutes.kt (DELETE /activities/{id})
+end note
+
+note right of UC7
+  usecase/analytics/GetActivityTrendsUseCase
+  usecase/analytics/GetActivityStatisticsUseCase
+  routing/analyticsRoutes.kt
+end note
+
+note right of UC8
+  usecase/activity/PromoteActivityUseCase
+  usecase/activity/UnpromoteActivityUseCase
+  routing/activityRoutes.kt (POST /activities/{id}/promote, DELETE /activities/{id}/promote)
+end note
+
+note right of UC9
+  routing/userRoutes.kt (admin beheer)
+  usecase/user/DeleteUserUseCase, usecase/user/RegisterAdminUseCase
+end note
+
+note right of UC10
+  usecase/analyticsdata/GetAllAnalyticsDataUseCase
+  usecase/analyticsdata/GetAnalyticsDataByActivityUseCase
+  routing/analyticsDataRoutes.kt
+end note
+
+@enduml
