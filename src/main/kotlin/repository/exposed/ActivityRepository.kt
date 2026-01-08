@@ -41,10 +41,11 @@ class ActivityRepository : IActivityRepository {
         ActivityTable.selectAll().map(::toActivity)
     }
 
-    override suspend fun getById(id: Int): Activity? =
+    override suspend fun getById(id: Int): Activity? = dbQuery {
         ActivityTable.selectAll().where { ActivityTable.id eq id }.toList()
             .map(::toActivity)
             .singleOrNull()
+    }
 
     override suspend fun getByQuery(predicate: (Activity) -> Boolean): List<Activity> =
         getAll().filter(predicate)
