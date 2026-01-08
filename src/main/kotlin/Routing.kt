@@ -1,12 +1,6 @@
 package com.example
 
 import com.example.repository.exposed.*
-//import com.example.repository.memory.ActivityTagRepository
-//import com.example.repository.memory.TagRepository
-//import repository.ActivityRepository
-//import repository.ActivityVoteRepository
-//import repository.AnalyticsDataRepository
-//import repository.UserRepository
 import com.example.routing.analyticsDataRoutes
 import com.example.routing.tagRoutes
 import com.example.routing.voteRoutes

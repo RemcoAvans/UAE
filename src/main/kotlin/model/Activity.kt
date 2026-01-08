@@ -9,7 +9,7 @@ data class Activity(
     val id: Int,
     val title: String,
     val description: String,
-    val photoUrl: String = "",
+    var photoUrl: String = "",
     val type: String,
     val price: Double,
     val createdByUserId: Int = 0,
