@@ -9,7 +9,7 @@ data class Activity(
     val id: Int,
     val title: String,
     val description: String,
-    val photoUrl: String = "",
+    var photoUrl: String = "",
     val type: String,
     val price: Double,
     val createdByUserId: Int = 0,
@@ -21,5 +21,6 @@ data class Activity(
     @Serializable(with = LocalDateSerializer::class) val endDate: LocalDate,
     val recurrencePattern: String = "",
     val recurrenceDays: String = "",
-    @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null
+    @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null,
+    val rating: Int = 0
 )

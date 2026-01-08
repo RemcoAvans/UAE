@@ -10,6 +10,11 @@ class GetActivitiesUseCase(private val repository : IActivityRepository) : BaseU
 
     override suspend fun execute(): ObjectResult<List<Activity>> {
         val result  = repository.getAll()
+        result.forEach { activity ->
+            if (!activity.photoUrl.isNullOrEmpty()) {
+                activity.photoUrl = "http://10.0.2.2:8080/uploads/${activity.photoUrl}"
+                }
+        }
          return if (result.isNotEmpty()) {
              ObjectResult.success(result)
         } else {

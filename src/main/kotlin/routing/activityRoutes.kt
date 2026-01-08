@@ -15,18 +15,24 @@ import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
+import com.example.usecase.activity.getPhotoUseCase
 import dtos.activity.ActivityFilterDto
 import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateSportActivityDto
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
+import io.ktor.server.http.content.staticFiles
 import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.request.receiveText
+import io.ktor.server.response.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.routing.*
 
 import repository.CrudRepository
+import java.io.File
 
 fun Route.activityRoutes(
     activityRepository: IActivityRepository,
@@ -42,11 +48,38 @@ fun Route.activityRoutes(
     val deleteActivity = DeleteActivityUseCase(activityRepository)
     val searchActivity = SearchActivityUseCase(filterActivities, activityRepository)
     val createActivityWithPicture = CreateActivityWithPictureUseCase(createActivity, activityRepository)
+    val getPhoto = getPhotoUseCase()
 
     route("/activities") {
         get() { // Let op voor testen van ophalen fotos heb ik hem buiten de Auth gezet moet rterug als dit nog niet gedaan is !
             val result = getActivities.execute()
             call.handle(result)
+        }
+        get("/photo/{filename}") {
+            val filename = call.parameters["filename"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Bestandsnaam ontbreekt")
+            try {
+                val result: ByteArray = getPhoto.getPicture(filename)
+                
+                if (result.isEmpty()) {
+                    call.respond(HttpStatusCode.NotFound, "Foto niet gevonden")
+                    return@get
+                }
+
+                val contentType = when (filename.substringAfterLast('.', "").lowercase()) {
+                    "jpg", "jpeg" -> ContentType.Image.JPEG
+                    "png" -> ContentType.Image.PNG
+                    "gif" -> ContentType.Image.GIF
+                    else -> ContentType.Application.OctetStream
+                }
+
+                call.respondBytes(
+                    bytes = result,
+                    contentType = contentType,
+                    status = HttpStatusCode.OK
+                )
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.NotFound, "Foto niet gevonden")
+            }
         }
         authenticate("auth-jwt") {
 

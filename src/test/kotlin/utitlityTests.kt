@@ -1,5 +1,6 @@
 import com.example.Utilities.uploadPicture
 import com.example.dtos.utilities.pictureDto
+import com.example.usecase.activity.getPhotoUseCase
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -26,6 +27,29 @@ class utitlityTests {
 
         // Clean up
         uploadDir.deleteRecursively()
+    }
+
+    @Test
+    fun `getPicture should find saved photo`() {
+        // Arrange
+        val fileName = "test_get_picture.jpg"
+        val content = "Test content".toByteArray()
+        val uploadDir = File("uploads")
+        if (!uploadDir.exists()) uploadDir.mkdirs()
+        val testFile = File(uploadDir, fileName)
+        testFile.writeBytes(content)
+
+        val useCase = getPhotoUseCase()
+
+        // Act
+        val result = useCase.getPicture(fileName)
+
+        // Assert
+        assertTrue(result.isNotEmpty(), "Resultaat mag niet leeg zijn")
+        assertEquals("Test content", String(result), "Inhoud moet overeenkomen")
+
+        // Clean up
+        testFile.delete()
     }
 
 }
