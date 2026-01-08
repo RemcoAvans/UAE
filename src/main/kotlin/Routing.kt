@@ -30,10 +30,11 @@ fun Application.configureRouting() {
     val tagRepo = TagRepository()
     val userRepo = UserRepository()
     val analyticsDataRepo = AnalyticsDataRepository()
+    val locationRepository = LocationRepository()
 
     routing {
         userRoutes(userRepo)
-        activityRoutes(activityRepo, activityVoteRepo, tagRepo, activityTagRepo)
+        activityRoutes(activityRepo, activityVoteRepo, tagRepo, activityTagRepo, locationRepository)
         voteRoutes(activityVoteRepo)
         analyticsDataRoutes(analyticsDataRepo, activityRepo)
         tagRoutes(tagRepo, activityTagRepo, activityRepo)
