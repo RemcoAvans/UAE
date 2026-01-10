@@ -21,7 +21,13 @@ class CreateActivityUseCase(
     BaseInputUseCase<CreateActivityDto<*>, Activity> {
     override suspend fun execute(input: CreateActivityDto<*>): ObjectResult<Activity> {
         val userId = 0
-        val locationId = getLocation(input.locationLatitude, input.locationLongitude)
+        val locationId = if (input.locationId != null) {
+            input.locationId!!
+        } else if (input.locationLatitude != null && input.locationLongitude != null) {
+            getLocation(input.locationLatitude!!, input.locationLongitude!!)
+        } else {
+            return ObjectResult.fail("Location ID of coördinaten (latitude/longitude) ontbreken.")
+        }
         val activity = input.toActivity(userId, locationId)
         val result = repository.create(activity)
         when (input) {

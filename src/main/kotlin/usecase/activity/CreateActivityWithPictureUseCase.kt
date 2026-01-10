@@ -6,8 +6,14 @@ import com.example.dtos.utilities.pictureDto
 import com.example.dtos.utilities.splitMultipartDataAndPicturedDto
 import com.example.repository.IActivityRepository
 import com.example.usecase.BaseInputUseCase
+import dtos.activity.CreateActivityDto
+import dtos.activity.CreateCultureActivityDto
 import dtos.activity.CreateFoodActivityDto
+import dtos.activity.CreateSportActivityDto
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import model.Activity
 import usecase.activity.CreateActivityUseCase
 
@@ -21,8 +27,19 @@ class CreateActivityWithPictureUseCase(
         if (errors.isNotEmpty()) {
             return ObjectResult.fail(errors.joinToString { ". " })
         }
-        val foodActivity : CreateFoodActivityDto = Json.decodeFromString(input.jsonData!!)
-        val activityResult = createActivity.execute(foodActivity)
+        val json = Json { ignoreUnknownKeys = true }
+        val jsonElement = json.parseToJsonElement(input.jsonData!!)
+        val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content?.lowercase() 
+            ?: return ObjectResult.fail("Type veld ontbreekt in JSON")
+        
+        val activityDto: CreateActivityDto<*> = when (type) {
+            "food" -> json.decodeFromString<CreateFoodActivityDto>(input.jsonData!!)
+            "culture" -> json.decodeFromString<CreateCultureActivityDto>(input.jsonData!!)
+            "sport" -> json.decodeFromString<CreateSportActivityDto>(input.jsonData!!)
+            else -> return ObjectResult.fail("Onbekend activiteitstype: $type")
+        }
+        
+        val activityResult = createActivity.execute(activityDto)
         if (!activityResult.success || activityResult.result?.id == null) return activityResult
 
         val picture = pictureDto(input.originalFileName!!, input.fileBytes!!)

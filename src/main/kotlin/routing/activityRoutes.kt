@@ -128,14 +128,17 @@ fun Route.activityRoutes(
                 var result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
+
             post("/culture") {
-                val cultureActivity = call.receive<CreateCultureActivityDto>()
-                val result = createActivity.execute(cultureActivity);
+                val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
+                val data = splitMultipartDataAndPicture(multipartData)
+                val result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
             post("/sport") {
-                val sportActivity = call.receive<CreateSportActivityDto>()
-                val result = createActivity.execute(sportActivity);
+                val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
+                val data = splitMultipartDataAndPicture(multipartData)
+                val result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
         }
