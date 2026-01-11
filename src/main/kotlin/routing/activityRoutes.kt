@@ -16,16 +16,14 @@ import com.example.usecase.activity.CreateActivityWithPictureUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
 import com.example.usecase.activity.GetActivitiesByLocation
+import com.example.usecase.activity.GetActivityDetailListUseCase
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
 import com.example.usecase.activity.getPhotoUseCase
 import dtos.activity.ActivityFilterDto
-import dtos.activity.CreateCultureActivityDto
-import dtos.activity.CreateSportActivityDto
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
-import io.ktor.server.http.content.staticFiles
 import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.request.receiveText
@@ -57,18 +55,25 @@ fun Route.activityRoutes(
         activityVoteRepository,
         activityTagRepository,
         tagRepo)
+    val getActivityDetailList = GetActivityDetailListUseCase(
+        locationRepository,
+        activityVoteRepository,
+        activityTagRepository,
+        tagRepo)
     val getPhoto = getPhotoUseCase()
 
     route("/activities") {
         get() { // Let op voor testen van ophalen fotos heb ik hem buiten de Auth gezet moet rterug als dit nog niet gedaan is !
-            val result = getActivities.execute()
+            val activities = getActivities.execute()
+            val result = getActivityDetailList.execute(activities.result)
             call.handle(result)
         }
         get("{lat}/{lon}") {
             val lat = call.parameters["lat"]!!.toDouble()
             val lon = call.parameters["lon"]!!.toDouble()
             val location = Location(0, lat,lon,"","")
-            val result = getActivitiesByLocation.execute(location)
+            val activities = getActivitiesByLocation.execute(location)
+            val result = getActivityDetailList.execute(activities.result)
             call.handle(result)
         }
         get("/photo/{filename}") {

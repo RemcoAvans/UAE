@@ -10,6 +10,7 @@ import com.example.repository.IActivityVoteRepository
 import com.example.repository.ILocationRepository
 import com.example.services.CalculateBoundingBoxService.calculateBoundingBox
 import com.example.usecase.BaseInputUseCase
+import model.Activity
 import repository.CrudRepository
 
 class GetActivitiesByLocation(
@@ -18,9 +19,9 @@ class GetActivitiesByLocation(
     private val voteRepo: IActivityVoteRepository,
     private val activityTagRepo: IActivityTagRepository,
     private val tagRepo: CrudRepository<Tag>
-) : BaseInputUseCase<Location, List<ActivityDetailDto>> {
+) : BaseInputUseCase<Location, List<Activity>> {
 
-    override suspend fun execute(input: Location): ObjectResult<List<ActivityDetailDto>> {
+    override suspend fun execute(input: Location): ObjectResult<List<Activity>> {
 
         val radiusMeters = 5000.0 // 5 km
 
@@ -47,45 +48,6 @@ class GetActivitiesByLocation(
             it.locationId in locationMap.keys
         }
 
-        val result = activities.mapNotNull { activity ->
-            val location = locationMap[activity.locationId] ?: return@mapNotNull null
-
-            ActivityDetailDto(
-                id = activity.id,
-                title = activity.title,
-                description = activity.description,
-                photoUrl = activity.photoUrl,
-                type = activity.type,
-                price = activity.price,
-                createdByUserId = activity.createdByUserId,
-                locationId = activity.locationId,
-                latitude = location.latitude,
-                longitude = location.longitude,
-                isHighlighted = activity.isFeatured,
-                capacity = activity.capacity,
-                isFull = activity.isFull,
-                startDate = activity.startDate,
-                endDate = activity.endDate,
-                recurrencePattern = activity.recurrencePattern,
-                recurrenceDays = activity.recurrenceDays,
-                createdAt = activity.createdAt,
-                rating = getRating(activity.id),
-                tags = getTags(activity.id)
-            )
-        }
-
-        return ObjectResult.success(result)
-    }
-
-    private suspend fun getRating(activityId: Int): Int {
-        val votes = voteRepo.getByQuery { it.activityId == activityId }
-        return votes.count { it.positive } - votes.count { !it.positive }
-    }
-
-    private suspend fun getTags(activityId: Int): List<String> {
-        val activityTags = activityTagRepo.getByQuery { it.ActivityId == activityId }
-        return activityTags.mapNotNull {
-            tagRepo.getById(it.TagId)?.name
-        }
+        return ObjectResult.success(activities)
     }
 }

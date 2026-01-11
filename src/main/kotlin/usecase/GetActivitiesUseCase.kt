@@ -3,7 +3,6 @@ package com.example.usecase
 import com.example.core.ObjectResult
 import com.example.repository.IActivityRepository
 import model.Activity
-import repository.ActivityRepository
 import usecase.BaseUseCase
 
 class GetActivitiesUseCase(private val repository : IActivityRepository) : BaseUseCase<List<Activity>> {
@@ -15,10 +14,7 @@ class GetActivitiesUseCase(private val repository : IActivityRepository) : BaseU
                 activity.photoUrl = "http://10.0.2.2:8080/uploads/${activity.photoUrl}"
                 }
         }
-         return if (result.isNotEmpty()) {
-             ObjectResult.success(result)
-        } else {
-             ObjectResult.notFound("No Activity's found")
-        }
+
+        return ObjectResult.success(result)
     }
 }

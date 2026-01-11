@@ -33,7 +33,7 @@ fun Application.configureRouting() {
         analyticsDataRoutes(analyticsDataRepo, activityRepo)
         tagRoutes(tagRepo, activityTagRepo, activityRepo)
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText("App werkt!")
         }
     }
 }
