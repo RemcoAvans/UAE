@@ -15,6 +15,8 @@ data class ActivityDetailDto(
     val price: Double,
     val createdByUserId: Int = 0,
     val locationId: Int,
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
     val isHighlighted: Boolean = false,
     val capacity: Int?,
     val isFull: Boolean?,

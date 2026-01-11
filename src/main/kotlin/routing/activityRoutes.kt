@@ -3,6 +3,7 @@ package routing
 import com.example.Utilities.splitMultipartDataAndPicture
 import com.example.baseRouter.BaseRouter.handle
 import com.example.baseRouter.BaseRouter.unauthorized
+import com.example.model.Location
 import com.example.model.Tag
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
@@ -14,6 +15,7 @@ import com.example.usecase.GetActivityUseCase
 import com.example.usecase.activity.CreateActivityWithPictureUseCase
 import com.example.usecase.activity.DeleteActivityUseCase
 import com.example.usecase.activity.FilterActivitiesUseCase
+import com.example.usecase.activity.GetActivitiesByLocation
 import com.example.usecase.activity.GetActivityDetailsUseCase
 import com.example.usecase.activity.SearchActivityUseCase
 import com.example.usecase.activity.getPhotoUseCase
@@ -33,7 +35,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.routing.*
 
 import repository.CrudRepository
-import java.io.File
 
 fun Route.activityRoutes(
     activityRepository: IActivityRepository,
@@ -50,11 +51,24 @@ fun Route.activityRoutes(
     val deleteActivity = DeleteActivityUseCase(activityRepository)
     val searchActivity = SearchActivityUseCase(filterActivities, activityRepository)
     val createActivityWithPicture = CreateActivityWithPictureUseCase(createActivity, activityRepository)
+    val getActivitiesByLocation = GetActivitiesByLocation(
+        activityRepository,
+        locationRepository,
+        activityVoteRepository,
+        activityTagRepository,
+        tagRepo)
     val getPhoto = getPhotoUseCase()
 
     route("/activities") {
         get() { // Let op voor testen van ophalen fotos heb ik hem buiten de Auth gezet moet rterug als dit nog niet gedaan is !
             val result = getActivities.execute()
+            call.handle(result)
+        }
+        get("{lat}/{lon}") {
+            val lat = call.parameters["lat"]!!.toDouble()
+            val lon = call.parameters["lon"]!!.toDouble()
+            val location = Location(0, lat,lon,"","")
+            val result = getActivitiesByLocation.execute(location)
             call.handle(result)
         }
         get("/photo/{filename}") {
