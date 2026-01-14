@@ -123,11 +123,12 @@ fun Route.activityRoutes(
                 val result = getActivity.execute(id)
                 call.handle(result)
             }
-        get("/Details/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            val result = getActivityDetails.execute(id)
-            call.handle(result)
-        }
+
+            get("/Details/{id}") {
+                val id = call.parameters["id"]?.toIntOrNull()
+                val result = getActivityDetails.execute(id)
+                call.handle(result)
+            }
 
             delete("/{id}") {
                 val principal = call.principal<JWTPrincipal>()

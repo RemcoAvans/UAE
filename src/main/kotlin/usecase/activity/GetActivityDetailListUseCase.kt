@@ -52,8 +52,8 @@ class GetActivityDetailListUseCase(
         }.associateBy { it.id }
 
         // ---- DTO mapping
-        val result = input.mapNotNull { activity ->
-            val location = locations[activity.locationId] ?: return@mapNotNull null
+        val result = input.map { activity ->
+            val location = locations[activity.locationId]
 
             val rating = votes[activity.id]
                 ?.let { v -> v.count { it.positive } - v.count { !it.positive } }
@@ -62,7 +62,8 @@ class GetActivityDetailListUseCase(
             val tagNames = activityTags[activity.id]
                 ?.mapNotNull { tags[it.TagId]?.name }
                 ?: emptyList()
-
+            val defaultLatitude = 52.1326
+            val defaultLongitude = 5.2913
             ActivityDetailDto(
                 id = activity.id,
                 title = activity.title,
@@ -72,8 +73,8 @@ class GetActivityDetailListUseCase(
                 price = activity.price,
                 createdByUserId = activity.createdByUserId,
                 locationId = activity.locationId,
-                latitude = location.latitude,
-                longitude = location.longitude,
+                latitude = location?.latitude ?: defaultLatitude,
+                longitude = location?.longitude ?: defaultLongitude,
                 isHighlighted = activity.isFeatured,
                 capacity = activity.capacity,
                 isFull = activity.isFull,
