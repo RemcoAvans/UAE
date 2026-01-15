@@ -39,7 +39,22 @@ fun Route.userRoutes(repo: IUserRepository) {
     post("/users/register") {
         val user = call.receive<UserRegisterDto>()
         val result = registerUseCase.execute(user)
-        call.handle(result)
+
+        // If registration successful, generate and return JWT token
+        if (result.success) {
+            val jwt = JwtConfig(environment)
+            val expiresAt = System.currentTimeMillis() + 600 * 1000
+            val token = JWT.create()
+                .withAudience(jwt.audience)
+                .withIssuer(jwt.issuer)
+                .withClaim("username", result.result?.username)
+                .withClaim("role", result.result?.role)
+                .withExpiresAt(Date(expiresAt))
+                .sign(Algorithm.HMAC256(jwt.secret))
+            call.sendToken(token, result.result?.username, expiresAt)
+        } else {
+            call.handle(result)
+        }
     }
 
     post("/users/registerAdmin") {

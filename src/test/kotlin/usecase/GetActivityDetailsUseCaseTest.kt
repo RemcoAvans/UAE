@@ -14,7 +14,7 @@ import repository.ActivityRepository
 import repository.ActivityVoteRepository
 import repository.CrudRepository
 
-class GetActivityDetailsUseCaseTest {
+class GetActivityDetailsUseCaseTest {git init
 
     // ---------- Fake Repositories ----------
     class FakeActivityRepository(val activity: Activity?) : ActivityRepository() {
