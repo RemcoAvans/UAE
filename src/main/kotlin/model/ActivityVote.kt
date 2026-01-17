@@ -14,5 +14,5 @@ data class ActivityVote(
     val createAt: LocalDate = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .date,
-    val positive: Boolean,
+    var positive: Boolean,
 ) { }

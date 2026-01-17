@@ -16,6 +16,7 @@ import ai.koog.prompt.executor.llms.MultiLLMPromptExecutor
 import ai.koog.prompt.llm.LLMProvider
 import com.example.core.FilterActivitiesTool
 import com.example.repository.IActivityRepository
+import dtos.activity.ActivityIdResult
 import kotlinx.serialization.json.Json
 import repository.ActivityRepository
 
@@ -40,7 +41,8 @@ class SearchActivityUseCase(
             executor = executor,
             llmModel = OpenAIModels.Chat.GPT4o,
             toolRegistry = tools,
-            systemPrompt = """
+            systemPrompt =
+            """
             Je bent een AI-assistent die helpt bij het vinden van de best passende activiteiten.
             Je krijgt een gebruikersvraag in het Nederlands (bijv. "Ik wil iets sportiefs doen morgen in Amsterdam").
             
@@ -52,17 +54,36 @@ class SearchActivityUseCase(
             3. Gebruik de beschikbare tools om de gevonden filters te testen en activiteiten te zoeken.
             4. Geef maximaal 3 resultaten terug, maar **zorg dat er altijd minimaal 1 resultaat is**, tenzij er echt niets bestaat.
             5. Sorteer resultaten op relevantie: de activiteit die het beste past op basis van de gebruikersvraag komt eerst.
-            6. Geef alleen JSON terug, zonder uitleg of extra tekst.
-            7. Gebruik zo min mogelijk tokens, en houd output compact.
+            6. Geef alleen JSON terug in exact dit formaat:
 
+            {
+              "activityIds": [1, 2, 3]
+            }
+            
+            - Geef GEEN volledige activiteiten terug
+            - Geef GEEN extra tekst
+            - Alleen geldige IDs die bestaan
             """.trimIndent()
         )
 
         val output = agent.run(input)
 
-        // Parse output (AI returns JSON list of activities)
-        val activities = parseActivitiesFromJson(output)
-      return ObjectResult.success(activities)
+        val activityIds = parseActivityIdsFromJson(output)
+
+        if (activityIds.isEmpty()) {
+            return ObjectResult.success(emptyList())
+        }
+
+        val activities = repo.getByQuery {
+            it.id in activityIds
+        }
+
+        // Sorteer in volgorde van AI-relevantie
+        val sorted = activityIds.mapNotNull { id ->
+            activities.find { it.id == id }
+        }
+
+        return ObjectResult.success(sorted)
     }
 
     private val jsonParser = Json {
@@ -71,12 +92,27 @@ class SearchActivityUseCase(
         encodeDefaults = true
         coerceInputValues = true
     }
+    private fun parseActivityIdsFromJson(json: String): List<Int> {
 
-    private fun parseActivitiesFromJson(json: String): List<Activity> {
+        // 1️⃣ Eerst: correcte JSON proberen
+        try {
+            val result = jsonParser.decodeFromString<ActivityIdResult>(json)
+            if (result.activityIds.isNotEmpty()) {
+                return result.activityIds
+            }
+        } catch (_: Exception) {
+            // bewust leeg – we vallen terug op regex
+        }
+
+        // 2️⃣ Fallback: alle integers uit de string halen
         return try {
-            jsonParser.decodeFromString(json)
+            val regex = Regex("""\b\d+\b""")
+            regex.findAll(json)
+                .map { it.value.toInt() }
+                .distinct()
+                .toList()
         } catch (e: Exception) {
-            println("Failed to parse activities: ${e.message}")
+            println("Failed to extract activity IDs via regex: ${e.message}")
             emptyList()
         }
     }

@@ -25,6 +25,7 @@ class CreateOrUpdateVoteUseCase(private val repository: IActivityVoteRepository)
 
         if (existingVote != null) {
             val updatedVote = existingVote.copy()
+            updatedVote.positive = input.positive
             val success = repository.update(updatedVote)
             return if (success) ObjectResult.success(updatedVote.id)
             else ObjectResult.fail("Could not update vote ${updatedVote.id}")
