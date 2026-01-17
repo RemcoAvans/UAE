@@ -43,7 +43,7 @@ fun Route.activityRoutes(
 ) {
     val createActivity = CreateActivityUseCase(activityRepository, locationRepository)
     val getActivities = GetActivitiesUseCase(activityRepository)
-    val getActivityDetails = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo)
+    val getActivityDetails = GetActivityDetailsUseCase(activityRepository, activityVoteRepository, activityTagRepository, tagRepo, locationRepository)
     val filterActivities = FilterActivitiesUseCase(activityRepository)
     val getActivity = GetActivityUseCase(activityRepository)
     val deleteActivity = DeleteActivityUseCase(activityRepository)

@@ -2,10 +2,13 @@ package com.example.usecase.activity
 
 import com.example.core.ObjectResult
 import com.example.dtos.activity.ActivityDetailDto
+import com.example.model.Location
 import com.example.model.Tag
 import com.example.repository.IActivityRepository
 import com.example.repository.IActivityTagRepository
 import com.example.repository.IActivityVoteRepository
+import com.example.repository.ILocationRepository
+import com.example.repository.exposed.LocationRepository
 import com.example.usecase.BaseInputUseCase
 import repository.CrudRepository
 
@@ -13,7 +16,8 @@ class GetActivityDetailsUseCase(
     private val activityRepo: IActivityRepository,
     private val voteRepo: IActivityVoteRepository,
     private val activityTagRepository: IActivityTagRepository,
-    private val tagRepo: CrudRepository<Tag>
+    private val tagRepo: CrudRepository<Tag>,
+    private val locationRepository: ILocationRepository,
 ) : BaseInputUseCase<Int?, ActivityDetailDto> {
 
     override suspend fun execute(input: Int?): ObjectResult<ActivityDetailDto> {
@@ -25,6 +29,7 @@ class GetActivityDetailsUseCase(
 
         val ratings = getRating(input)
         val tags = getTags(input)
+        val location = getLocation(activity.locationId)
 
         val result = ActivityDetailDto(
             id = activity.id,
@@ -35,6 +40,8 @@ class GetActivityDetailsUseCase(
             price = activity.price,
             createdByUserId = activity.createdByUserId,
             locationId = activity.locationId,
+            latitude = location?.latitude ?: 0.0,
+            longitude = location?.longitude ?: 0.0,
             isHighlighted = activity.isFeatured,
             capacity = activity.capacity,
             isFull = activity.isFull,
@@ -64,5 +71,10 @@ class GetActivityDetailsUseCase(
             }
         }
         return tagNames
+    }
+
+    private suspend fun getLocation(locationId: Int) : Location? {
+        val location = locationRepository.getById(locationId)
+        return location
     }
 }
