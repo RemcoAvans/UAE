@@ -34,6 +34,9 @@ class ActivityRepository : IActivityRepository {
             isFeatured = row[ActivityTable.isFeatured],
             startDate = LocalDate.parse(row[ActivityTable.startDate].toString()),
             endDate = LocalDate.parse(row[ActivityTable.endDate].toString()),
+            recurrencePattern = row[ActivityTable.recurrencePattern],
+            recurrenceDays = row[ActivityTable.recurrenceDays],
+            phoneNumber = row[ActivityTable.phoneNumber],
             createdAt = LocalDate.parse(row[ActivityTable.createdAt])
         )
 
@@ -65,6 +68,7 @@ class ActivityRepository : IActivityRepository {
             row[createdAt] = entity.createdAt.toString()
             row[recurrencePattern] = entity.recurrencePattern ?: ""
             row[recurrenceDays] = entity.recurrenceDays ?: ""
+            row[phoneNumber] = entity.phoneNumber
             row[createdByUser] = 1 // placeholder foreign key
         }
 
@@ -86,6 +90,7 @@ class ActivityRepository : IActivityRepository {
             row[createdAt] = entity.createdAt.toString()
             row[recurrenceDays] = entity.recurrenceDays ?: ""
             row[recurrencePattern] = entity.recurrencePattern ?: ""
+            row[phoneNumber] = entity.phoneNumber
         }
 
         if (updated > 0) getById(id) else null

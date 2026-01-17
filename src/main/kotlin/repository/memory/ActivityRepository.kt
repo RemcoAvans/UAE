@@ -139,6 +139,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 2,
@@ -152,6 +153,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 3,
@@ -165,6 +167,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 4,
@@ -178,6 +181,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 5,
@@ -191,6 +195,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 6,
@@ -204,6 +209,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 7,
@@ -217,6 +223,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 8,
@@ -230,6 +237,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 9,
@@ -243,6 +251,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
                 Activity(
                     id = 10,
@@ -256,6 +265,7 @@ open class ActivityRepository : IActivityRepository {
                     isFull = false,
                     startDate = today,
                     endDate = today,
+                    phoneNumber = "0612345678"
                 ),
             )
         )

@@ -4,6 +4,7 @@ import com.example.core.ObjectResult
 import com.example.dtos.utilities.pictureDto
 import com.example.repository.IActivityRepository
 import java.io.File
+import java.util.UUID
 
 fun uploadPicture(data: pictureDto): ObjectResult<String> {
 
@@ -11,7 +12,17 @@ fun uploadPicture(data: pictureDto): ObjectResult<String> {
     if (!uploadDir.exists()) { // controleren of die bestaat
         uploadDir.mkdirs() // Maakt de 'uploads' map aan
     }
-    val fileToSave = File(uploadDir, data.fileName)
+    // 1. Haal de extensie op van de originele bestandsnaam (bv. "jpg")
+    val extension = File(data.fileName).extension
+
+    // 2. Maak de nieuwe unieke naam: UUID + punt + extensie
+    val uniqueFileName = "${UUID.randomUUID()}.$extension"
+
+    // 3. Gebruik deze nieuwe naam om het bestand aan te maken
+    val fileToSave = File(uploadDir, uniqueFileName)
+
     fileToSave.writeBytes(data.fileBytes)
-    return ObjectResult.success("/uploads/${data.fileName}")
+
+    // 4. Geef het pad met de NIEUWE naam terug
+    return ObjectResult.success("/uploads/$uniqueFileName")
 }

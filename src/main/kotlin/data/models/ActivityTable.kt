@@ -16,5 +16,6 @@ object ActivityTable : IntIdTable("activities") {
     val endDate = varchar("endDate", 255).nullable()
     val recurrencePattern = varchar("recurrencePattern", 255).nullable()
     val recurrenceDays = varchar("recurrenceDays", 255).nullable()
+    val phoneNumber = varchar("phoneNumber", 255).nullable()
     val createdAt = varchar("createdAt", 255)
 }

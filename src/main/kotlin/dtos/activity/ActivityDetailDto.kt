@@ -24,6 +24,7 @@ data class ActivityDetailDto(
     @Serializable(with = LocalDateSerializer::class) val endDate: LocalDate?,
     val recurrencePattern: String? = null,
     val recurrenceDays: String? = null,
+    val phoneNumber: String? = null,
     @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null,
     val rating: Int,
     val tags: List<String>,

@@ -49,6 +49,7 @@ class GetActivityDetailsUseCase(
             endDate = activity.endDate,
             recurrencePattern = activity.recurrencePattern,
             recurrenceDays = activity.recurrenceDays,
+            phoneNumber = activity.phoneNumber,
             createdAt = activity.createdAt,
             rating = ratings,
             tags = tags,

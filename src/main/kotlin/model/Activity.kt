@@ -21,5 +21,6 @@ data class Activity(
     @Serializable(with = LocalDateSerializer::class) val endDate: LocalDate?,
     val recurrencePattern: String? = "",
     val recurrenceDays: String? = "",
+    val phoneNumber: String? = "",
     @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null
 )

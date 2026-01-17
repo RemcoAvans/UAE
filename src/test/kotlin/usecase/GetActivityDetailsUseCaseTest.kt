@@ -2,7 +2,9 @@ package com.example.usecase.activity
 
 import com.example.model.ActivityTag
 import com.example.model.ActivityVote
+import com.example.model.Location
 import com.example.model.Tag
+import com.example.repository.ILocationRepository
 import com.example.repository.memory.ActivityTagRepository
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
@@ -14,7 +16,7 @@ import repository.ActivityRepository
 import repository.ActivityVoteRepository
 import repository.CrudRepository
 
-class GetActivityDetailsUseCaseTest {git init
+class GetActivityDetailsUseCaseTest {
 
     // ---------- Fake Repositories ----------
     class FakeActivityRepository(val activity: Activity?) : ActivityRepository() {
@@ -40,6 +42,15 @@ class GetActivityDetailsUseCaseTest {git init
         override suspend fun delete(id: Int): Boolean = true
     }
 
+    class FakeLocationRepository : ILocationRepository {
+        override suspend fun getAll(): List<Location> = emptyList()
+        override suspend fun getById(id: Int): Location? = Location(id, 52.0, 5.0, "", "")
+        override suspend fun getByQuery(predicate: (Location) -> Boolean): List<Location> = emptyList()
+        override suspend fun create(entity: Location): Location = entity
+        override suspend fun update(id: Int, entity: Location): Location? = entity
+        override suspend fun delete(id: Int): Boolean = true
+    }
+
     // ---------- TESTS ----------
     @Test
     fun `should return ActivityDetailDto with correct rating and tags`() = runBlocking {
@@ -60,6 +71,7 @@ class GetActivityDetailsUseCaseTest {git init
             endDate = LocalDate.parse("2025-10-22"),
             recurrencePattern = "",
             recurrenceDays = "",
+            phoneNumber = "0612345678",
             createdAt = LocalDate.parse("2025-10-01")
         )
 
@@ -83,7 +95,8 @@ class GetActivityDetailsUseCaseTest {git init
             activityRepo = FakeActivityRepository(activity),
             voteRepo = FakeVoteRepository(votes),
             activityTagRepository = FakeActivityTagRepository(activityTags),
-            tagRepo = FakeTagRepository(tags)
+            tagRepo = FakeTagRepository(tags),
+            locationRepository = FakeLocationRepository()
         )
 
         // Act
@@ -94,6 +107,7 @@ class GetActivityDetailsUseCaseTest {git init
         val dto = result.result!!
         assertEquals(1, dto.rating) // (2 positieve - 1 negatieve)
         assertEquals(listOf("Avontuur", "Sportief"), dto.tags)
+        assertEquals("0612345678", dto.phoneNumber)
     }
 
     @Test
@@ -103,7 +117,8 @@ class GetActivityDetailsUseCaseTest {git init
             activityRepo = FakeActivityRepository(null),
             voteRepo = FakeVoteRepository(emptyList()),
             activityTagRepository = FakeActivityTagRepository(emptyList()),
-            tagRepo = FakeTagRepository(emptyMap())
+            tagRepo = FakeTagRepository(emptyMap()),
+            locationRepository = FakeLocationRepository()
         )
 
         // Act

@@ -160,8 +160,8 @@ fun Route.activityRoutes(
             post("/sport") {
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
-                val result = createActivityWithPicture.execute(data)
                 data.type = "sport"
+                val result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
         }

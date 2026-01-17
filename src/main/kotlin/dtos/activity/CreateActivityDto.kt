@@ -26,6 +26,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
     abstract val endDate: LocalDate?
     abstract val recurrencePattern: String?
     abstract val recurrenceDays: String?
+    abstract val phoneNumber: String?
 
     fun toActivity(createdByUserId: Int, locationId: Int): Activity =
         Activity(
@@ -44,6 +45,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
             endDate = endDate,
             recurrencePattern = recurrencePattern,
             recurrenceDays = recurrenceDays,
+            phoneNumber = phoneNumber,
             createdAt = Clock.System.now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .date,

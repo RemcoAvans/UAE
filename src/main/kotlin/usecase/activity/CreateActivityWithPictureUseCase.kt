@@ -27,7 +27,7 @@ class CreateActivityWithPictureUseCase(
         if (errors.isNotEmpty()) {
             return ObjectResult.fail(errors.joinToString { ". " })
         }
-        val json = Json { ignoreUnknownKeys = true }
+        val json = Json { ignoreUnknownKeys = false }
         val jsonElement = json.parseToJsonElement(input.jsonData!!)
         val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content?.lowercase() 
             ?:input.type
