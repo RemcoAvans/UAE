@@ -48,7 +48,7 @@ suspend fun splitMultipartDataAndPicture(multipartData: MultiPartData): splitMul
 
 
     
-    return splitMultipartDataAndPicturedDto(jsonString,fileBytes, fileName)
+    return splitMultipartDataAndPicturedDto(jsonString,fileBytes, fileName, null)
 
     // Retourneer een Pair (wat (ByteArray, String) eigenlijk is)
     // met de ingelezen bytes en de bestandsnaam.
