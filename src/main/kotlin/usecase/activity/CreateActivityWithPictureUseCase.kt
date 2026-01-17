@@ -30,6 +30,7 @@ class CreateActivityWithPictureUseCase(
         val json = Json { ignoreUnknownKeys = true }
         val jsonElement = json.parseToJsonElement(input.jsonData!!)
         val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content?.lowercase() 
+            ?:input.type
             ?: return ObjectResult.fail("Type veld ontbreekt in JSON")
         
         val activityDto: CreateActivityDto<*> = when (type) {

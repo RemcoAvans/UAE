@@ -2,7 +2,8 @@ package com.example.dtos.utilities
 
 data class splitMultipartDataAndPicturedDto(val jsonData: String?,
                                             val fileBytes: ByteArray?,
-                                            val originalFileName: String?) {
+                                            val originalFileName: String?,
+                                            var type: String?) {
 
     fun validate(): List<String> {
         val errors = mutableListOf<String>()

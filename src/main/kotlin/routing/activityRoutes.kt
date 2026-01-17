@@ -145,6 +145,7 @@ fun Route.activityRoutes(
             post("/food") {
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
+                data.type = "food"
                 var result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
@@ -152,6 +153,7 @@ fun Route.activityRoutes(
             post("/culture") {
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
+                data.type = "culture"
                 val result = createActivityWithPicture.execute(data)
                 call.handle(result)
             }
@@ -159,6 +161,7 @@ fun Route.activityRoutes(
                 val multipartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100)
                 val data = splitMultipartDataAndPicture(multipartData)
                 val result = createActivityWithPicture.execute(data)
+                data.type = "sport"
                 call.handle(result)
             }
         }
