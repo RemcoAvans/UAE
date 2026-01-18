@@ -86,12 +86,6 @@ fun Route.userRoutes(repo: IUserRepository) {
         } else {
             call.handle(result)
         }
-
-
-
-
-
-
     }
 
 
