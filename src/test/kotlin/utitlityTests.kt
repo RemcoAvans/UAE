@@ -20,9 +20,15 @@ class utitlityTests {
         val result = uploadPicture(pictureDto)
 
         // Assert
-        val savedFile = File(uploadDir, "test.jpg")
+        // Het bestand krijgt een UUID naam, maar moet wel de juiste extensie hebben
+        assertTrue(result.result?.startsWith("/uploads/") == true, "Path moet beginnen met /uploads/")
+        assertTrue(result.result?.endsWith(".jpg") == true, "Path moet eindigen met .jpg")
+
+        // Haal de bestandsnaam uit het resultaat
+        val fileName = result.result?.removePrefix("/uploads/") ?: ""
+        val savedFile = File(uploadDir, fileName)
+
         assertTrue(savedFile.exists(), "Bestand moet zijn aangemaakt")
-        assertEquals("/uploads/test.jpg", result.result, "Return pad moet correct zijn")
         assertEquals("HelloWorld", savedFile.readText(), "Bestand moet correcte inhoud hebben")
 
         // Clean up
