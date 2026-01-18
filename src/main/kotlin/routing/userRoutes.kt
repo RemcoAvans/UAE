@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.example.baseRouter.BaseRouter.badRequest
 import com.example.baseRouter.BaseRouter.handle
+import com.example.baseRouter.BaseRouter.ok
 import com.example.baseRouter.BaseRouter.sendToken
 import com.example.baseRouter.BaseRouter.unauthorized
 import com.example.config.JwtConfig
@@ -113,13 +114,23 @@ fun Route.userRoutes(repo: IUserRepository) {
                     val username = principal.payload.getClaim("username").asString()
                     val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
                     call.respondText("Hello, $username! you're role is : $role And you're Token expires at $expiresAt ms.")
-
                 } else {
                     call.unauthorized()
                 }
+            }
 
-
-
+            get("isAdmin"){
+                val principal = call.principal<JWTPrincipal>()
+                if (principal == null) {
+                    call.unauthorized("Unauthenticated user")
+                    return@get
+                }
+                val role = principal.payload.getClaim("role").asString()
+                if (role == "Admin"){
+                    call.ok(true)
+                } else {
+                    call.ok(false)
+                }
             }
 
             delete("/DeleteUser/{id}") {
