@@ -11,6 +11,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.config.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
@@ -171,6 +172,15 @@ class UserRoutesIntegrationTest {
     fun `POST users register - should return 200 when registration is successful`() = testApplication {
         // Arrange
         val fakeRepo = FakeUserRepository()
+
+        environment {
+            config = MapApplicationConfig(
+                "jwt.issuer" to "https://jwt-ktor-demo-les6/",
+                "jwt.audience" to "jwt-audience",
+                "jwt.realm" to "ktor sample app",
+                "jwt.secret" to "mySecret"
+            )
+        }
 
         application {
             install(Authentication) {
