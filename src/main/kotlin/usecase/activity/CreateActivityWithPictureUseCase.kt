@@ -39,6 +39,13 @@ class CreateActivityWithPictureUseCase(
             "sport" -> json.decodeFromString<CreateSportActivityDto>(input.jsonData!!)
             else -> return ObjectResult.fail("Onbekend activiteitstype: $type")
         }
+
+        when (type) {
+            "food" -> activityDto.type = "food"
+            "culture" -> activityDto.type = "culture"
+            "sport" -> activityDto.type = "sport"
+            else -> return ObjectResult.fail("Onbekend activiteitstype: $type")
+        }
         
         val activityResult = createActivity.execute(activityDto)
         if (!activityResult.success || activityResult.result?.id == null) return activityResult

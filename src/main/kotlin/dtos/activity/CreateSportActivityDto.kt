@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 class CreateSportActivityDto(
     override val title: String,
     override val description: String,
-    override val type: String = "",
+    override var type: String = "",
     override val price: Double,
     override val locationLatitude: Double? = null,
     override val locationLongitude: Double? = null,

@@ -16,7 +16,7 @@ abstract class CreateActivityDto<TCreateActivityDto>(
 {
     abstract val title: String
     abstract val description: String
-    abstract val type : String
+    abstract var type : String
     abstract val price : Double
     abstract val locationLatitude: Double?
     abstract val locationLongitude: Double?
