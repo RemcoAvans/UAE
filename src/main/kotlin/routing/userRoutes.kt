@@ -122,14 +122,16 @@ fun Route.userRoutes(repo: IUserRepository) {
             get("isAdmin"){
                 val principal = call.principal<JWTPrincipal>()
                 if (principal == null) {
-                    call.unauthorized("Unauthenticated user")
+                    call.ok(false)
                     return@get
                 }
                 val role = principal.payload.getClaim("role").asString()
                 if (role == "Admin"){
                     call.ok(true)
+                    return@get
                 } else {
                     call.ok(false)
+                    return@get
                 }
             }
 
