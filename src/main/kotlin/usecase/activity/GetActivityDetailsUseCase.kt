@@ -27,7 +27,11 @@ class GetActivityDetailsUseCase(
         val activity = activityRepo.getById(input)
             ?: return ObjectResult.notFound("Activiteit niet gevonden.")
 
-        val ratings = getRating(input)
+        val votes = voteRepo.getByQuery { it.activityId == input }
+        val positiveVotes = votes.count { it.positive }
+        val negativeVotes = votes.count { !it.positive }
+        val rating = positiveVotes - negativeVotes
+
         val tags = getTags(input)
         val location = getLocation(activity.locationId)
 
@@ -51,15 +55,12 @@ class GetActivityDetailsUseCase(
             recurrenceDays = activity.recurrenceDays,
             phoneNumber = activity.phoneNumber,
             createdAt = activity.createdAt,
-            rating = ratings,
+            rating = rating,
             tags = tags,
+            positiveVotes = positiveVotes,
+            negativeVotes = negativeVotes
         )
         return ObjectResult.success(result)
-    }
-
-    private suspend fun getRating(activityId: Int): Int {
-        val votes = voteRepo.getByQuery { it.activityId == activityId }
-        return votes.filter{it.positive}.size - votes.filter{!it.positive}.size;
     }
 
     private suspend fun getTags(activityId: Int): List<String> {

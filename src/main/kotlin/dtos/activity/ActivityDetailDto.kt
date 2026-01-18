@@ -28,5 +28,7 @@ data class ActivityDetailDto(
     @Serializable(with = LocalDateSerializer::class) val createdAt: LocalDate? = null,
     val rating: Int,
     val tags: List<String>,
+    val positiveVotes: Int = 0,
+    val negativeVotes: Int = 0,
 ) {
 }
