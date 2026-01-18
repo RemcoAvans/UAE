@@ -32,18 +32,20 @@ fun main(args: Array<String>): Unit =
 
 fun Application.module() {
 
-    install(Koog){
-        llm {
-            openAI(apiKey = System.getenv("") ?: "") {
-                baseUrl = "https://api.openai.com"
-                timeouts { // Default values shown below
-                    requestTimeout = 15.minutes
-                    connectTimeout = 60.seconds
-                    socketTimeout = 15.minutes
-                }
-            }
-        }
-    }
+    // Koog AI Agent installation - Currently disabled
+    // Uncomment when you need AI chat functionality
+//    install(Koog){
+//        llm {
+//            openAI(apiKey = System.getenv("OPENAI_API_KEY") ?: "") {
+//                baseUrl = "https://api.openai.com"
+//                timeouts { // Default values shown below
+//                    requestTimeout = 15.minutes
+//                    connectTimeout = 60.seconds
+//                    socketTimeout = 15.minutes
+//                }
+//            }
+//        }
+//    }
 
 //    routing {
 //        route("/ai") {
