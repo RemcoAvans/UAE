@@ -55,9 +55,10 @@ class GetActivityDetailListUseCase(
         val result = input.map { activity ->
             val location = locations[activity.locationId]
 
-            val rating = votes[activity.id]
-                ?.let { v -> v.count { it.positive } - v.count { !it.positive } }
-                ?: 0
+            val activityVotes = votes[activity.id] ?: emptyList()
+            val positiveVotes = activityVotes.count { it.positive }
+            val negativeVotes = activityVotes.count { !it.positive }
+            val rating = positiveVotes - negativeVotes
 
             val tagNames = activityTags[activity.id]
                 ?.mapNotNull { tags[it.TagId]?.name }
@@ -85,7 +86,9 @@ class GetActivityDetailListUseCase(
                 phoneNumber = activity.phoneNumber,
                 createdAt = activity.createdAt,
                 rating = rating,
-                tags = tagNames
+                tags = tagNames,
+                positiveVotes = positiveVotes,
+                negativeVotes = negativeVotes
             )
         }
 
