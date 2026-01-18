@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 class CreateFoodActivityDto(
     override val title: String,
     override val description: String,
-    override val type: String = "",
+    override var type: String = "",
     override val price: Double,
     override val locationLatitude: Double? = null,
     override val locationLongitude: Double? = null,
@@ -17,7 +17,7 @@ class CreateFoodActivityDto(
     override val endDate: LocalDate? = null,
     override val recurrencePattern: String? = null,
     override val recurrenceDays: String? = null,
-    override val phoneNumber: String? = null,
+    override var phoneNumber: String? = null,
     val Cuisine: String,
     val PriceRange: String,
 ) : CreateActivityDto<CreateFoodActivityDto>(

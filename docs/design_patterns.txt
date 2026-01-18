@@ -1,0 +1,55 @@
+DESIGN PATTERNS UAE APPLICATIE
+
+Dit document beschrijft de design patterns die zijn toegepast in de UAE (Ultimate Activity Experience) applicatie, specifiek gericht op de functionaliteit rondom het aanmaken van activiteiten.
+
+--------------------------------------------------------------------------------
+
+1. REPOSITORY PATTERN
+
+MOTIVATIE
+Het Repository Pattern wordt gebruikt om de business logica (Use Cases) los te koppelen van de data-toegangslaag (Exposed ORM / Database).
+
+VOORDELEN:
+- Scheiding van belangen (Separation of Concerns): De Use Case hoeft niet te weten hoe data precies wordt opgeslagen of opgehaald.
+- Vervangbaarheid: We kunnen eenvoudig wisselen tussen een database-implementatie (ActivityRepository) en bijvoorbeeld een in-memory implementatie voor unit tests, zonder de Use Cases aan te passen.
+- Centrale logica: Queries en data-mapping (toActivity) bevinden zich op één plek.
+
+KLASSENDIAGRAM BESCHRIJVING:
+In het klassendiagram is te zien dat er een interface 'IActivityRepository' bestaat. De 'ActivityRepository' implementeert deze interface en bevat de daadwerkelijke database-logica. De 'CreateActivityUseCase' is afhankelijk van de interface, niet van de concrete implementatie.
+
+SEQUENCE DIAGRAM BESCHRIJVING (CREATE ACTIVITY):
+1. De Client roept de execute methode aan op de CreateActivityUseCase.
+2. De Use Case roept de create methode aan op de IActivityRepository.
+3. De Repository voert de insert actie uit op de Database.
+4. De Database geeft een nieuw ID terug.
+5. De Repository geeft het aangemaakte activiteit-object terug aan de Use Case.
+6. De Use Case geeft het resultaat terug aan de Client.
+
+--------------------------------------------------------------------------------
+
+2. STRATEGY PATTERN (POLYMORFISME IN DTO'S & USE CASES)
+
+MOTIVATIE
+Bij het aanmaken van activiteiten hebben we te maken met verschillende types (Food, Sport, Culture) die elk hun eigen specifieke data hebben. In plaats van één grote klasse met veel optionele velden, gebruiken we polymorfisme in de DTO's en een 'Strategy-achtige' aanpak in de Use Case.
+
+VOORDELEN:
+- Type-veiligheid: Specifieke velden zoals 'Cuisine' horen alleen bij 'FoodActivity'.
+- Uitbreidbaarheid: Nieuwe activiteitstypes kunnen worden toegevoegd door een nieuwe DTO-klasse te maken zonder de basislogica te breken.
+- Schonere code: De Use Case gebruikt een 'when'-expressie om de specifieke opslaglogica te bepalen op basis van het type.
+
+KLASSENDIAGRAM BESCHRIJVING:
+Er is een abstracte basisklasse 'CreateActivityDto' waar specifieke klassen zoals 'CreateFoodActivityDto' en 'CreateSportActivityDto' van overerven. De 'CreateActivityUseCase' ontvangt de basisklasse en kan via polymorfisme de juiste velden aanspreken.
+
+SEQUENCE DIAGRAM BESCHRIJVING (CREATE WITH PICTURE & TYPE HANDLING):
+1. De Route laag roept de CreateActivityWithPictureUseCase aan.
+2. De Use Case bepaalt het type (Food, Sport, etc.) op basis van de input.
+3. De CreateActivityUseCase wordt aangeroepen met de specifieke DTO.
+4. De basis-activiteit wordt aangemaakt via de repository.
+5. De type-specifieke data (Food/Sport/Culture) wordt opgeslagen.
+6. Nadat de activiteit is aangemaakt, wordt de foto geüpload en de URL bijgewerkt in de database via de repository.
+
+--------------------------------------------------------------------------------
+
+INSTRUCTIE VOOR WORD:
+- Kopieer de bovenstaande tekst naar Microsoft Word.
+- Voor de diagrammen kun je de Mermaid-code uit het .md bestand gebruiken op https://mermaid.live/ om afbeeldingen te genereren en deze in het Word-document te plakken onder de betreffende kopjes.
