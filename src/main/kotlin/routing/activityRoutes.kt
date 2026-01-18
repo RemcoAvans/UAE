@@ -104,8 +104,6 @@ fun Route.activityRoutes(
         }
         authenticate("auth-jwt") {
 
-
-
             post("/search") {
                 val userInput = call.receiveText()
                 val result = searchActivity.execute(userInput)
