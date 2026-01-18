@@ -42,7 +42,7 @@ fun Route.userRoutes(repo: IUserRepository) {
 
         // If registration successful, generate and return JWT token
         if (result.success) {
-            val jwt = JwtConfig(environment)
+            val jwt = JwtConfig(call.application.environment)
             val expiresAt = System.currentTimeMillis() + 600 * 1000
             val token = JWT.create()
                 .withAudience(jwt.audience)
@@ -71,7 +71,7 @@ fun Route.userRoutes(repo: IUserRepository) {
 
         if (result.success) {
 
-            val jwt = JwtConfig(environment)
+            val jwt = JwtConfig(call.application.environment)
 
             val expiresAt = System.currentTimeMillis() + 600 * 1000
             val token =  JWT.create()
